@@ -13,6 +13,13 @@
             <span class="text-xl md:text-2xl">+</span>
           </button>
         </router-link>
+        <router-link to="/profile">
+          <button
+            class="text-gray-600 px-2  md:px-3 rounded-md shadow-xl hover:scale-110 transition-transform duration-300 ease-in-out"
+          >
+            <span class="text-xl md:text-2xl">Profile</span>
+          </button>
+        </router-link>
 
         <button v-if="!isAdmin" @click="goToLogin" class="text-gray-600 px-2  md:px-3 rounded-md shadow-xl hover:scale-110 transition-transform duration-300 ease-in-out">
           Admin

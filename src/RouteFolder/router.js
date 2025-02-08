@@ -3,6 +3,7 @@ import HomeComponent from '../views/HomeComponent.vue';
 import AdminLogin from '../views/AdminLogin.vue';
 import PlaceUpload from '../components/PlaceUpload.vue';  // Import the new component
 import PlaceDetails from '../components/PlaceDetails.vue';
+import UserProfile from '../components/UserProfile.vue';
 
 const routes = [
   {
@@ -14,6 +15,11 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: AdminLogin,
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: UserProfile,
   },
   {
     path: '/place/:id',
