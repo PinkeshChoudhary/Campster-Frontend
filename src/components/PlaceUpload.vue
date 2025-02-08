@@ -30,7 +30,21 @@
 
         <!-- Image Upload -->
         <div class="mb-4">
-          <input type="file" @change="handleImageUpload" multiple class="input-field" />
+          <input type="file" @change="handleImageUpload" multiple accept="image/*" class="input-field" />
+        </div>
+
+        <!-- Image Preview -->
+        <div v-if="imagePreviews.length" class="mb-4 grid grid-cols-3 gap-2">
+          <div v-for="(image, index) in imagePreviews" :key="index" class="relative">
+            <img :src="image" class="w-24 h-24 object-cover rounded-lg shadow-md" />
+            <button
+              type="button"
+              class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-2"
+              @click="removeImage(index)"
+            >
+              ✖
+            </button>
+          </div>
         </div>
 
         <!-- Submit Button -->
@@ -54,27 +68,47 @@ export default {
       images: [],
     });
 
+    const imagePreviews = ref([]);
+
+    // Handle file input change
     const handleImageUpload = (event) => {
-      const files = event.target.files;
-      place.value.images = Array.from(files);
+      const files = Array.from(event.target.files);
+      
+      files.forEach((file) => {
+        if (!file.type.startsWith("image/")) return;
+        
+        place.value.images.push(file);
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          imagePreviews.value.push(e.target.result);
+        };
+        reader.readAsDataURL(file);
+      });
     };
 
+    // Remove image from list
+    const removeImage = (index) => {
+      place.value.images.splice(index, 1);
+      imagePreviews.value.splice(index, 1);
+    };
+
+    // Submit form data
     const submitPlace = async () => {
       try {
         const formData = new FormData();
         formData.append("name", place.value.name);
         formData.append("description", place.value.description);
-        place.value.images.forEach((image) => {
-          formData.append("images", image);
-        });
+        place.value.images.forEach((image) => formData.append("images", image));
 
         await axios.post("http://localhost:5000/api/places/submit", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
 
+        // Reset form
         place.value.name = "";
         place.value.description = "";
         place.value.images = [];
+        imagePreviews.value = [];
 
         alert("Place submitted successfully!");
       } catch (error) {
@@ -83,7 +117,7 @@ export default {
       }
     };
 
-    return { place, handleImageUpload, submitPlace };
+    return { place, imagePreviews, handleImageUpload, removeImage, submitPlace };
   },
 };
 </script>
