@@ -2,7 +2,7 @@
   <div @click="viewDetails" class=" shadow-xl cursor-pointer rounded-2xl overflow-hidden bg-white">
     <img :src="place.images[0]" alt="Place image" class="w-full h-48 object-cover">
     <div class="p-4 ">
-      <h3 class="text-xl font-semibold">{{ place.name }}</h3>
+      <h3 class="text-xl font-semibold">{{ place.destination }}</h3>
     </div>
 
   </div>

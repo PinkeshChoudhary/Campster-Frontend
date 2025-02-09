@@ -1,12 +1,12 @@
 <template>
 <div class="relative w-full h-screen">
     <!-- Background Image Slideshow -->
-    <div class="absolute inset-0 bg-cover bg-center transition-opacity duration-1000" :style="{ backgroundImage: `url(${currentImage})`, opacity: fadeOpacity }"></div>
+    <div class="absolute inset-0 bg-cover bg-center  duration-2000" :style="{ backgroundImage: `url(${currentImage})`,  }"></div>
 
     <!-- Overlay for readability -->
     <!-- <div class="absolute inset-0 bg-black bg-opacity-40"></div> -->
 </div>
-<div class="p-4">
+<div class="p-4 pb-20">
     <!-- Admin view: Display pending places -->
     <div v-if="isAdmin">
         <h2 class="text-xl font-semibold">Pending Places</h2>
@@ -30,13 +30,14 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <PlaceCard v-for="place in approvedPlaces" :key="place._id" :place="place" />
         </div>
-        <div class="fixed bottom-0 right-0 p-9">
-      <button
-        class="bg-gray-500 text-green p-4 mb-13 shadow-xl hover:scale-110 transition-transform duration-300 ease-in-out"
-      >
-        <span class="text-xl md:text-2xl">Rent a camp</span>
-      </button>
-  </div>
+        <router-link to="/tent">
+            <div class="fixed bottom-0 right-0 py-20 px-3">
+                <button class="bg-gray-500 text-green p-4 mb-13 shadow-xl hover:scale-110 transition-transform duration-300 ease-in-out">
+                    <span class="text-xl md:text-2xl">Rent a camp</span>
+                </button>
+
+            </div>
+        </router-link>
     </div>
 </div>
 </template>

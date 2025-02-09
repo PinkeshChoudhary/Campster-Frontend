@@ -4,7 +4,7 @@
     <div class="container mx-auto">
       <RouterView />
     </div>
-    <FooterComponent />
+    <BottomNavigation />
   </div>
   <OtpLogin v-else />
 </template>
@@ -12,15 +12,15 @@
 <script>
 import { ref, onMounted } from "vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import FooterComponent from "./components/FooterComponent.vue";
 import Navbar from "./components/Navbar.vue";
 import OtpLogin from "./components/OtpLogin.vue";
+import BottomNavigation from "./components/BottomNavigation.vue";
 
 export default {
   components: {
     Navbar,
     OtpLogin,
-    FooterComponent,
+    BottomNavigation,
   },
   setup() {
     const isAuthenticated = ref(false);
