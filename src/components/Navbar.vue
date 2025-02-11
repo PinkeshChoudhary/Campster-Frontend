@@ -1,19 +1,14 @@
 <template>
-  <div class="sticky top-0 w-full backdrop-blur-md bg-white/30 shadow-md p-2">
+  <div class="sticky top-0 w-full  shadow-md p-2">
     <div class="flex justify-between items-center">
       <!-- Left: Logo -->
       <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold">Campster</h1>
 
-      <!-- Right: Upload Button & Admin Buttons -->
+      <!-- Right: Admin Buttons -->
       <div class="flex items-center space-x-4 ml-auto">
-        <router-link to="/submit-place">
-          <button
-            class="text-gray-600 px-2  md:px-3 rounded-md shadow-xl hover:scale-110 transition-transform duration-300 ease-in-out"
-          >
-            <span class="text-xl md:text-2xl">+</span>
-          </button>
-        </router-link>
-
+        <button class="nav-item">
+        <i class="fas fa-search text-xl"></i>
+      </button>
         <button v-if="!isAdmin" @click="goToLogin" class="text-gray-600 px-2  md:px-3 rounded-md shadow-xl hover:scale-110 transition-transform duration-300 ease-in-out">
           Admin
         </button>
