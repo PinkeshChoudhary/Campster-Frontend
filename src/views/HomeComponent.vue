@@ -9,22 +9,10 @@
 <div class="p-4 pb-20">
     <!-- Admin view: Display pending places -->
     <div v-if="isAdmin">
-        <h2 class="text-xl font-semibold">Pending Places</h2>
-        <div v-for="place in pendingPlaces" :key="place._id" class="mb-4">
-            <div class="flex justify-between items-center">
-                <div class=" shadow-xl cursor-pointer rounded-2xl overflow-hidden bg-white">
-                    <img :src="place.images[0]" alt="Place image" class="w-full h-48 object-cover">
-                    <div class="p-4 ">
-                        <h3 class="text-xl font-semibold">{{ place.name }}</h3>
-                        <button @click="approvePlace(place._id)" class="bg-green-500 text-white px-4 py-2 rounded-md">Approve</button>
-                        <button @click="rejectPlace(place._id)" class="bg-red-500 text-white px-4 py-2 rounded-md">Reject</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+       <AdminDashboard />
     </div>
 
-    <!-- Non-admin view: Display approved places -->
+    <!-- Non-admin view: Display approved post -->
     <div v-else>
         <h4 class="text-sm mb-5">Your Next Adventure Awaits – Explore Local Wonders</h4>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -53,19 +41,17 @@ import {
 } from '../store/store';
 import axios from 'axios';
 import PlaceCard from '../components/PlaceCard.vue';
-import PlaceUpload from '../components/PlaceUpload.vue';
+import AdminDashboard from '../components/AdminDashboard.vue';
 
 export default {
     components: {
         PlaceCard,
-        PlaceUpload,
+        AdminDashboard,
     },
     setup() {
         const store = useStore();
         const isAdmin = computed(() => store.isAdmin);
         const approvedPlaces = computed(() => store.approvedPlaces);
-        const pendingPlaces = computed(() => store.pendingPlaces);
-
         const backgroundImages = [
             '../../public/homeimage.avif',
             '../../public/couplecamp.avif',
@@ -97,64 +83,15 @@ export default {
             }
         };
 
-        // Fetch pending places for admins
-        const fetchPendingPlaces = async () => {
-            try {
-                const response = await axios.get('http://localhost:5000/api/admin/pending-places', {
-                    headers: {
-                        Authorization: `Bearer ${store.token}`,
-                    },
-                });
-                store.setPendingPlaces(response.data.places);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-
-        // Approve a place (admin)
-        const approvePlace = async (placeId) => {
-            try {
-                await axios.post(`http://localhost:5000/api/admin/approve-place/${placeId}`, {}, {
-                    headers: {
-                        Authorization: `Bearer ${store.token}`,
-                    },
-                });
-                fetchPendingPlaces(); // Refresh the pending places
-            } catch (error) {
-                console.error(error);
-            }
-        };
-
-        // Reject (delete) a place (admin)
-        const rejectPlace = async (placeId) => {
-            try {
-                await axios.delete(`http://localhost:5000/api/admin/reject-place/${placeId}`, {
-                    headers: {
-                        Authorization: `Bearer ${store.token}`,
-                    },
-                });
-                fetchPendingPlaces(); // Refresh the pending places
-            } catch (error) {
-                console.error(error);
-            }
-        };
-
         // Fetch places on component mount
         onMounted(() => {
             changeBackgroundImage(); // Start the slideshow
-            if (isAdmin.value) {
-                fetchPendingPlaces();
-            } else {
-                fetchPlaces();
-            }
+            fetchPlaces();
         });
 
         return {
             isAdmin,
             approvedPlaces,
-            pendingPlaces,
-            approvePlace,
-            rejectPlace,
             currentImage,
             fadeOpacity,
         };

@@ -1,53 +1,58 @@
 <template>
-    <div class="p-4" v-if="tent">
-      <h2 class="text-xl font-semibold">{{ tent.name }}</h2>
-      <div v-if="tent.images && tent.images.length">
-        <div class="carousel">
-          <img 
-            v-for="(image, index) in tent.images" 
-            :key="index" 
-            :src="image" 
-            alt="tent image" 
-            class="w-full h-64 object-cover rounded-md" 
-          />
-        </div>
-        <div class="mt-4">
-          <p>{{ tent.description }}</p>
-        </div>
-      </div>
+  <div class="p-6 max-w-4xl mx-auto">
+    <h2 class="text-2xl font-bold mb-4">{{ tent.size }} Tent</h2>
+
+    <!-- Image Gallery -->
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <img v-for="(img, index) in tent.images" :key="index" :src="img" class="w-full h-40 object-cover rounded" />
     </div>
-    <div v-else>
-      <p>Loading tent details...</p>
-    </div>
-  </template>
-  
-  <script>
-  import { ref, onMounted } from 'vue';
-  import { useRoute } from 'vue-router';
-  import axios from 'axios';
-  
-  export default {
-    setup() {
-      const route = useRoute();  // Access the current route here
-      const tent = ref(null);
-  
-      const fetchtentDetails = async () => {
-        const tentId = route.params.id;  // Access 'id' from route parameters
-        try {
-          const response = await axios.get(`http://localhost:5000/api/tents/${tentId}`);
-          tent.value = response.data;
-        } catch (error) {
-          console.error('Error fetching tent details:', error);
-        }
-      };
-  
-      onMounted(fetchtentDetails);
-  
-      return { tent };
-    },
-  };
-  </script>
-  
-  <style scoped>
-  </style>
-  
+
+    <p class="mt-4 text-gray-700">Available Colors: {{ tent.colors.join(", ") }}</p>
+
+    <!-- Book Now Button -->
+    <button @click="goToBooking" class="mt-4 bg-green-600 text-white w-full py-2 rounded hover:bg-green-700">
+      Book Now
+    </button>
+  </div>
+</template>
+
+<script>
+import { ref, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
+
+export default {
+  setup() {
+    const route = useRoute();
+    const router = useRouter();
+    const tent = ref(null);
+
+    const tentsData = {
+      Small: { 
+        size: "Small", 
+        images: ["https://via.placeholder.com/200?text=Small+Tent", "https://via.placeholder.com/200?text=Small+Tent+2"],
+        colors: ["Red", "Blue", "Green"] 
+      },
+      Medium: { 
+        size: "Medium", 
+        images: ["https://via.placeholder.com/200?text=Medium+Tent", "https://via.placeholder.com/200?text=Medium+Tent+2"], 
+        colors: ["Yellow", "Black", "White"] 
+      },
+      Large: { 
+        size: "Large", 
+        images: ["https://via.placeholder.com/200?text=Large+Tent", "https://via.placeholder.com/200?text=Large+Tent+2"], 
+        colors: ["Brown", "Gray", "Orange"] 
+      },
+    };
+
+    onMounted(() => {
+      tent.value = tentsData[route.query.size];
+    });
+
+    const goToBooking = () => {
+      router.push({ name: "Booking", query: { size: tent.value.size } });
+    };
+
+    return { tent, goToBooking };
+  },
+};
+</script>

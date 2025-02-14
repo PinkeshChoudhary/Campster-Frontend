@@ -7,6 +7,8 @@ import UserProfile from '../components/UserProfile.vue';
 import TentList from '../components/TentList.vue';
 import EventComponent from '../components/EventComponent.vue';
 import GlampingSites from '../components/GlampingSites.vue';
+import BookingComponent from '../components/BookingComponent.vue';
+import MyBooking from '../components/MyBooking.vue';
 
 
 
@@ -41,6 +43,15 @@ const routes = [
     name: 'Tent',
     component: TentList,
   },
+  {
+    path: '/tentbooking',
+    name: 'Booking',
+    component: BookingComponent,
+  },
+  { path: "/my-bookings",
+    name: 'MyBooking',
+    component: MyBooking
+   },
   {
     path: '/place/:id',
     name: 'place',
