@@ -6,10 +6,8 @@
 
       <!-- Right: Admin Buttons -->
       <div class="flex items-center space-x-4 ml-auto">
-        <button class="nav-item">
-        <i class="fas fa-search text-xl"></i>
-      </button>
-        <button v-if="!isAdmin" @click="goToLogin" class="text-gray-600 px-2  md:px-3 rounded-md shadow-xl hover:scale-110 transition-transform duration-300 ease-in-out">
+        <router-link to="/my-bookings" class="mr-4">My Bookings</router-link>
+        <button v-if="!isAdmin" @click="goToLogin" class="mr-4">
           Admin
         </button>
         <button v-if="isAdmin" @click="logout" class="text-gray-600 px-2  md:px-3 rounded-md shadow-xl hover:scale-110 transition-transform duration-300 ease-in-out">
