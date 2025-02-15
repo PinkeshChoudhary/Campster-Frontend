@@ -20,6 +20,20 @@
                 </div>
             </div>
         </div>
+
+        <!-- Bookings Section -->
+        <h2 class="text-xl font-semibold mt-8">Bookings</h2>
+        <div v-if="bookings.length === 0" class="text-gray-500">No bookings found.</div>
+        <div v-for="booking in bookings" :key="booking._id" class="border p-4 rounded-lg shadow-lg my-4 bg-white">
+            <h3 class="font-semibold">Tent: {{ booking.tentId?.name || "Unknown Tent" }}</h3>
+            <p>User ID: {{ booking.userId }}</p>
+            <p>From: {{ formatDate(booking.fromDate) }}</p>
+            <p>To: {{ formatDate(booking.toDate) }}</p>
+            <p>Quantity: {{ booking.quantity }}</p>
+            <p class="font-bold" :class="booking.status === 'Pending' ? 'text-yellow-500' : 'text-green-600'">
+                Status: {{ booking.status }}
+            </p>
+        </div>
     </div>
 </template>
 
@@ -35,6 +49,7 @@ export default {
         const pendingPlaces = computed(() => store.pendingPlaces);
         const showNotification = ref(false);
         const notificationMessage = ref("");
+        const bookings = ref([]);
 
         // Fetch pending places for admins
         const fetchPendingPlaces = async () => {
@@ -70,6 +85,24 @@ export default {
             } catch (error) {
                 console.error(error);
             }
+        };
+
+         // Fetch all pending and confirmed bookings
+         const fetchBookings = async () => {
+            try {
+                const response = await axios.get("http://localhost:5000/api/admin/allbookings", {
+                    headers: { Authorization: `Bearer ${store.token}` },
+                });
+                bookings.value = response.data.bookings;
+            } catch (error) {
+                console.error("Error fetching bookings:", error);
+            }
+        };
+
+          // Format date
+          const formatDate = (dateString) => {
+            const options = { year: "numeric", month: "short", day: "numeric" };
+            return new Date(dateString).toLocaleDateString(undefined, options);
         };
 
         // Connect to Socket.io
@@ -108,6 +141,7 @@ export default {
         // Listen for booking notifications
         onMounted(() => {
             fetchPendingPlaces();
+            fetchBookings();
             socket.on("bookingNotification", handleBookingNotification);
             if ("serviceWorker" in navigator) {
     (async () => {
@@ -138,6 +172,8 @@ export default {
             rejectPlace,
             showNotification,
             notificationMessage,
+            bookings,
+            formatDate,
         };
     },
 };
