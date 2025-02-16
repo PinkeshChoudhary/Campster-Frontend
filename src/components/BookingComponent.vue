@@ -3,12 +3,13 @@
       <h2 class="text-2xl font-bold mb-4">Rent a Tent</h2>
   
       <!-- Select Tent Size (Prefilled & Read-only) -->
-      <label class="block font-semibold">Selected Tent Size:</label>
-      <select v-model="selectedSize" class="w-full p-2 border rounded">
-        <option v-for="size in sizes" :key="size" :value="size">
-          {{ size }}
-        </option>
-      </select>
+      <label class="block font-semibold">Seed Tent Size:</label>
+    <input
+      type="text"
+      v-model="selectedSize"
+      class="w-full p-2 border rounded"
+      readonly
+    />
       <!-- Select Tent Color -->
       <label class="block font-semibold mt-3">Select Tent Color:</label>
       <select v-model="selectedColor" class="w-full p-2 border rounded">
@@ -71,14 +72,16 @@
   import { ref, watch } from "vue";
   import debounce from "lodash.debounce"; 
   import { getAuth } from "firebase/auth";
+  import { useRoute } from "vue-router";
   
   export default {
     setup() {
       const colors = ref(["Red", "Blue", ]);
-      const sizes = ref(["Small", "Medium", "Large"]);
+      const route = useRoute();
+      const selectedSize = route.query.size; // Access the size parameter
+      // const sizes = ref(["Small", "Medium", "Large"]);
       const selectedColor = ref("");
       const fromDate = ref("");
-      const selectedSize = ref("");
       const toDate = ref("");
       const quantity = ref(1);
       const availability = ref(null);
@@ -88,7 +91,7 @@
       const auth = getAuth();
 
       const checkAvailability = debounce(async () => {
-        if ( !selectedSize.value || !selectedColor.value || !fromDate.value || !toDate.value) {
+        if ( !selectedColor.value || !fromDate.value || !toDate.value) {
           console.info(selectedColor, selectedSize )
           availability.value = null;
           return;
@@ -97,7 +100,7 @@
         try {
           const response = await axios.get("http://localhost:5000/api/tents/available", {
             params: {
-              size: selectedSize.value,
+              size: selectedSize,
               color: selectedColor.value,
               fromDate: fromDate.value,
               toDate: toDate.value,
@@ -170,7 +173,6 @@
         bookingStatus,
         bookTent,
         cancelBooking,
-        sizes,
         selectedSize,
       };
     },

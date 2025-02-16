@@ -4,7 +4,7 @@
     <div class="container mx-auto">
       <RouterView />
     </div>
-    <BottomNavigation />
+    <!-- <BottomNavigation /> -->
   </div>
   <OtpLogin v-else />
 </template>
