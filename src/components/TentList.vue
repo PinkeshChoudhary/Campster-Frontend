@@ -34,17 +34,17 @@ export default {
     const tents = [
       { 
         size: "Small", 
-        images: ["https://via.placeholder.com/200?text=Small+Tent"], 
+        images: ["../../public/24.webp"], 
         colors: ["Red", "Blue", "Green"]
       },
       { 
         size: "Medium", 
-        images: ["https://via.placeholder.com/200?text=Medium+Tent"], 
+        images: ["../../public/25.webp"], 
         colors: ["Yellow", "Black", "White"]
       },
       { 
         size: "Large", 
-        images: ["https://via.placeholder.com/200?text=Large+Tent"], 
+        images: ["../../public/65.webp"], 
         colors: ["Brown", "Gray", "Orange"]
       },
     ];
