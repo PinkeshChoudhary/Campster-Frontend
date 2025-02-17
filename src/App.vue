@@ -1,5 +1,7 @@
 <template>
-  <div v-if="isAuthenticated">
+  <div class="ctnr">
+    <ProgramList/>
+    <div v-if="isAuthenticated">
     <Navbar />
     <div class="container mx-auto">
       <RouterView />
@@ -7,6 +9,7 @@
     <BottomNavigation />
   </div>
   <OtpLogin v-else />
+  </div>
 </template>
 
 <script>
@@ -15,12 +18,14 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Navbar from "./components/Navbar.vue";
 import OtpLogin from "./components/OtpLogin.vue";
 import BottomNavigation from "./components/BottomNavigation.vue";
+import ProgramList from "./components/menus/programList.vue";
 
 export default {
   components: {
     Navbar,
     OtpLogin,
     BottomNavigation,
+    ProgramList,
   },
   setup() {
     const isAuthenticated = ref(false);
@@ -42,5 +47,9 @@ console.info("isAuthenticated", isAuthenticated.value)
 /* Global styles */
 body {
   font-family: 'Arial', sans-serif;
+}
+.ctnr {
+  display: flex;
+  flex-direction: row;
 }
 </style>
