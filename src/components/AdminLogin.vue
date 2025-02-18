@@ -59,7 +59,7 @@ export default {
     <div class="w-full max-w-lg p-6 bg-white rounded-lg shadow-lg backdrop-blur-md bg-white/50">
       <h2
         class="text-2xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600 shadow-lg p-2 rounded-md">
-        Login
+        Partner
       </h2>
       <input v-model="email" type="email" placeholder="Email"
         class="shadow-lg bg-gradient-to-r from-blue-200 to-blue-400 text-gray-900 w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center items-center p-4">
+  <div class="flex justify-center items-center p-4 mb-20">
     <div class="w-full max-w-lg p-6 bg-white rounded-lg shadow-lg">
       <h3 class="text-3xl font-semibold text-gray-700 mb-6 text-center">
         Share Your Camping Experience

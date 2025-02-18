@@ -16,7 +16,7 @@
       <div 
         v-if="menuOpen" 
         ref="menu" 
-        class="fixed top-0 right-0 h-full w-3/4 sm:w-1/2 md:w-1/3 lg:w-1/4 bg-gray-100 shadow-lg z-50 flex flex-col p-6 text-gray-800 transition-transform"
+        class="fixed top-0 right-0 h-full w-3/4 sm:w-1/2 md:w-1/3 lg:w-1/4 bg-gray-100 shadow-lg z-[101] flex flex-col p-6 text-gray-800 transition-transform "
         @click.stop
       >
         <!-- Close Button -->
@@ -59,21 +59,31 @@
           </div>
         </transition>
 
-        <!-- Menu Items -->
-        <ul class="mt-6 space-y-4">
-          <li @click="navigate('glamping')" class="menu-item">
-            <span class="icon">🌍</span> Explore Sites
-          </li>
-          <li @click="navigate('login')" class="menu-item">
-            <span class="icon">⭐</span> Admin
-          </li>
-          <li @click="navigate('tent')" class="menu-item">
-            <span class="icon">⛺</span> Rent a Tent
-          </li>
-          <li @click="navigate('my-bookings')" class="menu-item">
-            <span class="icon">📅</span> My Bookings
-          </li>
-        </ul>
+       <!-- Menu Items -->
+<ul class="mt-6 space-y-6 text-lg  text-gray-800">
+  <li @click="navigate('glamping')" class="menu-item flex items-center space-x-3 py-3 border-b border-gray-400 hover:bg-gray-200 rounded-lg transition">
+    <span>Explore Sites</span>
+  </li>
+
+  <li @click="navigate('login')" class="menu-item flex items-center space-x-3  py-3 border-b border-gray-400 hover:bg-gray-200 rounded-lg transition">
+    <span>Admin</span>
+  </li>
+
+  <li @click="navigate('tent')" class="menu-item flex items-center space-x-3  py-3 border-b border-gray-400 hover:bg-gray-200 rounded-lg transition">
+    <span>Rent a Tent</span>
+  </li>
+
+  <li @click="navigate('my-bookings')" class="menu-item flex items-center space-x-3  py-3 border-b border-gray-400 hover:bg-gray-200 rounded-lg transition">
+    <span>My Bookings</span>
+  </li>
+  <li @click="navigate('contact')" class="menu-item flex items-center space-x-3  py-3 border-b border-gray-400 hover:bg-gray-200 rounded-lg transition">
+    <span>Contact Us</span>
+  </li>
+  <li @click="navigate('partner')" class="menu-item flex items-center space-x-3  py-3 border-b border-gray-400 hover:bg-gray-200 rounded-lg transition">
+    <span>Partner with us</span>
+  </li>
+</ul>
+
       </div>
     </transition>
 
