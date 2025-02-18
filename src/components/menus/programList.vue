@@ -49,7 +49,6 @@
             <p class="text-lg font-semibold">{{ userStore.name || "Guest" }}</p>
             <p class="text-sm text-gray-500">{{ userStore.email || "No email" }}</p>
             <p class="text-sm text-gray-500">{{ userStore.phone || "No phone" }}</p>
-            <p class="text-sm text-gray-500">Joined: Jan 10, 2024</p>
             <button 
               @click="editProfile"
               class="mt-3 bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition"

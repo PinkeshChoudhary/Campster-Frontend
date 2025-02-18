@@ -100,9 +100,12 @@
 <script>
 import { ref } from "vue";
 import axios from "axios";
+import { getAuth } from "firebase/auth";
 
 export default {
   setup() {
+    const auth = getAuth();
+    const user = auth.currentUser;
     const experience = ref({
       destination: "",
       date: "",
@@ -149,7 +152,9 @@ export default {
             formData.append(key, experience.value[key]);
           }
         });
-
+         // Add the Firebase UID to the form data
+         formData.append("userId", user.auth.currentUser.uid); // Firebase UID
+         console.info("userId", user.auth.currentUser.uid)
         await axios.post("http://localhost:5000/api/places/submit", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });

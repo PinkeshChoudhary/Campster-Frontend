@@ -9,6 +9,7 @@ import EventComponent from '../components/EventComponent.vue';
 import GlampingSites from '../components/GlampingSites.vue';
 import BookingComponent from '../components/BookingComponent.vue';
 import MyBooking from '../components/MyBooking.vue';
+import MyPosts from '../components/MyPosts.vue';
 
 
 
@@ -61,6 +62,11 @@ const routes = [
     path: '/submit-place',
     name: 'PlaceUpload', // New route for uploading a place
     component: PlaceUpload,
+  },
+  {
+    path: '/myPost',
+    name: 'MyPost', // New route for uploading a place
+    component: MyPosts,
   },
 ];
 
