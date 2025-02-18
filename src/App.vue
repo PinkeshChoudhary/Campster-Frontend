@@ -1,14 +1,10 @@
 <template>
-  <div class="ctnr">
-    <ProgramList/>
     <div v-if="isAuthenticated">
     <Navbar />
     <div class="container mx-auto">
       <RouterView />
     </div>
     <BottomNavigation />
-  </div>
-  <OtpLogin v-else />
   </div>
 </template>
 

@@ -25,9 +25,9 @@
       </router-link>
   
       <!-- Profile -->
-      <router-link to="/profile" :class="activeClass('/profile')" class="nav-item">
+      <router-link to="/myPost" :class="activeClass('/myPost')" class="nav-item">
         <i class="fas fa-user text-xl"></i>
-        <span class="text-xs">Profile</span>
+        <span class="text-xs">MyPost  </span>
       </router-link>
     </div>
   </template>
