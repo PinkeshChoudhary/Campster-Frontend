@@ -1,5 +1,5 @@
 <template>
-  <div class="p-6 max-w-4xl mx-auto">
+  <div class="p-6 max-w-4xl mx-auto mb-20">
     <h2 class="text-2xl font-bold mb-4">Available Tents</h2>
 
     <div class="grid md:grid-cols-3 gap-6">
@@ -34,17 +34,17 @@ export default {
     const tents = [
       { 
         size: "Small", 
-        images: ["../../public/24.webp"], 
+        images: ["../../public/6person.webp"], 
         colors: ["Red", "Blue", "Green"]
       },
       { 
         size: "Medium", 
-        images: ["../../public/25.webp"], 
+        images: ["../../public/2person.webp"], 
         colors: ["Yellow", "Black", "White"]
       },
       { 
         size: "Large", 
-        images: ["../../public/65.webp"], 
+        images: ["../../public/4person.webp"], 
         colors: ["Brown", "Gray", "Orange"]
       },
     ];

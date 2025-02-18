@@ -1,10 +1,10 @@
 <template>
-<div class="relative w-full h-screen">
-    <!-- Background Image Slideshow -->
-    <div class="absolute inset-0 bg-cover bg-center  duration-2000" :style="{ backgroundImage: `url(${currentImage})`,  }"></div>
+<div class="relative w-full" :style="{ height: `calc(100vh - 80px - 60px)` }">
+    <!-- Background Image Slideshow
+    <div class="absolute inset-0 bg-cover bg-center  duration-2000" :style="{ backgroundImage: `url(${currentImage})`,  }"></div> -->
 
     <!-- Overlay for readability -->
-    <!-- <div class="absolute inset-0 bg-black bg-opacity-40"></div> -->
+    <div class="absolute inset-0 bg-cover bg-opacity-40 duration-2000" :style="{ backgroundImage: `url(${currentImage})`,  }"></div>
 </div>
 <div class="p-4 pb-20">
     <!-- Admin view: Display pending places -->
