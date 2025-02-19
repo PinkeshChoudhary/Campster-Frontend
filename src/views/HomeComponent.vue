@@ -1,11 +1,7 @@
 <template>
-<div class="relative w-full" :style="{ height: `calc(100vh - 80px - 60px)` }">
-    <!-- Background Image Slideshow
-    <div class="absolute inset-0 bg-cover bg-center  duration-2000" :style="{ backgroundImage: `url(${currentImage})`,  }"></div> -->
-
-    <!-- Overlay for readability -->
+<!-- <div class="relative w-full" :style="{ height: `calc(100vh - 80px - 60px)` }">
     <div class="absolute inset-0 bg-cover bg-opacity-40 duration-2000" :style="{ backgroundImage: `url(${currentImage})`,  }"></div>
-</div>
+</div> -->
 <div class="p-4 pb-20">
     <!-- Admin view: Display pending places -->
     <div v-if="isAdmin">
@@ -52,27 +48,27 @@ export default {
         const store = useStore();
         const isAdmin = computed(() => store.isAdmin);
         const approvedPlaces = computed(() => store.approvedPlaces);
-        const backgroundImages = [
-            '../../public/homeimage.avif',
-            '../../public/couplecamp.avif',
-            '../../public/friendscam.avif',
-            '../../public/mancamping.avif'
-        ];
-        const currentImage = ref(backgroundImages[0]); // Start with the first image
+        // const backgroundImages = [
+        //     '../../public/homeimage.avif',
+        //     '../../public/couplecamp.avif',
+        //     '../../public/friendscam.avif',
+        //     '../../public/mancamping.avif'
+        // ];
+        // const currentImage = ref(backgroundImages[0]); // Start with the first image
         const fadeOpacity = ref(1);
-        let imageIndex = 0;
+        // let imageIndex = 0;
 
-        // Function to cycle through images every 3 seconds
-        const changeBackgroundImage = () => {
-            setInterval(() => {
-                fadeOpacity.value = 0; // Fade out effect
-                setTimeout(() => {
-                    imageIndex = (imageIndex + 1) % backgroundImages.length;
-                    currentImage.value = backgroundImages[imageIndex]; // Change image
-                    fadeOpacity.value = 1; // Fade in effect
-                }, 500);
-            }, 3000);
-        };
+        // // Function to cycle through images every 3 seconds
+        // const changeBackgroundImage = () => {
+        //     setInterval(() => {
+        //         fadeOpacity.value = 0; // Fade out effect
+        //         setTimeout(() => {
+        //             imageIndex = (imageIndex + 1) % backgroundImages.length;
+        //             currentImage.value = backgroundImages[imageIndex]; // Change image
+        //             fadeOpacity.value = 1; // Fade in effect
+        //         }, 500);
+        //     }, 3000);
+        // };
         // Fetch approved places
         const fetchPlaces = async () => {
             try {
@@ -85,14 +81,14 @@ export default {
 
         // Fetch places on component mount
         onMounted(() => {
-            changeBackgroundImage(); // Start the slideshow
+            // changeBackgroundImage();
             fetchPlaces();
         });
 
         return {
             isAdmin,
             approvedPlaces,
-            currentImage,
+            // currentImage,
             fadeOpacity,
         };
     },

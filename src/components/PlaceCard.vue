@@ -1,6 +1,6 @@
 <template>
-  <div @click="viewDetails" class=" shadow-xl cursor-pointer rounded-2xl overflow-hidden bg-white">
-    <img :src="place.images[0]" alt="Place image" class="w-full h-48 object-cover">
+  <div @click="viewDetails" class=" shadow-xl cursor-pointer rounded-2xl overflow-hidden bg-white p-8" style="background-color: rgb(229 232 239)">
+    <img :src="place.images[0]" alt="Place image" class="w-full h-48 object-fill">
     <div class="p-4 ">
       <h3 class="text-xl font-semibold">{{ place.destination }}</h3>
       <div class="like-container">
