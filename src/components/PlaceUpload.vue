@@ -33,7 +33,7 @@
         <!-- Tent Condition & Comfort Level -->
         <div class="mb-4 grid grid-cols-2 gap-2">
           <select v-model="experience.tentCondition" class="input-field" required>
-            <option value="">🏕️ Tent Condition</option>
+            <option value="">Tent Condition</option>
             <option>Excellent</option>
             <option>Good</option>
             <option>Average</option>

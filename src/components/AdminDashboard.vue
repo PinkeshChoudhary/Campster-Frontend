@@ -27,6 +27,7 @@
         <div v-for="booking in bookings" :key="booking._id" class="border p-4 rounded-lg shadow-lg my-4 bg-white">
             <h3 class="font-semibold">Tent: {{ booking.tentId?.name || "Unknown Tent" }}</h3>
             <p>User ID: {{ booking.userId }}</p>
+            <p>User Phone: {{ booking.userPhone }}</p>
             <p>From: {{ formatDate(booking.fromDate) }}</p>
             <p>To: {{ formatDate(booking.toDate) }}</p>
             <p>Quantity: {{ booking.quantity }}</p>

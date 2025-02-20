@@ -25,6 +25,7 @@
         v-model="quantity"
         min="1"
         class="w-full p-2 border rounded"
+        readonly
       />
   
       <!-- Select Date Range -->
@@ -134,6 +135,7 @@
         console.info("userid",user.uid)
         try {
           const response = await axios.post("http://localhost:5000/api/bookings/rent", {
+            userPhone: user.phoneNumber,
             userId: user.uid,
             tentId: tentId.value,  
             fromDate: fromDate.value,
