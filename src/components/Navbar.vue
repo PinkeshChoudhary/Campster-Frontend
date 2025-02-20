@@ -1,7 +1,7 @@
 <template>
   <!-- Navbar -->
   <div
-    class="fixed top-0 w-full shadow-md p-2 bg-white transition-transform duration-300 z-50 p-0 border-b-2 border-black"
+    class="fixed top-0 w-full shadow-md p-0 bg-white transition-transform duration-300 z-50  border-b-2 border-black"
     :class="{ '-translate-y-full': !isVisible }"
   >
     <div class="flex justify-between items-center p-2" style="background-color: rgb(146 161 191)">
@@ -20,7 +20,7 @@
         <p class="text-sm text-blue-500 mt-1">Explore Hidden Gems Udaipur</p>
       </div>
 
-      <!-- Right: Admin Buttons -->
+      <!-- Right: Admin Buttons
       <div class="flex items-center space-x-4 ml-auto">
         <router-link to="/my-bookings" class="mr-4">My Bookings</router-link>
         <button v-if="!isAdmin" @click="goToLogin" class="mr-4">
@@ -29,26 +29,21 @@
         <button v-if="isAdmin" @click="logout" class="text-gray-600 px-2  md:px-3 rounded-md shadow-xl hover:scale-110 transition-transform duration-300 ease-in-out">
           Logout
         </button>
-      </div>
+      </div> -->
 
       <!-- Right: Hamburger Menu -->
       <ProgramList />
     </div>
   </div>
-
-  <!-- Slideshow remains visible -->
-  <SlideShow class="mt-0 pt-0"/>
 </template>
 
 <script>
 import { ref, onMounted, onUnmounted } from "vue";
 import ProgramList from "./menus/programList.vue";
-import SlideShow from "./Images/SlideShow.vue";
 
 export default {
   components: {
     ProgramList,
-    SlideShow
   },
   setup() {
     const isVisible = ref(true);

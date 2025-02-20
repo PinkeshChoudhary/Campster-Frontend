@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed bottom-0 w-full bg-white shadow-md border-t flex justify-around items-center py-3 ">
+    <div class="fixed bottom-0 w-full bg-white shadow-md border-t flex justify-around items-center">
       <!-- Home -->
       <router-link to="/" :class="activeClass('/')" class="nav-item">
         <i class="fas fa-home text-xl"></i>

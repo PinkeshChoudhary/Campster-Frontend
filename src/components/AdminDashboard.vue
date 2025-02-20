@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2 class="text-xl font-semibold">Pending Places</h2>
+        <h2 class="text-xl font-semibold pt-20">Pending Places</h2>
 
         <!-- Popup Notification -->
         <div v-if="showNotification" class="fixed top-5 right-5 bg-white shadow-lg p-4 rounded-lg border border-gray-300">

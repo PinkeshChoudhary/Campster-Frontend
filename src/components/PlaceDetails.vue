@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4 pb-20 max-w-3xl mx-auto mb-20" v-if="place">
+  <div class="p-4 pb-20 max-w-3xl mx-auto mb-20 pt-20" v-if="place">
     <!-- Title & Date -->
     <h2 class="text-2xl font-bold text-gray-900 mb-2">{{ place.destination }}</h2>
     <p class="text-gray-500 text-sm">
@@ -114,8 +114,8 @@
     </div>
   </div>
   
-  <div v-else class="text-center text-gray-500 p-6">
-    <p><i class="fas fa-spinner fa-spin"></i> Loading place details...</p>
+  <div v-else class="text-center text-gray-500 pt-40">
+    <p><i class="fas fa-spinner fa-spin"></i> Loading details.....</p>
   </div>
 </template>
 

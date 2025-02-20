@@ -1,15 +1,15 @@
 <template>
-<!-- <div class="relative w-full" :style="{ height: `calc(100vh - 80px - 60px)` }">
-    <div class="absolute inset-0 bg-cover bg-opacity-40 duration-2000" :style="{ backgroundImage: `url(${currentImage})`,  }"></div>
-</div> -->
 <div class="p-4 pb-20">
     <!-- Admin view: Display pending places -->
     <div v-if="isAdmin">
-       <AdminDashboard />
+        <AdminDashboard />
     </div>
 
     <!-- Non-admin view: Display approved post -->
     <div v-else>
+        <!-- Slideshow remains visible -->
+        <SlideShow class="mt-20" />
+
         <h4 class="text-sm mb-5">Your Next Adventure Awaits – Explore Local Wonders</h4>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <PlaceCard v-for="place in approvedPlaces" :key="place._id" :place="place" />
@@ -38,38 +38,34 @@ import {
 import axios from 'axios';
 import PlaceCard from '../components/PlaceCard.vue';
 import AdminDashboard from '../components/AdminDashboard.vue';
+import SlideShow from '../components/Images/SlideShow.vue';
+import { getAuth } from "firebase/auth";
 
 export default {
     components: {
         PlaceCard,
         AdminDashboard,
+        SlideShow,
     },
     setup() {
         const store = useStore();
         const isAdmin = computed(() => store.isAdmin);
         const approvedPlaces = computed(() => store.approvedPlaces);
-        // const backgroundImages = [
-        //     '../../public/homeimage.avif',
-        //     '../../public/couplecamp.avif',
-        //     '../../public/friendscam.avif',
-        //     '../../public/mancamping.avif'
-        // ];
-        // const currentImage = ref(backgroundImages[0]); // Start with the first image
-        const fadeOpacity = ref(1);
-        // let imageIndex = 0;
+        const auth = getAuth();
 
-        // // Function to cycle through images every 3 seconds
-        // const changeBackgroundImage = () => {
-        //     setInterval(() => {
-        //         fadeOpacity.value = 0; // Fade out effect
-        //         setTimeout(() => {
-        //             imageIndex = (imageIndex + 1) % backgroundImages.length;
-        //             currentImage.value = backgroundImages[imageIndex]; // Change image
-        //             fadeOpacity.value = 1; // Fade in effect
-        //         }, 500);
-        //     }, 3000);
-        // };
-        // Fetch approved places
+        const checkIfAdmin = async ()  =>{
+            try {
+                console.info("userid",auth.currentUser.uid)
+                const response = await axios.get(`http://localhost:5000/api/adminfire/dashboard`, {
+                              params: { uid: auth.currentUser.uid }
+                               });
+                store.setIsAdmin(response.data.isAdmin);
+            } catch (error) {
+                console.error('Error checking admin status', error);
+                return false;
+            }
+        }
+
         const fetchPlaces = async () => {
             try {
                 const response = await axios.get('http://localhost:5000/api/places');
@@ -81,6 +77,7 @@ export default {
 
         // Fetch places on component mount
         onMounted(() => {
+            checkIfAdmin()
             // changeBackgroundImage();
             fetchPlaces();
         });
@@ -89,7 +86,6 @@ export default {
             isAdmin,
             approvedPlaces,
             // currentImage,
-            fadeOpacity,
         };
     },
 };
