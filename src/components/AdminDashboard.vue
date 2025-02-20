@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2 class="text-xl font-semibold">Pending Places</h2>
+        <h2 class="text-xl font-semibold pt-20">Pending Places</h2>
 
         <!-- Popup Notification -->
         <div v-if="showNotification" class="fixed top-5 right-5 bg-white shadow-lg p-4 rounded-lg border border-gray-300">
@@ -27,6 +27,7 @@
         <div v-for="booking in bookings" :key="booking._id" class="border p-4 rounded-lg shadow-lg my-4 bg-white">
             <h3 class="font-semibold">Tent: {{ booking.tentId?.name || "Unknown Tent" }}</h3>
             <p>User ID: {{ booking.userId }}</p>
+            <p>User Phone: {{ booking.userPhone }}</p>
             <p>From: {{ formatDate(booking.fromDate) }}</p>
             <p>To: {{ formatDate(booking.toDate) }}</p>
             <p>Quantity: {{ booking.quantity }}</p>

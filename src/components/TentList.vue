@@ -1,5 +1,5 @@
 <template>
-  <div class="p-6 max-w-4xl mx-auto mb-20">
+  <div class="p-6 max-w-4xl mx-auto mb-20 pt-20">
     <h2 class="text-2xl font-bold mb-4">Available Tents</h2>
 
     <div class="grid md:grid-cols-3 gap-6">

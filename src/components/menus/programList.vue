@@ -1,5 +1,5 @@
 <template>
-  <div class="relative">
+  <div class="relative" >
     <!-- Hamburger Icon -->
     <button 
       @click.stop="toggleMenu" 
@@ -62,10 +62,6 @@
 <ul class="mt-6 space-y-6 text-lg  text-gray-800">
   <li @click="navigate('glamping')" class="menu-item flex items-center space-x-3 py-3 border-b border-gray-400 hover:bg-gray-200 rounded-lg transition">
     <span>Explore Sites</span>
-  </li>
-
-  <li @click="navigate('login')" class="menu-item flex items-center space-x-3  py-3 border-b border-gray-400 hover:bg-gray-200 rounded-lg transition">
-    <span>Admin</span>
   </li>
 
   <li @click="navigate('tent')" class="menu-item flex items-center space-x-3  py-3 border-b border-gray-400 hover:bg-gray-200 rounded-lg transition">

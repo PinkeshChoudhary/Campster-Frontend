@@ -6,6 +6,9 @@
     </div>
     <BottomNavigation />
   </div>
+  <div v-else >
+   <OtpLogin />
+  </div>
 </template>
 
 <script>

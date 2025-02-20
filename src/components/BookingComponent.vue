@@ -1,5 +1,5 @@
 <template>
-    <div class="p-6 max-w-lg mx-auto bg-white shadow-lg rounded-lg mb-20">
+    <div class="p-6 pt-20 max-w-lg mx-auto bg-white shadow-lg rounded-lg mb-20">
       <h2 class="text-2xl font-bold mb-4">Rent a Tent</h2>
   
       <!-- Select Tent Size (Prefilled & Read-only) -->
@@ -25,6 +25,7 @@
         v-model="quantity"
         min="1"
         class="w-full p-2 border rounded"
+        readonly
       />
   
       <!-- Select Date Range -->
@@ -134,6 +135,7 @@
         console.info("userid",user.uid)
         try {
           const response = await axios.post("http://localhost:5000/api/bookings/rent", {
+            userPhone: user.phoneNumber,
             userId: user.uid,
             tentId: tentId.value,  
             fromDate: fromDate.value,
