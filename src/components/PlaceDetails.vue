@@ -1,238 +1,183 @@
 <template>
-  <div class="p-4 pb-20 max-w-3xl mx-auto mb-20 pt-20" v-if="place">
-    <!-- Title & Date -->
-    <h2 class="text-2xl font-bold text-gray-900 mb-2">{{ place.destination }}</h2>
-    <p class="text-gray-500 text-sm">
-      <i class="fas fa-calendar-alt mr-1"></i> {{ formatDate(place.date) }} - Stayed for {{ place.duration }} days
-    </p>
+<div class="p-4 pb-20 max-w-5xl mx-auto mb-20 pt-20" v-if="place">
+    <!-- Back Button -->
+    <button @click="goBack" class="text-yellow-900 hover:text-yellow-700 transition duration-200">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-8 h-8">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+    </button>
 
-    <!-- Image Carousel -->
-    <div v-if="place.images && place.images.length" class="carousel-container my-4">
-      <div class="carousel">
-        <img 
-          v-for="(image, index) in place.images" 
-          :key="index" 
-          :src="image" 
-          alt="Camping Image" 
-          class="carousel-image rounded-lg shadow-md"
-        />
-      </div>
+    <!-- Destination -->
+    <h2 class="text-3xl font-bold text-yellow-900 mb-6 text-center">{{ place.destination }}</h2>
+
+    <!-- Images Displayed One by One -->
+    <div v-if="place.images && place.images.length" class="image-stack">
+        <img v-for="(image, index) in place.images" :key="index" :src="image" alt="Place Image" class="stacked-image" />
     </div>
 
-    <!-- Trip Overview -->
-    <div class="mt-4 bg-white p-6 rounded-lg shadow-lg border border-gray-200">
-      <h3 class="text-2xl font-bold text-gray-900 mb-4">Trip Overview</h3>
-      
-      <div class="grid grid-cols-2 gap-4 text-gray-800">
-        <p class="text-lg font-medium">
-          <i class="fas fa-users mr-2"></i> Group Size: <span class="font-normal">{{ place.groupSize }} people</span>
-        </p>
-        <p class="text-lg font-medium">
-          <i class="fas fa-star mr-2 text-yellow-500"></i> Rating: <span class="font-normal">{{ place.rating }} / 5</span>
-        </p>
-        <p class="text-lg font-medium">
-          <i class="fas fa-campground mr-2"></i> Comfort Level: <span class="font-normal">{{ place.comfort }} / 5</span>
-        </p>
-        <p class="text-lg font-medium">
-          <i class="fas fa-tent mr-2"></i> Tent Condition: <span class="font-normal">{{ place.tentCondition }}</span>
-        </p>
-      </div>
-
-      <div v-if="place.amenities.length" class="mt-4">
-        <p class="text-lg font-medium">
-          <i class="fas fa-check-circle mr-2 text-green-500"></i> Amenities Provided:
-        </p>
-        <ul class="list-disc pl-5 text-gray-700">
-          <li v-for="(amenity, index) in place.amenities" :key="index">{{ amenity }}</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Trip Highlights Section -->
-    <div class="mt-6 bg-white p-6 rounded-lg shadow-lg border border-gray-200">
-      <h3 class="text-2xl font-bold text-gray-900 mb-4">Trip Highlights</h3>
-
-      <div class="space-y-6">
-        <div v-if="place.wildlife" class="p-4 border-b border-gray-300 shadow-sm bg-gray-50 rounded-lg">
-          <p class="text-lg font-semibold text-gray-800">
-            <i class="fas fa-paw mr-2 text-green-500"></i> Wildlife Spotted
-          </p>
-          <p class="text-gray-700">{{ place.wildlife }}</p>
-        </div>
-
-        <div class="p-4 border-b border-gray-300 shadow-sm bg-gray-50 rounded-lg">
-          <p class="text-lg font-semibold text-gray-800">
-            <i class="fas fa-heart mr-2 text-red-500"></i> Best Part of the Trip
-          </p>
-          <p class="text-gray-700">{{ place.bestPart }}</p>
-        </div>
-
-        <div v-if="place.challenges" class="p-4 border-b border-gray-300 shadow-sm bg-gray-50 rounded-lg">
-          <p class="text-lg font-semibold text-gray-800">
-            <i class="fas fa-exclamation-triangle mr-2 text-orange-500"></i> Challenges Faced
-          </p>
-          <p class="text-gray-700">{{ place.challenges }}</p>
-        </div>
-
-        <div v-if="place.tips" class="p-4 shadow-sm bg-gray-50 rounded-lg">
-          <p class="text-lg font-semibold text-gray-800">
-            <i class="fas fa-lightbulb mr-2 text-yellow-500"></i> Tips for Future Campers
-          </p>
-          <p class="text-gray-700">{{ place.tips }}</p>
-        </div>
-      </div>
+    <!-- Description & Location (Black Background) -->
+    <div class="mt-6 bg-black text-white p-6 rounded-lg shadow-lg">
+        <h3 class="text-2xl font-bold mb-4 text-yellow-900">Details</h3>
+        <p class="text-lg text-yellow-900"><strong>Description:</strong> {{ place.description }}</p>
+        <p class="text-lg mt-2 text-yellow-900"><strong>Location:</strong> {{ place.location }}</p>
     </div>
 
     <!-- Comments Section -->
-    <div class="mt-6 bg-white p-6 rounded-lg shadow-lg border border-gray-200">
-      <h3 class="text-2xl font-bold text-gray-900 mb-4">Reviews & Comments</h3>
+    <div class="mt-8 p-6 bg-gray-100 rounded-lg bg-gray-800 shadow-lg">
+        <h3 class="text-2xl font-bold text-yellow-900 mb-4">Comments</h3>
 
-      <!-- Comments Display -->
-      <div v-if="comments.length" class="space-y-4">
-        <div v-for="(comment, index) in comments" :key="index" class="p-4 border-b border-gray-300 shadow-sm bg-gray-50 rounded-lg">
-          <p class="text-lg font-semibold text-gray-800">
-            <i class="fas fa-user mr-2 text-blue-500"></i> {{ comment.user }}
-          </p>
-          <p class="text-gray-700">{{ comment.text }}</p>
-          <p class="text-sm text-gray-500">
-  {{ new Date(comment.createdAt).toLocaleDateString('en-GB') }}
-</p>
+        <!-- Display Existing Comments -->
+        <div v-if="comments.length">
+           <div v-for="(comment, index) in comments" :key="index" class="mb-3 p-3 bg-gray-500 shadow-md rounded-lg flex items-start">
+    <!-- User Avatar (Smaller Size) -->
+    <div class="mr-2">
+        <i class="fas fa-user-circle text-2xl text-gray-800"></i> <!-- Smaller FontAwesome User Icon -->
+    </div>
+
+    <!-- Comment Content -->
+    <div class="flex-1 bg-gray-500">
+        <div class="flex items-center justify-between">
+            <p class="text-base  text-gray-900">{{ comment.user }}</p> <!-- Increased text size -->
+            <p class="text-xs text-gray-800"><i class="far fa-clock"></i> {{ new Date(comment.createdAt).toLocaleDateString('en-GB') }}</p>
+        </div>
+        <p class="text-lg  mt-1">{{ comment.text }}</p> <!-- Slightly bigger comment text -->
+    </div>
+</div>
 
         </div>
-      </div>
+        <p v-else class="text-gray-600">No comments yet. Be the first to comment!</p>
 
-      <!-- No Comments Yet -->
-      <p v-else class="text-gray-500">No comments yet. Be the first to comment!</p>
-
-      <!-- Add Comment Form -->
-      <div class="mt-4 p-4 border-t border-gray-300 bg-gray-50 rounded-lg">
-        <textarea v-model="newComment" placeholder="Write a comment..." rows="4" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>
-        <button @click="addComment" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600">
-          Post Comment
-        </button>
-      </div>
+        <!-- Add New Comment -->
+        <div class="mt-6">
+            <textarea v-model="newComment" class="w-full p-3 border bg-gray-500 rounded-lg" rows="3" placeholder="Write a comment..."></textarea>
+            <button @click="addComment" class="mt-2 bg-yellow-900 text-white px-4 py-2 rounded-lg hover:bg-yellow-700">
+                Post Comment
+            </button>
+        </div>
     </div>
-  </div>
-  
-  <div v-else class="text-center text-gray-500 pt-40">
+</div>
+
+<div v-else class="text-center text-yellow-900 pt-40">
     <p><i class="fas fa-spinner fa-spin"></i> Loading details.....</p>
-  </div>
+</div>
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import {
+    ref,
+    onMounted
+} from 'vue';
+import {
+    useRoute,
+    useRouter
+} from 'vue-router';
 import axios from 'axios';
-import { useUserStore } from "../store/user";
+import {
+    useUserStore
+} from '../store/user';
 
 export default {
-  setup() {
-    const route = useRoute();
-    const place = ref(null);
-    const comments = ref([]);
-    const newComment = ref("");
-    const userStore = useUserStore();
-    const userName = ref(userStore.name || "Guest");
+    setup() {
+        const route = useRoute();
+        const router = useRouter();
+        const place = ref(null);
+        const comments = ref([]);
+        const newComment = ref("");
+        const userStore = useUserStore();
+        const userName = ref(userStore.name || "Guest");
 
-    const fetchPlaceDetails = async () => {
-      const placeId = route.params.id;
-      try {
-        const response = await axios.get(`http://localhost:5000/api/places/${placeId}`);
-        place.value = response.data;
-      } catch (error) {
-        console.error('Error fetching place details:', error);
-      }
-    };
+        // Fetch Place Details
+        const fetchPlaceDetails = async () => {
+            const placeId = route.params.id;
+            try {
+                const response = await axios.get(`http://localhost:5000/api/places/${placeId}`);
+                place.value = response.data;
+            } catch (error) {
+                console.error('Error fetching place details:', error);
+            }
+        };
 
-    const formatDate = (dateString) => {
-      const options = { year: "numeric", month: "long", day: "numeric" };
-      return new Date(dateString).toLocaleDateString(undefined, options);
-    };
-    
-    const fetchComments = async () => {
-      const placeId = route.params.id;
-      try {
-        const response = await axios.get(`http://localhost:5000/api/places/${placeId}/comments`);
-        comments.value = response.data;
-      } catch (error) {
-        console.error('Error fetching comments:', error);
-      }
-    };
+        // Fetch Comments
+        const fetchComments = async () => {
+            const placeId = route.params.id;
+            try {
+                const response = await axios.get(`http://localhost:5000/api/places/${placeId}/comments`);
+                comments.value = response.data;
+            } catch (error) {
+                console.error('Error fetching comments:', error);
+            }
+        };
 
-    const addComment = async () => {
-      const placeId = route.params.id;
-      if (!newComment.value.trim()) return;
-      try {
-        const response = await axios.post(`http://localhost:5000/api/places/${placeId}/comments`, {
-          user: userName.value,
-          text: newComment.value.trim(),
+        // Add Comment
+        const addComment = async () => {
+            if (!newComment.value.trim()) return;
+
+            const placeId = route.params.id;
+            try {
+                const response = await axios.post(`http://localhost:5000/api/places/${placeId}/comments`, {
+                    text: newComment.value.trim(),
+                    user: userName.value,
+
+                });
+                comments.value = response.data;
+                newComment.value = "";
+            } catch (error) {
+                console.error('Error adding comment:', error);
+            }
+        };
+
+        const goBack = () => {
+            if (window.history.length > 1) {
+                router.back();
+            } else {
+                router.push('/');
+            }
+        };
+
+        onMounted(() => {
+            fetchPlaceDetails();
+            fetchComments();
         });
-        comments.value = response.data;
-        newComment.value = "";
-      } catch (error) {
-        console.error('Error adding comment:', error);
-      }
-    };
-    onMounted(() => {
-      fetchPlaceDetails();
-      fetchComments();
-    });
 
-
-    return { place, formatDate, comments, newComment, addComment, userName };
-  },
+        return {
+            place,
+            comments,
+            newComment,
+            addComment,
+            goBack
+        };
+    },
 };
 </script>
 
 <style scoped>
-/* Centering & Layout */
-.p-4 {
-  max-width: 800px;
-  margin: auto;
+/* Images Stacked Vertically */
+.image-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
-/* Image Carousel */
-.carousel-container {
-  margin-top: 10px;
-  overflow: hidden;
+/* Individual Image Styling */
+.stacked-image {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    object-fit: cover;
 }
 
-.carousel {
-  display: flex;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  gap: 10px;
-  padding-bottom: 10px;
+/* Description & Location */
+.bg-black {
+    background: #000;
+    color: #fff;
+    border-radius: 12px;
+    padding: 20px;
 }
 
-.carousel-image {
-  flex: 0 0 auto;
-  width: 200px;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 8px;
-  transition: transform 0.2s ease-in-out;
-}
-
-.carousel-image:hover {
-  transform: scale(1.05);
-}
-
-/* Card Styling */
-.bg-white {
-  background: #ffffff;
-  transition: box-shadow 0.3s ease-in-out;
-}
-
-.bg-white:hover {
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-}
-
-/* Responsive Design */
-@media (max-width: 640px) {
-  .carousel-image {
-    width: 150px;
-    height: 120px;
-  }
+/* Responsive */
+@media (max-width: 768px) {
+    .stacked-image {
+        border-radius: 8px;
+    }
 }
 </style>

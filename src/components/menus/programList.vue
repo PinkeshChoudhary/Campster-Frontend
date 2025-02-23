@@ -1,5 +1,5 @@
 <template>
-  <div class="relative" >
+  <div class="relative">
     <!-- Hamburger Icon -->
     <button 
       @click.stop="toggleMenu" 
@@ -16,7 +16,7 @@
       <div 
         v-if="menuOpen" 
         ref="menu" 
-        class="fixed top-0 right-0 h-full w-3/4 sm:w-1/2 md:w-1/3 lg:w-1/4 bg-gray-100 shadow-lg z-[101] flex flex-col p-6 text-gray-800 transition-transform "
+        class="fixed top-0 right-0 h-full w-3/4 sm:w-1/2 md:w-1/3 lg:w-1/4 bg-black shadow-lg z-[101] flex flex-col p-6 text-gray-800 transition-transform"
         @click.stop
       >
         <!-- Close Button -->
@@ -32,23 +32,22 @@
 
         <!-- Profile Section (Collapsible) -->
         <div @click="toggleProfile" class="cursor-pointer">
-          <div class="flex items-center space-x-3 p-4 bg-white rounded-lg shadow-md">
-            <!-- Use FontAwesome User Icon -->
-      <div class="w-12 h-12 flex items-center justify-center bg-gray-300 text-white rounded-full">
-        <i class="fas fa-user text-xl"></i>
-      </div>
+          <div class="flex items-center space-x-3 p-4 bg-gray-800 rounded-lg shadow-md">
+            <div class="w-12 h-12 flex items-center justify-center bg-gray-800 text-white rounded-full">
+              <i class="fas fa-user text-xl"></i>
+            </div>
             <div>
-              <p class="text-lg font-semibold">{{ userStore.name || "Guest" }}</p>
+              <p class="text-lg font-semibold text-yellow-500">{{ userStore.name || "Guest" }}</p>
             </div>
           </div>
         </div>
 
         <!-- Expanded Profile Details -->
         <transition name="fade">
-          <div v-if="profileExpanded" class="mt-4 p-4 bg-white rounded-lg shadow-md">
-            <p class="text-lg font-semibold">{{ userStore.name || "Guest" }}</p>
-            <p class="text-sm text-gray-500">{{ userStore.email || "No email" }}</p>
-            <p class="text-sm text-gray-500">{{ userStore.phone || "No phone" }}</p>
+          <div v-if="profileExpanded" class="mt-4 p-4 bg-black  rounded-lg shadow-md">
+            <p class="text-lg font-semibold text-yellow-500 ">{{ userStore.name || "Guest" }}</p>
+            <p class="text-lg text-yellow-500">{{ userStore.email || "No email" }}</p>
+            <p class="text-lg text-yellow-500">{{ userStore.phone || "No phone" }}</p>
             <button 
               @click="editProfile"
               class="mt-3 bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition"
@@ -58,26 +57,24 @@
           </div>
         </transition>
 
-       <!-- Menu Items -->
-<ul class="mt-6 space-y-6 text-lg  text-gray-800">
-  <li @click="navigate('glamping')" class="menu-item flex items-center space-x-3 py-3 border-b border-gray-400 hover:bg-gray-200 rounded-lg transition">
-    <span>Explore Sites</span>
-  </li>
-
-  <li @click="navigate('tent')" class="menu-item flex items-center space-x-3  py-3 border-b border-gray-400 hover:bg-gray-200 rounded-lg transition">
-    <span>Rent a Tent</span>
-  </li>
-
-  <li @click="navigate('my-bookings')" class="menu-item flex items-center space-x-3  py-3 border-b border-gray-400 hover:bg-gray-200 rounded-lg transition">
-    <span>My Bookings</span>
-  </li>
-  <li @click="navigate('contact')" class="menu-item flex items-center space-x-3  py-3 border-b border-gray-400 hover:bg-gray-200 rounded-lg transition">
-    <span>Contact Us</span>
-  </li>
-  <li @click="navigate('partner')" class="menu-item flex items-center space-x-3  py-3 border-b border-gray-400 hover:bg-gray-200 rounded-lg transition">
-    <span>Partner with us</span>
-  </li>
-</ul>
+        <!-- Menu Items -->
+        <ul class="mt-6 space-y-6 text-lg text-gray-800">
+          <li @click="navigate('glamping')" class=" text-yellow-500 menu-item flex items-center space-x-3 py-3 border-b border-gray-400 hover:bg-gray-200 rounded-lg transition">
+            <span>Explore Sites</span>
+          </li>
+          <li @click="navigate('tent')" class="text-yellow-500 menu-item flex items-center space-x-3 py-3 border-b border-gray-400 hover:bg-gray-200 rounded-lg transition">
+            <span>Rent a Tent</span>
+          </li>
+          <li @click="navigate('my-bookings')" class=" text-yellow-500 menu-item flex items-center space-x-3 py-3 border-b border-gray-400 hover:bg-gray-200 rounded-lg transition">
+            <span>My Bookings</span>
+          </li>
+          <li @click="navigate('contact')" class="text-yellow-500 menu-item flex items-center space-x-3 py-3 border-b border-gray-400 hover:bg-gray-200 rounded-lg transition">
+            <span>Contact Us</span>
+          </li>
+          <li @click="navigate('partner')" class="text-yellow-500 menu-item flex items-center space-x-3 py-3 border-b border-gray-400 hover:bg-gray-200 rounded-lg transition">
+            <span>Partner with us</span>
+          </li>
+        </ul>
 
       </div>
     </transition>

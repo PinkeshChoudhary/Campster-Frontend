@@ -1,30 +1,42 @@
 <template>
-  <div class="flex items-center justify-center min-h-screen bg-gray-200 px-4">
-    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-sm">
-      <h2 class="text-2xl font-bold text-center text-gray-800">Login with OTP</h2>
-      <p class="text-gray-500 text-center mt-1">Enter your phone number to receive an OTP</p>
+  <div class="relative flex items-end justify-center min-h-screen bg-black bg-cover bg-center"
+       style="background-image: url('../../public/lbg.webp');">
+    
+    <!-- Remove Black Overlay for Full Transparency -->
+    
+    <!-- Transparent Glassmorphism Login Box -->
+    <div class="relative z-10 p-8 rounded-2xl w-full max-w-sm border border-gray-500 shadow-2xl"
+         style="backdrop-filter: blur(15px); background: rgba(255, 255, 255, 0.05);">
       
+      <h2 class="text-3xl font-bold text-center text-white">Login with OTP</h2>
+      <p class="text-gray-300 text-center mt-1">Enter your phone number to receive an OTP</p>
+
+      <!-- Phone Number Input -->
       <div class="mt-6">
-        <label class="block text-gray-700 font-medium">Phone Number</label>
-        <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden mt-1">
-          <span class="px-3 text-gray-600">+91</span>
-          <input v-model="phoneNumber" type="text" placeholder="Enter phone number" 
-                 class="w-full p-3 focus:outline-none" @input="validatePhoneNumber" />
+        <label class="block text-gray-300 font-medium">Phone Number</label>
+        <div class="flex items-center bg-transparent border border-gray-500 rounded-lg overflow-hidden mt-1">
+          <span class="px-3 text-gray-400">+91</span>
+          <input v-model="phoneNumber" type="text" placeholder="Enter phone number"
+                 class="w-full p-3 bg-transparent text-white focus:outline-none placeholder-gray-400" 
+                 @input="validatePhoneNumber" />
         </div>
       </div>
-      
+
+      <!-- Send OTP Button -->
       <button @click="sendOTP" :disabled="isSendingOTP || !isPhoneNumberValid"
-              class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg mt-4 transition duration-300 disabled:opacity-50">
+              class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg mt-4 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
         {{ isSendingOTP ? 'Sending...' : 'Send OTP' }}
       </button>
-      
-      <div v-if="showOTPInput" class="mt-4">
-        <label class="block text-gray-700 font-medium">Enter OTP</label>
-        <input v-model="otp" type="text" placeholder="Enter OTP" 
-               class="w-full p-3 border border-gray-300 rounded-lg mt-1 focus:outline-none" />
-        
+
+      <!-- OTP Input Field -->
+      <div v-if="showOTPInput" class="mt-6">
+        <label class="block text-gray-300 font-medium">Enter OTP</label>
+        <input v-model="otp" type="text" placeholder="Enter OTP"
+               class="w-full p-3 bg-transparent text-white border border-gray-500 rounded-lg mt-1 focus:outline-none placeholder-gray-400" />
+
+        <!-- Verify OTP Button -->
         <button @click="verifyOTP" :disabled="isVerifyingOTP"
-                class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 rounded-lg mt-4 transition duration-300 disabled:opacity-50">
+                class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg mt-4 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
           {{ isVerifyingOTP ? 'Verifying...' : 'Verify OTP' }}
         </button>
       </div>
@@ -33,6 +45,7 @@
     </div>
   </div>
 </template>
+
 
 <script>
 import { ref, computed, onMounted } from "vue";
