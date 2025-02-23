@@ -10,6 +10,7 @@ import GlampingSites from '../components/GlampingSites.vue';
 import TentBooking from '../components/TentBooking.vue';
 import MyTentBooking from '../components/MyTentBooking.vue';
 import MyPosts from '../components/MyPosts.vue';
+import GlampingSiteDetails from '../components/GlampingSiteDetails.vue';
 
 
 
@@ -18,11 +19,6 @@ const routes = [
     path: '/',
     name: 'Home',
     component: HomeComponent,
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: AdminLogin,
   },
   {
     path: '/profile',
@@ -45,6 +41,11 @@ const routes = [
     component: TentList,
   },
   {
+    path: '/login',
+    name: 'Login',
+    component: AdminLogin,
+  },
+  {
     path: '/tentbooking',
     name: 'Booking',
     component: TentBooking,
@@ -57,6 +58,11 @@ const routes = [
     path: '/place/:id',
     name: 'place',
     component: PlaceDetails,
+  },
+  {
+    path: '/glamping/:id',
+    name: 'glamping',
+    component: GlampingSiteDetails,
   },
   {
     path: '/submit-place',

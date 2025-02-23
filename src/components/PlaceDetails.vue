@@ -14,6 +14,10 @@
     <div v-if="place.images && place.images.length" class="image-stack">
         <img v-for="(image, index) in place.images" :key="index" :src="image" alt="Place Image" class="stacked-image" />
     </div>
+    <h2 class="text-lg text-yellow-900 font-semibold transition-all duration-300 mt-6">
+    Likes {{ likes }}
+  </h2>
+
 
     <!-- Description & Location (Black Background) -->
     <div class="mt-6 bg-black text-white p-6 rounded-lg shadow-lg">
@@ -85,6 +89,7 @@ export default {
         const newComment = ref("");
         const userStore = useUserStore();
         const userName = ref(userStore.name || "Guest");
+        const likes = ref(0)
 
         // Fetch Place Details
         const fetchPlaceDetails = async () => {
@@ -126,6 +131,16 @@ export default {
             }
         };
 
+        const likeCount =  async () => {
+            const placeId = route.params.id;
+            try {
+                const response = await axios.get(`http://localhost:5000/api/places/${placeId}/likes`);
+                likes.value = response.data;
+            } catch (error) {
+                console.error('Error loading likes:', error);
+            }
+        };
+
         const goBack = () => {
             if (window.history.length > 1) {
                 router.back();
@@ -137,6 +152,7 @@ export default {
         onMounted(() => {
             fetchPlaceDetails();
             fetchComments();
+            likeCount();
         });
 
         return {
@@ -144,7 +160,8 @@ export default {
             comments,
             newComment,
             addComment,
-            goBack
+            goBack,
+            likes,
         };
     },
 };
