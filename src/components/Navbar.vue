@@ -1,12 +1,12 @@
 <template>
   <!-- Navbar -->
   <div
-    class="fixed top-0 w-full shadow-md p-0 bg-white transition-transform duration-300 z-50  border-b-2 border-black"
+    class="fixed top-0 w-full shadow-md p-0  transition-transform duration-300 z-50 "
     :class="{ '-translate-y-full': !isVisible }"
   >
-    <div class="flex justify-between items-center p-2" style="background-color: rgb(146 161 191)">
+    <div class="flex justify-end items-center p-2  text-yellow-900 " >
       <!-- Left: Logo -->
-      <div>
+      <!-- <div>
         <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold">
           <span class="text-blue-600">C</span>
           <span class="text-white bg-blue-600 px-1 rounded">a</span>
@@ -18,7 +18,7 @@
           <span class="text-white bg-blue-600 px-1 rounded">r</span>
         </h1>
         <p class="text-sm text-blue-500 mt-1">Explore Hidden Gems Udaipur</p>
-      </div>
+      </div> -->
 
       <!-- Right: Admin Buttons
       <div class="flex items-center space-x-4 ml-auto">

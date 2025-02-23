@@ -8,18 +8,20 @@
     <!-- Non-admin view: Display approved post -->
     <div v-else>
         <!-- Slideshow remains visible -->
-        <SlideShow class="mt-20" />
+        <SlideShow class="mt-10" />
 
         <h4 class="text-sm mb-5">Your Next Adventure Awaits – Explore Local Wonders</h4>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <PlaceCard v-for="place in approvedPlaces" :key="place._id" :place="place" />
         </div>
         <router-link to="/tent">
-            <div class="fixed bottom-0 right-0 py-20 px-3">
-                <button class="bg-gray-500 text-green p-4 mb-13 shadow-xl hover:scale-110 transition-transform duration-300 ease-in-out">
-                    <span class="text-xl md:text-2xl">Rent a camp</span>
+            <div class="fixed pb-10 bottom-5 right-5 ">
+                <button class="relative flex items-center justify-center w-28 h-28 rounded-full border-4 border-white bg-black text-white font-bold shadow-lg transition-all duration-300 active:bg-white active:text-black">
+                    <div class="text-center">
+                        <span class="block text-xl">RENT</span>
+                        <span class="block text-lg bg-white text-black px-2 rounded-md mt-1 active:bg-black active:text-white">TENT</span>
+                    </div>
                 </button>
-
             </div>
         </router-link>
     </div>
@@ -39,7 +41,9 @@ import axios from 'axios';
 import PlaceCard from '../components/PlaceCard.vue';
 import AdminDashboard from '../components/AdminDashboard.vue';
 import SlideShow from '../components/Images/SlideShow.vue';
-import { getAuth } from "firebase/auth";
+import {
+    getAuth
+} from "firebase/auth";
 
 export default {
     components: {
@@ -53,12 +57,14 @@ export default {
         const approvedPlaces = computed(() => store.approvedPlaces);
         const auth = getAuth();
 
-        const checkIfAdmin = async ()  =>{
+        const checkIfAdmin = async () => {
             try {
-                console.info("userid",auth.currentUser.uid)
+                console.info("userid", auth.currentUser.uid)
                 const response = await axios.get(`http://localhost:5000/api/adminfire/dashboard`, {
-                              params: { uid: auth.currentUser.uid }
-                               });
+                    params: {
+                        uid: auth.currentUser.uid
+                    }
+                });
                 store.setIsAdmin(response.data.isAdmin);
             } catch (error) {
                 console.error('Error checking admin status', error);

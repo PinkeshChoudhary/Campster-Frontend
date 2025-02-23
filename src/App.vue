@@ -46,6 +46,7 @@ console.info("isAuthenticated", isAuthenticated.value)
 /* Global styles */
 body {
   font-family: 'Arial', sans-serif;
+  background-color: black;
 }
 .ctnr {
   display: flex;

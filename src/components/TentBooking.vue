@@ -1,72 +1,77 @@
 <template>
-    <div class="p-6 pt-20 max-w-lg mx-auto bg-white shadow-lg rounded-lg mb-20">
-      <h2 class="text-2xl font-bold mb-4">Rent a Tent</h2>
-  
-      <!-- Select Tent Size (Prefilled & Read-only) -->
-      <label class="block font-semibold">Selected Tent Size:</label>
-      <input
+  <div class="p-6 mt-20 max-w-lg mx-auto bg-gray-900 shadow-lg rounded-xl mx-10 text-white border border-gray-700">
+    <h2 class="text-2xl font-bold mb-6 text-center text-green-400">🏕 Rent a Tent</h2>
+
+    <!-- Selected Tent Size (Read-only) -->
+    <label class="block font-semibold text-gray-300">Selected Tent Size:</label>
+    <input
       type="text"
       v-model="selectedSize"
-      class="w-full p-2 border rounded"
+      class="w-full p-3 border border-gray-600 bg-gray-800 rounded-lg text-gray-400 cursor-not-allowed opacity-75"
       readonly
     />
-      <!-- Select Tent Color -->
-      <label class="block font-semibold mt-3">Select Tent Color:</label>
-      <select v-model="selectedColor" class="w-full p-2 border rounded">
-        <option v-for="color in colors" :key="color" :value="color">
-          {{ color }}
-        </option>
-      </select>
-  
-      <!-- Select Quantity -->
-      <label class="block font-semibold mt-3">Select Quantity:</label>
-      <input
-        type="number"
-        v-model="quantity"
-        min="1"
-        class="w-full p-2 border rounded"
-        readonly
-      />
-  
-      <!-- Select Date Range -->
-      <label class="block font-semibold mt-3">Booking Dates:</label>
-      <input type="date" v-model="fromDate" class="w-full p-2 border rounded" />
-      <input
-        type="date"
-        v-model="toDate"
-        class="w-full p-2 border rounded mt-2"
-      />
-  
-      <!-- Availability Status -->
-      <p v-if="availability !== null" class="mt-3 text-sm">
-        <span v-if="availability" class="text-green-600">Available</span>
-        <span v-else class="text-red-600">Not Available for Given Criteria</span>
-      </p>
-  
-      <!-- Book Tent Button -->
+
+    <!-- Select Tent Color -->
+    <label class="block font-semibold mt-4 text-gray-300">Select Tent Color:</label>
+    <select v-model="selectedColor" 
+      class="w-full p-3 border border-gray-600 bg-gray-800 text-white rounded-lg focus:ring-2 focus:ring-green-500 transition-all">
+      <option v-for="color in colors" :key="color" :value="color">
+        {{ color }}
+      </option>
+    </select>
+
+    <!-- Select Quantity (Read-only) -->
+    <label class="block font-semibold mt-4 text-gray-300">Select Quantity:</label>
+    <input
+      type="number"
+      v-model="quantity"
+      min="1"
+      class="w-full p-3 border border-gray-600 bg-gray-800 rounded-lg text-gray-400 cursor-not-allowed opacity-75"
+      readonly
+    />
+
+    <!-- Select Date Range -->
+    <label class="block font-semibold mt-4 text-gray-300">Booking Dates:</label>
+    <input type="date" 
+      v-model="fromDate" 
+      class="w-full p-3 border border-gray-600 bg-gray-800 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition-all" />
+    
+    <input type="date" 
+      v-model="toDate" 
+      class="w-full p-3 border border-gray-600 bg-gray-800 text-white rounded-lg mt-2 focus:ring-2 focus:ring-blue-500 transition-all" />
+
+    <!-- Availability Status -->
+    <p v-if="availability !== null" class="mt-4 text-lg font-semibold">
+      <span v-if="availability" class="text-green-400">✔ Available</span>
+      <span v-else class="text-red-500">✖ Not Available for Given Criteria</span>
+    </p>
+
+    <!-- Book Tent Button -->
+    <button
+      @click="bookTent"
+      :disabled="!availability"
+      class="w-full mt-6 bg-green-600 text-white p-3 rounded-lg font-semibold shadow-lg hover:bg-green-700 transition-all
+      disabled:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-60"
+    >
+      📌 Book Tent
+    </button>
+
+    <!-- Booking Status -->
+    <div v-if="bookingStatus" class="mt-6 p-4 border border-gray-600 rounded-lg bg-gray-800">
+      <p><strong>Status:</strong> {{ bookingStatus }}</p>
+
+      <!-- Cancel Booking Button -->
       <button
-        @click="bookTent"
-        :disabled="!availability"
-        class="w-full mt-4 bg-green-600 text-white p-2 rounded hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+        v-if="bookingStatus === 'Pending' || bookingStatus === 'Confirmed'"
+        @click="cancelBooking"
+        class="mt-3 w-full bg-red-600 text-white p-3 rounded-lg font-semibold shadow-md hover:bg-red-700 transition-all"
       >
-        Book Tent
+        ❌ Cancel Booking
       </button>
-  
-      <!-- Booking Status -->
-      <div v-if="bookingStatus" class="mt-4 p-3 border rounded bg-gray-100">
-        <p><strong>Status:</strong> {{ bookingStatus }}</p>
-  
-        <!-- Cancel Booking Button -->
-        <button
-          v-if="bookingStatus === 'Pending' || bookingStatus === 'Confirmed'"
-          @click="cancelBooking"
-          class="mt-2 bg-red-600 text-white p-2 rounded hover:bg-red-700"
-        >
-          Cancel Booking
-        </button>
-      </div>
     </div>
-  </template>
+  </div>
+</template>
+
   
   <script>
   import axios from "axios";
