@@ -1,5 +1,5 @@
 <template>
-  <div @click="viewDetails" class="shadow-lg cursor-pointer rounded-lg overflow-hidden bg-white">
+  <div @click="viewDetails" class="shadow-lg cursor-pointer rounded-lg overflow-hidden bg-black">
     <div class="relative">
       <img :src="place.images[0]" alt="Place image" class="w-full object-cover">
       <button @click.stop="likePlace" class="absolute top-2 right-2 p-1">
