@@ -6,7 +6,7 @@
       class="p-2 rounded focus:outline-none focus:ring-2 focus:ring-gray-500 transition duration-300"
       aria-label="Toggle Menu"
     >
-      <svg v-if="!menuOpen" class="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg v-if="!menuOpen" class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
       </svg>
     </button>

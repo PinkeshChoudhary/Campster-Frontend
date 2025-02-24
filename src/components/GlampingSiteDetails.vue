@@ -1,5 +1,10 @@
 <template>
-    <div class="max-w-4xl mx-auto mt-10 bg-white shadow-lg rounded-lg overflow-hidden">
+   <button @click="goBack" class="text-yellow-900 hover:text-yellow-700 transition duration-200 pt-20 p-3">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-8 h-8">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+    </button>
+    <div class="max-w-4xl mx-auto  bg-white shadow-lg rounded-lg overflow-hidden pb-10">
       <!-- Image Carousel -->
       <div class="relative">
         <img :src="currentImage" alt="Glamping Site" class="w-full h-80 object-cover">
@@ -32,25 +37,31 @@
           </ul>
         </div>
   
-        <!-- Book Now Button -->
-        <button @click="bookNow"
-          class="mt-6 bg-yellow-500 text-white w-full py-3 rounded-md hover:bg-yellow-600 transition">
-          Book Now
-        </button>
+        <a :href="whatsappLink" target="_blank"
+  class="mt-6 bg-green-500 text-white w-full py-3 rounded-md hover:bg-green-600 transition flex items-center justify-center gap-2">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-6 h-6">
+    <path d="M12 2C6.477 2 2 6.477 2 12c0 1.937.546 3.78 1.487 5.347L2 22l4.887-1.41A9.953 9.953 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2Zm0 18a7.946 7.946 0 0 1-4.27-1.21l-.303-.19L5 19l.744-2.41-.19-.304A8 8 0 1 1 12 20Zm3.477-5.198c-.187-.094-1.106-.546-1.278-.61s-.296-.094-.42.093c-.125.188-.48.61-.589.736s-.218.14-.405.047a6.37 6.37 0 0 1-2.723-2.415c-.205-.352.205-.327.586-1.092.065-.137.032-.253-.032-.347-.063-.094-.42-1.01-.575-1.384-.152-.373-.306-.32-.42-.326l-.358-.006a.78.78 0 0 0-.566.266c-.194.213-.738.722-.738 1.759s.756 2.047.861 2.191c.107.143 1.49 2.308 3.609 3.234.504.218.899.349 1.206.446.508.161.97.139 1.337.084.407-.06 1.106-.452 1.262-.888s.156-.81.109-.888-.171-.125-.358-.219Z"/>
+  </svg>
+  Contact via WhatsApp
+</a>
       </div>
     </div>
   </template>
   
   <script>
   import { ref, computed } from "vue";
-  import { useRoute } from "vue-router";
   import axios from "axios";
+  import {
+    useRoute,
+    useRouter
+} from 'vue-router';
   
   export default {
     setup() {
       const route = useRoute();
       const site = ref(null);
       const currentImageIndex = ref(0);
+      const router = useRouter();
   
       // Fetch glamping site details from API
       const fetchGlampingSite = async () => {
@@ -84,19 +95,29 @@
         }
       };
   
-      // Book Now function
-      const bookNow = () => {
-        alert(`Booking request sent for ${site.value.name}`);
-      };
+      const goBack = () => {
+            if (window.history.length > 1) {
+                router.back();
+            } else {
+                router.push('/');
+            }
+        };
   
       fetchGlampingSite();
+
+      const whatsappLink = computed(() => {
+  const phoneNumber = "917568095317"; // Replace with your actual WhatsApp number
+  const message = `Hello, I am interested in booking . Could you please provide more details?`;
+  return `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+});
   
       return {
         site,
         currentImage,
         prevImage,
         nextImage,
-        bookNow,
+        goBack,
+        whatsappLink,
       };
     },
   };

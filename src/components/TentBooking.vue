@@ -1,7 +1,11 @@
 <template>
-  <div class="p-6 mt-20 max-w-lg mx-auto bg-gray-900 shadow-lg rounded-xl mx-10 text-white border border-gray-700">
+     <button @click="goBack" class="mt-20 p-5 bg-black rounded-full hover:bg-gray-400">
+      <svg class="h-6 w-6" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
+      </svg>
+    </button>
+  <div class="p-6  max-w-lg mx-auto bg-gray-900 shadow-lg rounded-xl mx-10 text-white border border-gray-700">
     <h2 class="text-2xl font-bold mb-6 text-center text-green-400">🏕 Rent a Tent</h2>
-
     <!-- Selected Tent Size (Read-only) -->
     <label class="block font-semibold text-gray-300">Selected Tent Size:</label>
     <input
@@ -78,12 +82,13 @@
   import { ref, watch } from "vue";
   import debounce from "lodash.debounce"; 
   import { getAuth } from "firebase/auth";
-  import { useRoute } from "vue-router";
+  import { useRoute , useRouter} from "vue-router";
   
   export default {
     setup() {
       const colors = ref(["Red", "Blue", ]);
       const route = useRoute();
+      const router = useRouter();
       const selectedSize = route.query.size; 
       const selectedColor = ref("");
       const fromDate = ref("");
@@ -168,6 +173,14 @@
           console.error("Cancellation error:", error);
         }
       };
+
+      const goBack = () => {
+            if (window.history.length > 1) {
+                router.back();
+            } else {
+                router.push('/');
+            }
+        };
   
       return {
         colors,
@@ -180,6 +193,7 @@
         bookTent,
         cancelBooking,
         selectedSize,
+        goBack,
       };
     },
   };

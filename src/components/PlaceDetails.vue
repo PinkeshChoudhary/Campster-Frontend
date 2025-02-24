@@ -12,18 +12,28 @@
 
     <!-- Images Displayed One by One -->
     <div v-if="place.images && place.images.length" class="image-stack">
-        <img v-for="(image, index) in place.images" :key="index" :src="image" alt="Place Image" class="stacked-image" />
+        <img v-for="(image, index) in place.images" :key="index" :src="image" alt="Place Image" class="stacked-image" @click="openFullScreen(image)" />
+    </div>
+    <div v-if="fullScreenImage" class="fullscreen-overlay" @click="closeFullScreen">
+        <img :src="fullScreenImage" class="fullscreen-image" />
     </div>
     <h2 class="text-lg text-yellow-900 font-semibold transition-all duration-300 mt-6">
-    Likes {{ likes }}
-  </h2>
-
+        Like {{ likes }}
+    </h2>
 
     <!-- Description & Location (Black Background) -->
     <div class="mt-6 bg-black text-white p-6 rounded-lg shadow-lg">
         <h3 class="text-2xl font-bold mb-4 text-yellow-900">Details</h3>
         <p class="text-lg text-yellow-900"><strong>Description:</strong> {{ place.description }}</p>
-        <p class="text-lg mt-2 text-yellow-900"><strong>Location:</strong> {{ place.location }}</p>
+        <p class="text-lg text-yellow-900"><strong>Location:</strong> {{ place.location }}</p>
+
+        <!-- Location in the Details Section -->
+        <p class="text-sm mt-2 text-yellow-900">
+            <button v-if="place.locationCoordinates" @click="openGoogleMaps" class="text-blue-500 underline hover:text-blue-700">
+                View on Google Maps
+            </button>
+        </p>
+
     </div>
 
     <!-- Comments Section -->
@@ -32,21 +42,21 @@
 
         <!-- Display Existing Comments -->
         <div v-if="comments.length">
-           <div v-for="(comment, index) in comments" :key="index" class="mb-3 p-3 bg-gray-500 shadow-md rounded-lg flex items-start">
-    <!-- User Avatar (Smaller Size) -->
-    <div class="mr-2">
-        <i class="fas fa-user-circle text-2xl text-gray-800"></i> <!-- Smaller FontAwesome User Icon -->
-    </div>
+            <div v-for="(comment, index) in comments" :key="index" class="mb-3 p-3 bg-gray-500 shadow-md rounded-lg flex items-start">
+                <!-- User Avatar (Smaller Size) -->
+                <div class="mr-2">
+                    <i class="fas fa-user-circle text-2xl text-gray-800"></i> <!-- Smaller FontAwesome User Icon -->
+                </div>
 
-    <!-- Comment Content -->
-    <div class="flex-1 bg-gray-500">
-        <div class="flex items-center justify-between">
-            <p class="text-base  text-gray-900">{{ comment.user }}</p> <!-- Increased text size -->
-            <p class="text-xs text-gray-800"><i class="far fa-clock"></i> {{ new Date(comment.createdAt).toLocaleDateString('en-GB') }}</p>
-        </div>
-        <p class="text-lg  mt-1">{{ comment.text }}</p> <!-- Slightly bigger comment text -->
-    </div>
-</div>
+                <!-- Comment Content -->
+                <div class="flex-1 bg-gray-500">
+                    <div class="flex items-center justify-between">
+                        <p class="text-base  text-gray-900">{{ comment.user }}</p> <!-- Increased text size -->
+                        <p class="text-xs text-gray-800"><i class="far fa-clock"></i> {{ new Date(comment.createdAt).toLocaleDateString('en-GB') }}</p>
+                    </div>
+                    <p class="text-lg  mt-1">{{ comment.text }}</p> <!-- Slightly bigger comment text -->
+                </div>
+            </div>
 
         </div>
         <p v-else class="text-gray-600">No comments yet. Be the first to comment!</p>
@@ -90,6 +100,7 @@ export default {
         const userStore = useUserStore();
         const userName = ref(userStore.name || "Guest");
         const likes = ref(0)
+        const fullScreenImage = ref(null);
 
         // Fetch Place Details
         const fetchPlaceDetails = async () => {
@@ -131,7 +142,7 @@ export default {
             }
         };
 
-        const likeCount =  async () => {
+        const likeCount = async () => {
             const placeId = route.params.id;
             try {
                 const response = await axios.get(`http://localhost:5000/api/places/${placeId}/likes`);
@@ -148,6 +159,18 @@ export default {
                 router.push('/');
             }
         };
+        const openGoogleMaps = () => {
+            if (place.value && place.value.location) {
+                window.open(`https://www.google.com/maps?q=${place.value.locationCoordinates}`, '_blank');
+            }
+        };
+
+        const openFullScreen = (image) => {
+            fullScreenImage.value = image;
+        };
+        const closeFullScreen = () => {
+            fullScreenImage.value = null;
+        };
 
         onMounted(() => {
             fetchPlaceDetails();
@@ -162,6 +185,10 @@ export default {
             addComment,
             goBack,
             likes,
+            openGoogleMaps,
+            fullScreenImage,
+            openFullScreen,
+            closeFullScreen,
         };
     },
 };
@@ -196,5 +223,29 @@ export default {
     .stacked-image {
         border-radius: 8px;
     }
+}
+.fullscreen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.stacked-image {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+  cursor: pointer;
+}
+.image-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 </style>

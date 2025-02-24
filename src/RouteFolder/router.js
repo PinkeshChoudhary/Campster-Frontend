@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeComponent from '../views/HomeComponent.vue';
-import AdminLogin from '../views/AdminLogin.vue';
-import PlaceUpload from '../components/PlaceUpload.vue';  // Import the new component
+import PlaceUpload from '../components/PlaceUpload.vue'; 
 import PlaceDetails from '../components/PlaceDetails.vue';
 import UserProfile from '../components/UserProfile.vue';
 import TentList from '../components/TentList.vue';
@@ -39,11 +38,6 @@ const routes = [
     path: '/tent',
     name: 'Tent',
     component: TentList,
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: AdminLogin,
   },
   {
     path: '/tentbooking',

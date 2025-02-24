@@ -14,7 +14,7 @@
                 <div class="shadow-xl cursor-pointer rounded-2xl overflow-hidden bg-white" @click="selectedPlace = place">
                     <img :src="place.images[0]" alt="Place image" class="w-full h-48 object-cover">
                     <div class="p-4">
-                        <h3 class="text-xl font-semibold">{{ place.name }}</h3>
+                        <h3 class="text-xl font-semibold">{{ place.destination }}</h3>
                         <button @click.stop="approvePlace(place._id)" class="bg-green-500 text-white px-4 py-2 rounded-md">Approve</button>
                         <button @click.stop="rejectPlace(place._id)" class="bg-red-500 text-white px-4 py-2 rounded-md">Reject</button>
                     </div>
@@ -33,6 +33,10 @@
         
         <h3 class="text-2xl font-semibold mt-4">{{ selectedPlace.destination }}</h3>
         <p class="mt-2">{{ selectedPlace.description }}</p>
+        <p class="mt-2">{{ selectedPlace.location }}</p>
+        <p class="mt-2">{{ selectedPlace.locationCoordinates }}</p>
+
+
 
         <div class="mt-4 flex justify-between">
             <button @click="approvePlace(selectedPlace._id)" class="bg-green-500 text-white px-4 py-2 rounded-md">Approve</button>

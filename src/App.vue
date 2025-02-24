@@ -1,13 +1,21 @@
 <template>
-    <div v-if="isAuthenticated">
+  <div v-if="isAuthenticated">
     <Navbar />
     <div class="container mx-auto">
       <RouterView />
     </div>
     <BottomNavigation />
   </div>
-  <div v-else >
-   <OtpLogin />
+
+  <div v-else-if="isLoading" class="flex items-center justify-center h-screen bg-blue-100">
+    <div class="wave-spinner">
+      <div class="wave"></div>
+      <div class="wave"></div>
+      <div class="wave"></div>
+    </div>
+  </div>
+  <div v-else>
+    <OtpLogin />
   </div>
 </template>
 
@@ -28,16 +36,16 @@ export default {
   },
   setup() {
     const isAuthenticated = ref(false);
-console.info("isAuthenticated", isAuthenticated.value)
+    const isLoading = ref(true);
     onMounted(() => {
       const auth = getAuth();
       onAuthStateChanged(auth, (user) => {
-        console.info("user", user , auth)
         isAuthenticated.value = user; // If user exists, they are authenticated
+        isLoading.value = false; // Stop loading once authentication is checked
       });
     });
 
-    return { isAuthenticated };
+    return { isAuthenticated, isLoading };
   },
 };
 </script>
@@ -51,5 +59,25 @@ body {
 .ctnr {
   display: flex;
   flex-direction: row;
+}
+.wave-spinner {
+  display: flex;
+  gap: 5px;
+}
+
+.wave {
+  width: 8px;
+  height: 20px;
+  background: #3498db;
+  border-radius: 4px;
+  animation: wave-animation 1s infinite ease-in-out;
+}
+
+.wave:nth-child(2) { animation-delay: 0.2s; }
+.wave:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes wave-animation {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(1.5); }
 }
 </style>

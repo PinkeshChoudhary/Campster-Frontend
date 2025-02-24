@@ -10,7 +10,7 @@
         <!-- Slideshow remains visible -->
         <SlideShow class="mt-10" />
 
-        <h4 class="text-sm mb-5">Your Next Adventure Awaits – Explore Local Wonders</h4>
+        <h4 class="text-lg mb-5 text-yellow-600 pt-10">Your Next Adventure Awaits – Explore Local Wonders</h4>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <PlaceCard v-for="place in approvedPlaces" :key="place._id" :place="place" />
         </div>
@@ -44,6 +44,9 @@ import SlideShow from '../components/Images/SlideShow.vue';
 import {
     getAuth
 } from "firebase/auth";
+import {
+    useUserStore
+} from "../store/user";
 
 export default {
     components: {
@@ -56,6 +59,7 @@ export default {
         const isAdmin = computed(() => store.isAdmin);
         const approvedPlaces = computed(() => store.approvedPlaces);
         const auth = getAuth();
+        const userStore = useUserStore();
 
         const checkIfAdmin = async () => {
             try {
@@ -66,6 +70,7 @@ export default {
                     }
                 });
                 store.setIsAdmin(response.data.isAdmin);
+                localStorage.setItem("dashboardAPICalled", "true");
             } catch (error) {
                 console.error('Error checking admin status', error);
                 return false;
@@ -83,9 +88,30 @@ export default {
 
         // Fetch places on component mount
         onMounted(() => {
-            checkIfAdmin()
-            // changeBackgroundImage();
+            const dashboardAPICalled = localStorage.getItem("dashboardAPICalled");
+            if (!dashboardAPICalled) {
+            checkIfAdmin() 
+            } 
             fetchPlaces();
+            auth.onAuthStateChanged(async (user) => {
+                if (user) {
+                    userStore.phone = user.phoneNumber;
+                    try {
+                        const {
+                            data
+                        } = await axios.get(`http://localhost:5000/api/user/${user.uid}`);
+                        if (data.success) {
+                            userStore.name = data.user.name || "";
+                            userStore.email = data.user.email || "";
+                        } else {
+                            showPopup.value = true;
+                        }
+                    } catch (error) {
+                        console.error("Error fetching user:", error);
+                        showPopup.value = true;
+                    }
+                }
+            });
         });
 
         return {
