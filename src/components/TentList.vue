@@ -1,6 +1,11 @@
 <template>
   <div class="p-6 max-w-4xl mx-auto mb-20 pt-20">
-    <h2 class="text-2xl text-yellow-900 font-bold mb-4">Available Tents</h2>
+    <button @click="goBack" class="text-yellow-900 hover:text-yellow-700 transition duration-200">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-8 h-8">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+    </button>
+    <h2 class="text-2xl text-yellow-900 font-bold mb-4 text-center">Available Tents</h2>
 
     <div class="grid md:grid-cols-3 gap-6">
       <div v-for="tent in tents" :key="tent.size" class="p-4 border rounded-lg  border-gray-600 shadow hover:shadow-lg transition">
@@ -59,7 +64,15 @@ export default {
       router.push({ name: "Booking", query: { size } });
     };
 
-    return { tents, viewTentDetails, goToBooking };
+    const goBack = () => {
+            if (window.history.length > 1) {
+                router.back();
+            } else {
+                router.push('/');
+            }
+        };
+
+    return { tents, viewTentDetails, goToBooking, goBack };
   },
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4 mt-10 mb-10">
+  <div class="p-4 mt-14 mb-10">
     <h2 class="text-3xl text-gray-500 font-bold text-center mb-6">Glamping Sites</h2>
     
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
