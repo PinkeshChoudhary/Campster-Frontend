@@ -108,7 +108,7 @@
         }
   
         try {
-          const response = await axios.get("http://localhost:5000/api/tents/available", {
+          const response = await axios.get("https://campster-backend-production.up.railway.app/api/tents/available", {
             params: {
               size: selectedSize,
               color: selectedColor.value,
@@ -144,7 +144,7 @@
         const user = auth.currentUser;
         console.info("userid",user.uid)
         try {
-          const response = await axios.post("http://localhost:5000/api/bookings/rent", {
+          const response = await axios.post("https://campster-backend-production.up.railway.app/api/bookings/rent", {
             userPhone: user.phoneNumber,
             userId: user.uid,
             tentId: tentId.value,  
@@ -166,7 +166,7 @@
         if (!bookingId.value) return;
   
         try {
-          await axios.patch(`http://localhost:5000/api/bookings/cancel/${bookingId.value}`);
+          await axios.patch(`https://campster-backend-production.up.railway.app/api/bookings/cancel/${bookingId.value}`);
           bookingStatus.value = "Cancelled";
           availability.value = true;
         } catch (error) {

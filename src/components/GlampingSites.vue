@@ -28,7 +28,7 @@ export default {
 
     const fetchGlampingSites = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/glamping");
+        const response = await axios.get("https://campster-backend-production.up.railway.app/api/glamping");
         glampingSites.value = response.data;
       } catch (error) {
         console.error("Error fetching glamping sites", error);

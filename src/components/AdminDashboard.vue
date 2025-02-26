@@ -85,7 +85,7 @@ export default {
 
         const fetchPendingPlaces = async () => {
             try {
-                const response = await axios.get("http://localhost:5000/api/admin/pending-places", {
+                const response = await axios.get("https://campster-backend-production.up.railway.app/api/admin/pending-places", {
                     headers: { Authorization: `Bearer ${store.token}` },
                 });
                 store.setPendingPlaces(response.data.places);
@@ -96,7 +96,7 @@ export default {
 
         const approvePlace = async (placeId) => {
             try {
-                await axios.post(`http://localhost:5000/api/admin/approve-place/${placeId}`, {}, {
+                await axios.post(`https://campster-backend-production.up.railway.app/api/admin/approve-place/${placeId}`, {}, {
                     headers: { Authorization: `Bearer ${store.token}` },
                 });
                 fetchPendingPlaces();
@@ -108,7 +108,7 @@ export default {
 
         const rejectPlace = async (placeId) => {
             try {
-                await axios.delete(`http://localhost:5000/api/admin/reject-place/${placeId}`, {
+                await axios.delete(`https://campster-backend-production.up.railway.app/api/admin/reject-place/${placeId}`, {
                     headers: { Authorization: `Bearer ${store.token}` },
                 });
                 fetchPendingPlaces();
@@ -120,7 +120,7 @@ export default {
 
         const fetchBookings = async () => {
             try {
-                const response = await axios.get("http://localhost:5000/api/admin/allbookings", {
+                const response = await axios.get("https://campster-backend-production.up.railway.app/api/admin/allbookings", {
                     headers: { Authorization: `Bearer ${store.token}` },
                 });
                 bookings.value = response.data.bookings;
@@ -134,7 +134,7 @@ export default {
             return new Date(dateString).toLocaleDateString(undefined, options);
         };
 
-        const socket = io("http://localhost:5000");
+        const socket = io("https://campster-backend-production.up.railway.app");
 
         const handleBookingNotification = (data) => {
             notificationMessage.value = `${data.message} (From: ${data.fromDate} To: ${data.toDate})`;

@@ -79,7 +79,7 @@ onMounted(async () => {
 
   try {
     console.info("userid", userId.uid);
-    const response = await axios.get(`http://localhost:5000/api/bookings/my-bookings/${userId.uid}`);
+    const response = await axios.get(`https://campster-backend-production.up.railway.app/api/bookings/my-bookings/${userId.uid}`);
     bookings.value = response.data;
   } catch (error) {
     console.error("Error fetching bookings:", error);

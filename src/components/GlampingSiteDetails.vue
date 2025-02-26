@@ -66,7 +66,7 @@
       // Fetch glamping site details from API
       const fetchGlampingSite = async () => {
         try {
-          const response = await axios.get(`http://localhost:5000/api/glamping/${route.params.id}`);
+          const response = await axios.get(`http://campster-backend-production.up.railway.app/api/glamping/${route.params.id}`);
           site.value = response.data;
         } catch (error) {
           console.error("Error fetching glamping site:", error);

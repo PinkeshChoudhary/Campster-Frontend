@@ -62,7 +62,7 @@ export default {
       }
 
       try {
-        await axios.post(`http://localhost:5000/api/places/like/${props.place._id}`, { userId: user.uid });
+        await axios.post(`http://campster-backend-production.up.railway.app/api/places/like/${props.place._id}`, { userId: user.uid });
         likedByUser.value = true;
       } catch (error) {
         console.error(error.response.data.message);
