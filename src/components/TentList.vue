@@ -39,17 +39,17 @@ export default {
     const tents = [
       { 
         size: "Small", 
-        images: ["../../public/6person.webp"], 
+        images: ["/6person.webp"], 
         colors: ["Red", "Blue", "Green"]
       },
       { 
         size: "Medium", 
-        images: ["../../public/2person.webp"], 
+        images: ["/2person.webp"], 
         colors: ["Yellow", "Black", "White"]
       },
       { 
         size: "Large", 
-        images: ["../../public/4person.webp"], 
+        images: ["/4person.webp"], 
         colors: ["Brown", "Gray", "Orange"]
       },
     ];
