@@ -1,6 +1,6 @@
 <template>
   <div class="relative flex items-end justify-center min-h-screen bg-black bg-cover bg-center"
-       style="background-image: url('../../public/lbg.webp');">
+       style="background-image: url('/lbg.webp');">
     
     <!-- Remove Black Overlay for Full Transparency -->
     
