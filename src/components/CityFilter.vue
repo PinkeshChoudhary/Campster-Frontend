@@ -41,8 +41,8 @@
     selectedCity.value = city;
     try {
       const response = await fetch(`https://campster-backend-production.up.railway.app/api/places/location?city=selectedCity.value}`);
-      const newdata = response.data.places;
-      emit("places-updated", newdata); // Send data to parent
+    //   const newdata = response.data;
+      emit("places-updated", response); // Send data to parent
     } catch (error) {
       console.error("Error fetching places:", error);
     }
