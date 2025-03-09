@@ -135,7 +135,7 @@ export default {
                     destination: "",
                     description: "",
                     locationCoordinates: "",
-                    location: "",
+                    City: "",
                     images: []
                 };
                 imagePreviews.value = [];

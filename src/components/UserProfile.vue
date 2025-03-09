@@ -16,7 +16,7 @@
       <!-- Input Fields -->
       <div class="space-y-4">
         <input v-model="userStore.name" placeholder="Full Name" class="input-field" />
-        <input v-model="dob" type="date" class="input-field" />
+        <input v-model="dob" type="date" placeholder="DOB" class="input-field" />
         <input v-model="userStore.email" placeholder="Email Address" class="input-field" />
         <input v-model="userStore.phone" disabled class="input-field bg-gray-800 text-gray-500 cursor-not-allowed" />
       </div>
