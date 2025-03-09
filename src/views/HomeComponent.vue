@@ -90,6 +90,7 @@ export default {
         };
 
         const updatePlaces = (newPlaces) => {
+            console.info("newplaces", newPlaces )
             store.setApprovedPlaces(newPlaces);
 };
 
