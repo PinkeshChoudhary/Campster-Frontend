@@ -1,5 +1,5 @@
 <template>
-    <div class="flex space-x-4 px-4 pt-4 overflow-x-auto">
+    <div class="flex space-x-4 p-4 overflow-x-auto">
       <!-- City Circles -->
       <div 
         v-for="city in cities" 
@@ -30,6 +30,10 @@
     { name: "Udaipur", },
     { name: "Mount Abu", },
     { name: "Jaipur", },
+    { name: "Jaisalmer", },
+    { name: "Delhi", },
+    { name: "Mount Abu", },
+    { name: "Kota", },
     { name: "Jaisalmer", }
   ]);
   
