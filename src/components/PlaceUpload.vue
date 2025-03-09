@@ -16,7 +16,7 @@
                 <input v-model="place.destination" type="text" placeholder="Destination Name?" class="input-field" required />
             </div>
             <div class="mb-4">
-                <input v-model="place.location" type="text" placeholder="Location " class="input-field" required />
+                <input v-model="place.location" type="text" placeholder="City " class="input-field" required />
             </div>
            
             <div class="mb-4">
