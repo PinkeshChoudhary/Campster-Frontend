@@ -27,14 +27,10 @@
   const emit = defineEmits(["places-updated"]); // Emit event to parent
   
   const cities = ref([
-    { name: "Udaipur", },
-    { name: "Mount Abu", },
-    { name: "Jaipur", },
-    { name: "Jaisalmer", },
-    { name: "Delhi", },
-    { name: "Mount Abu", },
-    { name: "Kota", },
-    { name: "Jaisalmer", }
+    { name: "Udaipur" },
+    { name: "Mount Abu" },
+    { name: "Jaipur" },
+    { name: "Jaisalmer" },
   ]);
   
   const selectCity = async (city) => {

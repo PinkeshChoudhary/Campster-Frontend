@@ -7,7 +7,7 @@
     <BottomNavigation />
   </div>
 
-  <div v-else-if="isLoading" class="flex items-center justify-center h-screen bg-blue-100">
+  <div v-else-if="isLoading" class="flex items-center justify-center h-screen bg-black-100">
     <div class="wave-spinner">
       <div class="wave"></div>
       <div class="wave"></div>
@@ -68,7 +68,7 @@ body {
 .wave {
   width: 8px;
   height: 20px;
-  background: #3498db;
+  background: #c6de14;
   border-radius: 4px;
   animation: wave-animation 1s infinite ease-in-out;
 }

@@ -9,9 +9,8 @@
     <div v-else>
         <!-- Slideshow remains visible -->
         <SlideShow class="mt-10" />
-
-        <h4 class="text-lg mb-5 text-yellow-600 pt-10">Your Next Adventure Awaits – Explore Local Wonders</h4>
-        <CityFilter @places-updated="updatePlaces" />
+        <CityFilter @places-updated="updatePlaces" class="p-5" />
+        <h4 class="text-lg mb-5 text-yellow-600 pt-5">Your Next Adventure Awaits – Explore Local Wonders</h4>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <PlaceCard v-for="place in approvedPlaces" :key="place._id" :place="place" />
         </div>
