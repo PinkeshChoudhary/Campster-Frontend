@@ -2,10 +2,11 @@
   <div class="relative w-full overflow-hidden images mt-0 pt-0" :style="{ height: `calc(100vh - 80px - 120px)` }">
     <div
       class="absolute inset-0 bg-contain bg-center bg-no-repeat transition-opacity duration-1000 object-fill"
-      :style="{ backgroundImage: `url(${currentImage})`, filter: 'blur(2px)' }"
+      :style="{ backgroundImage: `url(${currentImage})` }"
     ></div>
   </div>
 </template>
+
 
 <script>
 import { ref, onMounted } from 'vue';
