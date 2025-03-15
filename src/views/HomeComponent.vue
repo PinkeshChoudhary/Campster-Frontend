@@ -72,7 +72,7 @@ export default {
                     }
                 });
                 store.setIsAdmin(response.data.isAdmin);
-                localStorage.setItem("dashboardAPICalled", "true");
+                // localStorage.setItem("dashboardAPICalled", "true");
             } catch (error) {
                 console.error('Error checking admin status', error);
                 return false;
@@ -95,10 +95,11 @@ export default {
 
         // Fetch places on component mount
         onMounted(() => {
-            const dashboardAPICalled = localStorage.getItem("dashboardAPICalled");
-            if (!dashboardAPICalled) {
+            // const dashboardAPICalled = localStorage.getItem("dashboardAPICalled");
+            // if (!dashboardAPICalled) {
+            // checkIfAdmin() 
+            // } 
             checkIfAdmin() 
-            } 
             fetchPlaces();
             auth.onAuthStateChanged(async (user) => {
                 if (user) {
