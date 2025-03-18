@@ -6,9 +6,12 @@
     <div class="absolute bottom-20 right-1/4 w-60 h-60 bg-purple-300 opacity-20 rounded-full animate-float delay-1000"></div>
 
     <!-- Heading -->
-    <h1 class="text-4xl font-extrabold text-white text-center mb-6 drop-shadow-md">
-      My Posts ✨
-    </h1>
+    <h1 
+  class="text-4xl md:text-5xl font-extrabold text-white text-center mb-6 drop-shadow-lg opacity-0 animate-fadeInUp"
+>
+  My Posts ✨
+</h1>
+
 
     <!-- Loading State -->
     <div v-if="loading" class="flex justify-center">
@@ -92,4 +95,19 @@ export default {
 .transform:hover {
   transform: scale(1.05);
 }
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
 </style>

@@ -1,6 +1,11 @@
 <template>
   <div class="p-4 mt-14 mb-10">
-    <h2 class="text-3xl text-gray-500 font-bold text-center mb-6">Glamping Sites</h2>
+    <h2 
+  class="text-3xl md:text-4xl font-bold text-gray-500 text-center mb-6 opacity-0 animate-fadeInUp"
+>
+  Glamping Sites ⛺✨
+</h2>
+
     
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div v-for="site in glampingSites" :key="site._id" class="shadow-lg rounded-lg overflow-hidden">
@@ -48,3 +53,20 @@ export default {
   },
 };
 </script>
+<style scoped>
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+</style>

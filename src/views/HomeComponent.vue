@@ -10,16 +10,21 @@
         <!-- Slideshow remains visible -->
         <SlideShow class="mt-10" />
         <CityFilter @places-updated="updatePlaces" class="p-5" />
-        <h4 class="text-lg mb-5 text-yellow-600 pt-5">Your Next Adventure Awaits – Explore Local Wonders</h4>
+        <h4 
+  class="text-lg md:text-xl font-semibold text-yellow-500 pt-5 mb-5 text-center opacity-0 animate-fadeInUp"
+>
+  Your Next Adventure Awaits – Explore Local Wonders
+</h4>
+
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <PlaceCard v-for="place in approvedPlaces" :key="place._id" :place="place" />
         </div>
         <router-link to="/tent">
-            <div class="fixed pb-10 bottom-5 right-5 ">
-                <button class="relative flex items-center justify-center w-28 h-28 rounded-full border-4 border-white bg-black text-white font-bold shadow-lg transition-all duration-300 active:bg-white active:text-black">
+            <div class="fixed pb-14 bottom-5 right-5 ">
+                <button class="relative flex items-center justify-center w-14 h-14 rounded-full border-4 border-white bg-black text-white font-bold shadow-lg transition-all duration-300 active:bg-white active:text-black">
                     <div class="text-center">
-                        <span class="block text-xl">RENT</span>
-                        <span class="block text-lg bg-white text-black px-2 rounded-md mt-1 active:bg-black active:text-white">TENT</span>
+                        <span class="block text-xs">RENT</span>
+                        <span class="block text-xs bg-white text-black px-1 rounded-md  active:bg-black active:text-white">TENT</span>
                     </div>
                 </button>
             </div>
@@ -153,4 +158,19 @@ export default {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
 </style>

@@ -7,15 +7,16 @@
         class="flex flex-col items-center cursor-pointer"
         @click="selectCity(city.name)"
       >
-        <div 
-          class="w-20 h-20 flex items-center justify-center rounded-full text-center text-sm font-bold p-2"
-          :class="{
-            'bg-gray-300': selectedCity !== city.name,
-            'bg-yellow-500': selectedCity === city.name
-          }"
-        >
-          {{ city.name }}
-        </div>
+      <div 
+  class="w-20 h-20 flex items-center justify-center rounded-full text-center text-base font-bold p-2 shadow-lg transition-all duration-300 cursor-pointer"
+  :class="{
+    'bg-gradient-to-r from-gray-200 to-gray-400 text-black': selectedCity !== city.name,
+    'bg-gradient-to-r from-yellow-500 to-yellow-600 text-white scale-110': selectedCity === city.name
+  }"
+>
+  {{ city.name }}
+</div>
+
       </div>
     </div>
   </template>

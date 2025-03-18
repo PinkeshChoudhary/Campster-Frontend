@@ -4,18 +4,18 @@
     class="fixed top-0 w-full shadow-md p-0 bg-black   transition-transform duration-300 z-50 "
     :class="{ '-translate-y-full': !isVisible }"
   >
-    <div class="flex justify-between items-center p-2  text-yellow-900 " >
+    <div class="flex justify-between items-center p-2  text-yellow-500 " >
         <!-- Left: Logo -->
       <div>
         <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold px-2">
-          <span class="text-yellow-600">C</span>
-          <span class="text-black bg-yellow-600 px-1 rounded">a</span>
-          <span class="text-yellow-600">m</span>
-          <span class="text-black bg-yellow-600 px-1 rounded">p</span>
-          <span class="text-yellow-600">s</span>
-          <span class="text-black bg-yellow-600 px-1 rounded">t</span>
-          <span class="text-yellow-600">e</span>
-          <span class="text-black bg-yellow-600 px-1 rounded">r</span>
+          <span class="text-yellow-500">C</span>
+          <span class="text-black bg-yellow-500 px-1 rounded">a</span>
+          <span class="text-yellow-500">m</span>
+          <span class="text-black bg-yellow-500 px-1 rounded">p</span>
+          <span class="text-yellow-500">s</span>
+          <span class="text-black bg-yellow-500 px-1 rounded">t</span>
+          <span class="text-yellow-500">e</span>
+          <span class="text-black bg-yellow-500 px-1 rounded">r</span>
         </h1>
       </div>
 
