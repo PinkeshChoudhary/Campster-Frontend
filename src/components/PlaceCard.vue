@@ -1,26 +1,26 @@
 <template>
-  <div @click="viewDetails" class="shadow-lg cursor-pointer rounded-lg overflow-hidden bg-black">
+  <div
+    @click="viewDetails"
+    class="relative cursor-pointer overflow-hidden rounded-2xl shadow-xl bg-white hover:shadow-2xl transition-all duration-300"
+  >
     <div class="relative">
-      <img :src="place.images[0]" alt="Place image" class="w-full object-cover">
-      <button @click.stop="likePlace" class="absolute top-2 right-2 p-1">
-        <svg
-          v-if="likedByUser"
-          class="heart-icon liked"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path fill="red" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+      <img :src="place.images[0]" alt="Place image" class="w-full h-60 object-cover rounded-2xl">
+      <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+      
+      <!-- Like Button -->
+      <button @click.stop="likePlace" class="absolute top-3 right-3 p-2 bg-white/70 rounded-full backdrop-blur-sm">
+        <svg v-if="likedByUser" class="heart-icon liked" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path fill="red" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
         </svg>
-        <svg
-          v-else
-          class="heart-icon"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path fill="none" stroke="black" stroke-width="2" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+        <svg v-else class="heart-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path fill="none" stroke="black" stroke-width="2" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
         </svg>
       </button>
-      <div class="absolute bottom-2 left-2 text-yellow-600 p-0" >{{ place.destination }}</div>
+      
+      <!-- Place Info -->
+      <div class="absolute bottom-4 left-4 text-white font-semibold text-lg">
+        {{ place.destination }}
+      </div>
     </div>
   </div>
 </template>
@@ -81,16 +81,9 @@ export default {
 </script>
 
 <style scoped>
-.like-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-}
-
 .heart-icon {
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   transition: transform 0.2s ease-in-out;
 }
 
