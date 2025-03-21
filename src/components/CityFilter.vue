@@ -37,7 +37,8 @@
   const selectCity = async (city) => {
     selectedCity.value = city;
     try {
-      const response = await fetch(`https://campster-backend-production.up.railway.app/api/places/location?city=selectedCity.value}`);
+      const response = await fetch(`https://campster-backend-production.up.railway.app/api/places/location?city=${selectedCity.value}`);
+
     //   const newdata = response.data;
       emit("places-updated", response); // Send data to parent
     } catch (error) {
