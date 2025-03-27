@@ -10,6 +10,8 @@ import TentBooking from '../components/TentBooking.vue';
 import MyTentBooking from '../components/MyTentBooking.vue';
 import MyPosts from '../components/MyPosts.vue';
 import GlampingSiteDetails from '../components/GlampingSiteDetails.vue';
+import OtpLogin from '../components/OtpLogin.vue';
+import { getAuth } from 'firebase/auth';
 
 
 
@@ -23,6 +25,7 @@ const routes = [
     path: '/profile',
     name: 'Profile',
     component: UserProfile,
+    meta: { requiresAuth: true }
   },
   {
     path: '/glamping',
@@ -35,18 +38,26 @@ const routes = [
     component: EventComponent,
   },
   {
+    path: '/login',
+    name: 'Login',
+    component: OtpLogin,
+  },
+  {
     path: '/tent',
     name: 'Tent',
     component: TentList,
+    meta: { requiresAuth: true }
   },
   {
     path: '/tentbooking',
     name: 'Booking',
     component: TentBooking,
+    meta: { requiresAuth: true }
   },
   { path: "/my-bookings",
     name: 'MyBooking',
-    component: MyTentBooking
+    component: MyTentBooking,
+    meta: { requiresAuth: true }
    },
   {
     path: '/place/:id',
@@ -57,22 +68,36 @@ const routes = [
     path: '/glamping/:id',
     name: 'glamping',
     component: GlampingSiteDetails,
+    meta: { requiresAuth: true }
   },
   {
     path: '/submit-place',
     name: 'PlaceUpload', // New route for uploading a place
     component: PlaceUpload,
+    meta: { requiresAuth: true }
   },
   {
     path: '/myPost',
     name: 'MyPost', // New route for uploading a place
     component: MyPosts,
+    meta: { requiresAuth: true }
   },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  if (to.meta.requiresAuth && !user) {
+    next("/login"); // Redirect unauthenticated users
+  } else {
+    next(); // Proceed to the route
+  }
 });
 
 export default router;
