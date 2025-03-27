@@ -1,13 +1,5 @@
 <template>
-  <div v-if="isAuthenticated">
-    <Navbar />
-    <div class="container mx-auto">
-      <RouterView />
-    </div>
-    <BottomNavigation />
-  </div>
-
-  <div v-else-if="isLoading" class="flex items-center justify-center h-screen bg-black-100">
+  <div v-if="isLoading" class="flex items-center justify-center h-screen bg-black-100">
     <div class="wave-spinner">
       <div class="wave"></div>
       <div class="wave"></div>
@@ -15,7 +7,11 @@
     </div>
   </div>
   <div v-else>
-    <OtpLogin />
+    <Navbar />
+    <div class="container mx-auto">
+      <RouterView />
+    </div>
+    <BottomNavigation />
   </div>
 </template>
 
