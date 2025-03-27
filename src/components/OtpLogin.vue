@@ -1,50 +1,50 @@
 <template>
-  <div class="relative flex items-end justify-center min-h-screen bg-black bg-cover bg-center"
+  <div class="flex items-center justify-center min-h-screen bg-black bg-cover bg-center px-4 sm:px-0"
        style="background-image: url('/lbg.webp');">
     
-    <!-- Remove Black Overlay for Full Transparency -->
-    
-    <!-- Transparent Glassmorphism Login Box -->
-    <div class="relative z-10 p-8 rounded-2xl w-full max-w-sm border border-gray-500 shadow-2xl"
-         style="backdrop-filter: blur(15px); background: rgba(255, 255, 255, 0.05);">
+    <!-- Glassmorphism Login Box -->
+    <div class="relative w-full max-w-xs sm:max-w-sm md:max-w-md p-6 sm:p-8 rounded-2xl border border-gray-600 shadow-xl"
+         style="backdrop-filter: blur(15px); background: rgba(255, 255, 255, 0.08);">
       
-      <h2 class="text-3xl font-bold text-center text-white">Login with OTP</h2>
-      <p class="text-gray-300 text-center mt-1">Enter your phone number to receive an OTP</p>
+      <h2 class="text-2xl sm:text-3xl font-bold text-center text-white">Login with OTP</h2>
+      <p class="text-gray-300 text-center mt-1 text-sm sm:text-base">Enter your phone number to receive an OTP</p>
 
       <!-- Phone Number Input -->
       <div class="mt-6">
-        <label class="block text-gray-300 font-medium">Phone Number</label>
+        <label class="block text-gray-300 font-medium text-sm">Phone Number</label>
         <div class="flex items-center bg-transparent border border-gray-500 rounded-lg overflow-hidden mt-1">
-          <span class="px-3 text-gray-400">+91</span>
-          <input v-model="phoneNumber" type="text" placeholder="Enter phone number"
-                 class="w-full p-3 bg-transparent text-white focus:outline-none placeholder-gray-400" 
+          <span class="px-3 text-gray-400 text-lg">+91</span>
+          <input v-model="phoneNumber" type="tel" maxlength="10" placeholder="Enter phone number"
+                 class="w-full p-3 bg-transparent text-white focus:outline-none placeholder-gray-400 text-base" 
                  @input="validatePhoneNumber" />
         </div>
       </div>
 
       <!-- Send OTP Button -->
       <button @click="sendOTP" :disabled="isSendingOTP || !isPhoneNumberValid"
-              class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg mt-4 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+              class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg mt-4 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-base sm:text-lg">
         {{ isSendingOTP ? 'Sending...' : 'Send OTP' }}
       </button>
 
       <!-- OTP Input Field -->
       <div v-if="showOTPInput" class="mt-6">
-        <label class="block text-gray-300 font-medium">Enter OTP</label>
-        <input v-model="otp" type="text" placeholder="Enter OTP"
-               class="w-full p-3 bg-transparent text-white border border-gray-500 rounded-lg mt-1 focus:outline-none placeholder-gray-400" />
+        <label class="block text-gray-300 font-medium text-sm">Enter OTP</label>
+        <input v-model="otp" type="number" maxlength="6" placeholder="Enter OTP"
+               class="w-full p-3 bg-transparent text-white border border-gray-500 rounded-lg mt-1 focus:outline-none placeholder-gray-400 text-base sm:text-lg" />
 
         <!-- Verify OTP Button -->
         <button @click="verifyOTP" :disabled="isVerifyingOTP"
-                class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg mt-4 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg mt-4 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-base sm:text-lg">
           {{ isVerifyingOTP ? 'Verifying...' : 'Verify OTP' }}
         </button>
       </div>
 
+      <!-- Recaptcha Container -->
       <div id="recaptcha-container" class="mt-4"></div>
     </div>
   </div>
 </template>
+
 
 
 <script>
