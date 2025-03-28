@@ -44,6 +44,11 @@
                     </button>
                 </div>
             </div>
+            <!-- Cover Charges Checkbox -->
+<div class="mb-4 flex items-center gap-2">
+    <input v-model="place.paid" type="checkbox" id="coverCharges" class="w-5 h-5 text-green-600">
+    <label for="coverCharges" class="checkbox-field">This place has cover charges</label>
+</div>
 
             <!-- Submit Button (Disabled until form is filled or submitting) -->
             <button type="submit" class="submit-btn" :disabled="!isFormValid || isSubmitting">
@@ -81,6 +86,7 @@ export default {
             location: "",
             locationCoordinates: "",
             images: [],
+            paid: false, // Default to false
         });
 
         const imagePreviews = ref([]);
@@ -198,6 +204,13 @@ export default {
     border: 2px solid #2c2d2d;
     border-radius: 10px;
     outline: none;
+    transition: border-color 0.3s;
+}
+.checkbox-field {
+    width: 100%;
+    padding: 12px;
+    color: rgb(205, 86, 50);
+    background-color: black;
     transition: border-color 0.3s;
 }
 
