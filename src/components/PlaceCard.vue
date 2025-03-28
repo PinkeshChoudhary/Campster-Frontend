@@ -7,8 +7,8 @@
       <img :src="place.images[0]" alt="Place image" class="w-full h-60 object-cover rounded-2xl">
       <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
       
-      <div v-if="place.paid" class="absolute top-3 left-3 text-green-500 text-sm font-bold uppercase backdrop-blur-md px-3 py-1 rounded-full border border-green-500">
-         Paid
+      <div v-if="place.paid" class="absolute top-3 left-3 text-green-700 text-sm font-bold uppercase bg-green-100/80 backdrop-blur-md px-3 py-1 rounded-full">
+      Cover Charges
       </div>
 
       <!-- Like Button -->
