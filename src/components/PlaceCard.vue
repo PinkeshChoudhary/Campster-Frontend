@@ -7,9 +7,11 @@
       <img :src="place.images[0]" alt="Place image" class="w-full h-60 object-cover rounded-2xl">
       <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
       
-      <div v-if="place.paid" class="absolute top-3 left-3 bg-yellow-100/80 backdrop-blur-md p-2 rounded-full">
-    👑
+      <div v-if="place.paid" class="absolute top-3 left-3 bg-yellow-100/80 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1">
+    <i class="fas fa-crown text-yellow-700"></i>
+    <span class="text-yellow-700 text-sm font-bold uppercase">Premium</span>
 </div>
+
 
 
       <!-- Like Button -->
