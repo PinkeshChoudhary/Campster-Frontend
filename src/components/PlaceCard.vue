@@ -7,6 +7,9 @@
       <img :src="place.images[0]" alt="Place image" class="w-full h-60 object-cover rounded-2xl">
       <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
       
+      <div v-if="place.paid" class="absolute top-3 left-3 text-green-600 text-xs font-bold px-3 py-1 rounded-full shadow-lg border border-green-600 bg-green-300">
+        ✅ PAID
+      </div>
       <!-- Like Button -->
       <button @click.stop="likePlace" class="absolute top-3 right-3 p-2 bg-white/70 rounded-full backdrop-blur-sm">
         <svg v-if="likedByUser" class="heart-icon liked" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
