@@ -33,7 +33,7 @@ export default {
 
     const fetchGlampingSites = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/glampin`);
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/glamping`);
         glampingSites.value = response.data;
       } catch (error) {
         console.error("Error fetching glamping sites", error);
