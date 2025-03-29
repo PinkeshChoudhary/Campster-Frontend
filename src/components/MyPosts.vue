@@ -51,7 +51,7 @@ export default {
 
     const fetchPlaces = async () => {
       try {
-        const response = await axios.get(`https://campster-backend-production.up.railway.app/api/places/user/${auth.currentUser.uid}`);
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/places/user/${auth.currentUser.uid}`);
         await new Promise(resolve => setTimeout(resolve, 500)); // Smooth loading effect
         myPosts.value = response.data.places;
       } catch (error) {

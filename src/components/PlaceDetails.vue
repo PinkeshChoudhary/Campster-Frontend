@@ -105,7 +105,7 @@
       const fetchPlaceDetails = async () => {
         const placeId = route.params.id;
         try {
-          const response = await axios.get(`https://campster-backend-production.up.railway.app/api/places/${placeId}`);
+          const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/places/${placeId}`);
           place.value = response.data;
         } catch (error) {
           console.error('Error fetching place details:', error);
@@ -116,7 +116,7 @@
       const fetchComments = async () => {
         const placeId = route.params.id;
         try {
-          const response = await axios.get(`https://campster-backend-production.up.railway.app/api/places/${placeId}/comments`);
+          const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/places/${placeId}/comments`);
           comments.value = response.data;
         } catch (error) {
           console.error('Error fetching comments:', error);
@@ -129,7 +129,7 @@
   
         const placeId = route.params.id;
         try {
-          const response = await axios.post(`https://campster-backend-production.up.railway.app/api/places/${placeId}/comments`, {
+          const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/places/${placeId}/comments`, {
             text: newComment.value.trim(),
             user: userName.value,
           });
@@ -143,7 +143,7 @@
       const likeCount = async () => {
         const placeId = route.params.id;
         try {
-          const response = await axios.get(`https://campster-backend-production.up.railway.app/api/places/${placeId}/likes`);
+          const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/places/${placeId}/likes`);
           likes.value = response.data;
         } catch (error) {
           console.error('Error loading likes:', error);

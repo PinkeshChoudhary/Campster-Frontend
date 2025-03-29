@@ -50,7 +50,7 @@ export default {
         if (user) {
           userStore.phone = user.phoneNumber;
           try {
-            const { data } = await axios.get(`https://campster-backend-production.up.railway.app/api/user/${user.uid}`);
+            const { data } = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/user/${user.uid}`);
             if (data.success) {
               userStore.name = data.user.name || "";
               dob.value = data.user.dob ? data.user.dob.split("T")[0] : "";
@@ -68,7 +68,7 @@ export default {
 
     const saveProfile = async () => {
       const user = auth.currentUser;
-      await axios.post("https://campster-backend-production.up.railway.app/api/user", {
+      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/user`, {
         uid: user.uid,
         name: userStore.name,
         dob: dob.value,

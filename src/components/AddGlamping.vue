@@ -95,7 +95,7 @@
     images.value.forEach((img) => formData.append("images", img));
   
     try {
-      await axios.post("https://campster-backend-production.up.railway.app/api/glamping/submit", formData, {
+      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/glamping/submit`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       alert("Glamping site added successfully!");

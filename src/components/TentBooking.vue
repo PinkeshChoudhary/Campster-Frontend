@@ -108,7 +108,7 @@
         }
   
         try {
-          const response = await axios.get("https://campster-backend-production.up.railway.app/api/tents/available", {
+          const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/tents/available1`, {
             params: {
               size: selectedSize,
               color: selectedColor.value,
@@ -144,7 +144,7 @@
         const user = auth.currentUser;
         console.info("userid",user.uid)
         try {
-          const response = await axios.post("https://campster-backend-production.up.railway.app/api/bookings/rent", {
+          const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/bookings/rent`, {
             userPhone: user.phoneNumber,
             userId: user.uid,
             tentId: tentId.value,  
@@ -166,7 +166,7 @@
         if (!bookingId.value) return;
   
         try {
-          await axios.patch(`https://campster-backend-production.up.railway.app/api/bookings/cancel/${bookingId.value}`);
+          await axios.patch(`${import.meta.env.VITE_API_BASE_URL}/api/bookings/cancel/${bookingId.value}`);
           bookingStatus.value = "Cancelled";
           availability.value = true;
         } catch (error) {

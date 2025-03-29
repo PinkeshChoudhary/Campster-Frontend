@@ -71,7 +71,7 @@ export default {
         const checkIfAdmin = async () => {
             try {
                 console.info("userid", auth.currentUser.uid)
-                const response = await axios.get(`https://campster-backend-production.up.railway.app/api/adminfire/dashboard`, {
+                const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/adminfire/dashboard`, {
                     params: {
                         uid: auth.currentUser.uid
                     }
@@ -86,7 +86,7 @@ export default {
 
         const fetchPlaces = async () => {
             try {
-                const response = await axios.get('https://campster-backend-production.up.railway.app/api/places');
+                const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/places`);
                 store.setApprovedPlaces(response.data.places);
             } catch (error) {
                 console.error(error);
@@ -112,7 +112,7 @@ export default {
                     try {
                         const {
                             data
-                        } = await axios.get(`https://campster-backend-production.up.railway.app/api/user/${user.uid}`);
+                        } = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/user/${user.uid}`);
                         if (data.success) {
                             userStore.name = data.user.name || "";
                             userStore.email = data.user.email || "";

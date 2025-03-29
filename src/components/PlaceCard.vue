@@ -69,7 +69,7 @@ export default {
       }
 
       try {
-        await axios.post(`https://campster-backend-production.up.railway.app/api/places/like/${props.place._id}`, { userId: user.uid });
+        await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/places/like/${props.place._id}`, { userId: user.uid });
         likedByUser.value = true;
       } catch (error) {
         console.error(error.response.data.message);

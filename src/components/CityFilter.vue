@@ -37,7 +37,7 @@
   const selectCity = async (city) => {
     selectedCity.value = city;
     try {
-      const response = await fetch(`https://campster-backend-production.up.railway.app/api/places/location?city=${selectedCity.value}`);
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/places/location?city=${selectedCity.value}`);
 
       const data = await response.json();
       emit("places-updated", data); // Send data to parent

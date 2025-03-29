@@ -131,7 +131,7 @@ export default {
                 });
                 formData.append("userId", user.uid);
 
-                await axios.post("https://campster-backend-production.up.railway.app/api/places/submit", formData, {
+                await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/places/submit`, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data"
                     },
