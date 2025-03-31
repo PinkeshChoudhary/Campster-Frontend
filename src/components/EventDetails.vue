@@ -1,0 +1,105 @@
+<template>
+    <div class="w-full min-h-screen flex flex-col items-center px-4 pb-14 pt-14 bg-[#1A1A1A] text-white">
+      <button @click="goBack" class="self-start flex items-center text-gray-400 hover:text-yellow-500 transition duration-200 mb-4 mt-4">
+        <i class="fas fa-arrow-left text-xl mr-2"></i> Back
+      </button>
+  
+      <div class="w-full max-w-5xl flex-grow">
+        <!-- First Image at the Top -->
+        <img :src="event?.images?.[0]" alt="Event Image" class="w-full h-96 object-cover rounded-lg">
+  
+        <div class="mt-6">
+          <h2 class="text-4xl font-bold text-yellow-500">{{ event?.name }}</h2>
+  
+          <!-- Location & Time -->
+          <div class="mt-4 space-y-3 text-gray-300 text-lg">
+            <div class="flex items-center">
+              <i class="fas fa-map-marker-alt text-yellow-500 text-xl mr-3"></i>
+              <a :href="`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(event?.location)}`" target="_blank" class="text-yellow-500 font-semibold hover:underline">
+                {{ event?.location }}
+              </a>
+            </div>
+            <div class="flex items-center">
+              <i class="fas fa-calendar-alt text-yellow-500 text-xl mr-3"></i>
+              <span>{{ formatDate(event?.date) }}</span>
+            </div>
+            <div class="flex items-center">
+              <i class="fas fa-clock text-yellow-500 text-xl mr-3"></i>
+              <span>{{ event?.time }}</span>
+            </div>
+          </div>
+  
+          <p class="mt-4 text-lg font-semibold" :class="event?.isPaid ? 'text-green-500' : 'text-yellow-500'">
+            {{ event?.ticketType === "paid" ? `₹${event.price} / Ticket` : "Free Event" }}
+          </p>
+          <p class="mt-4 text-gray-300 leading-relaxed">{{ event?.description }}</p>
+        </div>
+  
+        <!-- Countdown Timer -->
+        <div v-if="timeLeft" class="mt-4 p-4 bg-[#444] text-white rounded-lg shadow-lg">
+          <h3 class="text-lg font-semibold">Event Starts In:</h3>
+          <p class="text-xl font-bold text-yellow-500">{{ timeLeft }}</p>
+        </div>
+      </div>
+  
+      <!-- Gallery Section -->
+      <div v-if="event?.images?.length > 1" class="mt-10 w-full max-w-5xl">
+        <h3 class="text-2xl font-bold text-yellow-500 mb-4">Gallery</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+          <img v-for="(image, index) in event.images.slice(1)" :key="index" :src="image" alt="Event Image" class="w-full h-48 object-cover rounded-lg">
+        </div>
+      </div>
+  
+      <!-- Book Now Button -->
+      <button @click="bookNow" class="w-full max-w-5xl mt-6 bg-yellow-500 text-white py-3 rounded-lg text-center font-semibold hover:bg-green-600 transition">
+        Buy Pass ( {{ event?.ticketType === "paid" ? `₹${event.price} / Ticket` : "Free Event" }})
+      </button>
+    </div>
+  </template>
+  
+  <script setup>
+  import { ref, onMounted } from "vue";
+  import { useRoute, useRouter } from "vue-router";
+  import axios from "axios";
+  
+  const route = useRoute();
+  const router = useRouter();
+  const event = ref(null);
+  const timeLeft = ref(null);
+  
+  const fetchEventDetails = async () => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/events/${route.params.id}`);
+      event.value = response.data;
+      updateCountdown();
+    } catch (error) {
+      console.error("Error fetching event details:", error);
+    }
+  };
+  
+  const updateCountdown = () => {
+    const eventDate = new Date(event.value?.date).getTime();
+    setInterval(() => {
+      const now = new Date().getTime();
+      const distance = eventDate - now;
+      if (distance < 0) {
+        timeLeft.value = "Event has started!";
+        return;
+      }
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      timeLeft.value = `${days}d ${hours}h ${minutes}m`;
+    }, 60000);
+  };
+  
+  const goBack = () => window.history.length > 1 ? router.back() : router.push("/");
+  const formatDate = (date) => new Date(date).toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+  const bookNow = () => router.push(`/book/${event.value?.id}`);
+  
+  onMounted(fetchEventDetails);
+  </script>
+  
+  <style>
+  @import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css";
+  </style>

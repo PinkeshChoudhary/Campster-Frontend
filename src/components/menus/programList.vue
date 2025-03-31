@@ -71,8 +71,8 @@
           <li @click="navigate('contact')" class="text-yellow-500 menu-item flex items-center space-x-3 py-3 border-b border-gray-400 hover:bg-gray-200 rounded-lg transition">
             <span>Contact Us</span>
           </li>
-          <li @click="navigate('partner')" class="text-yellow-500 menu-item flex items-center space-x-3 py-3 border-b border-gray-400 hover:bg-gray-200 rounded-lg transition">
-            <span>Partner with us</span>
+          <li @click="navigate('organizer')" class="text-yellow-500 menu-item flex items-center space-x-3 py-3 border-b border-gray-400 hover:bg-gray-200 rounded-lg transition">
+            <span>Organize an event</span>
           </li>
         </ul>
 

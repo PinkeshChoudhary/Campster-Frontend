@@ -12,6 +12,8 @@ import MyPosts from '../components/MyPosts.vue';
 import GlampingSiteDetails from '../components/GlampingSiteDetails.vue';
 import OtpLogin from '../components/OtpLogin.vue';
 import { getAuth } from 'firebase/auth';
+import TicketEventOrganizer from '../components/TicketEventOrganizer.vue';
+import EventDetails from '../components/EventDetails.vue';
 
 
 
@@ -36,6 +38,17 @@ const routes = [
     path: '/events',
     name: 'Events',
     component: EventComponent,
+  },
+  {
+    path: '/events/:id',
+    name: 'eventdetails',
+    component: EventDetails,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/organizer',
+    name: 'Organizer',
+    component: TicketEventOrganizer,
   },
   {
     path: '/login',
