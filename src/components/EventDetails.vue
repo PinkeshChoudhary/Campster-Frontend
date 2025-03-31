@@ -94,7 +94,32 @@
   
   const goBack = () => window.history.length > 1 ? router.back() : router.push("/");
   const formatDate = (date) => new Date(date).toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
-  const bookNow = () => router.push(`/book/${event.value?.id}`);
+
+  const bookNow = async () => {
+    try {
+        const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/tickets/generate-ticket`, {
+            eventId: event.value?._id,
+            eventName: event.value?.name,
+            eventDate: event.value?.createdAt,
+            location: event.value?.location,
+            userName: "John Doe"
+        }, { responseType: "blob" });
+
+        // Create a Blob URL to download the PDF
+        const blob = new Blob([response.data], { type: "application/pdf" });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `ticket-${event.value?.id}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+    } catch (error) {
+        console.error("Error generating ticket:", error);
+    }
+};
+
   
   onMounted(fetchEventDetails);
   </script>
