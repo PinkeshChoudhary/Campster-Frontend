@@ -10,11 +10,11 @@
       <div v-for="event in events" :key="event._id" 
         class="bg-[#2A2A2A] shadow-lg rounded-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl relative">
         <img :src="event.images[0]" class="w-full h-64 object-cover rounded-t-lg">
-        <div class="absolute top-4 right-4 bg-yellow-500 text-black px-3 py-1 rounded-full text-sm font-medium">
+        <div class="absolute top-4 right-4 bg-yellow-100 text-black px-3 py-1 rounded-full text-sm font-medium">
           <i class="fas fa-ticket-alt"></i> {{ event.ticketType  && event.price ? `₹${event.price} / Ticket` : "FREE" }}
         </div>
         <div class="p-6 flex flex-col gap-2">
-          <h3 class="text-2xl text-yellow-500 font-bold"> {{ event.name }}</h3>
+          <h3 class="text-2xl text-white font-semibold text-lg"> {{ event.name }}</h3>
           <p class="text-gray-400 flex items-center">
             <i class="fas fa-map-marker-alt mr-2"></i>{{ event.location }}
           </p>
