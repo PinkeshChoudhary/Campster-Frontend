@@ -3,10 +3,10 @@
     <h2 class="text-white font-semibold pt-20">Pending Events</h2>
 
     <!-- Popup Notification -->
-    <div v-if="showNotification" class="fixed top-5 right-5 bg-white shadow-lg p-4 rounded-lg border border-gray-300">
+    <!-- <div v-if="showNotification" class="fixed top-5 right-5 bg-white shadow-lg p-4 rounded-lg border border-gray-300">
         <p class="font-semibold">{{ notificationMessage }}</p>
         <button @click="showNotification = false" class="bg-red-500 text-white px-3 py-1 rounded mt-2">Close</button>
-    </div>
+    </div> -->
 
     <!-- Pending Events List -->
     <div v-for="event in pendingEvents" :key="event._id" class="mb-4">
@@ -64,7 +64,7 @@ export default {
         const fetchPendingEvents = async () => {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/events`);
-                pendingEvents.value = response.data.events;
+                pendingEvents.value = response.data;
             } catch (error) {
                 console.error(error);
             }
