@@ -52,8 +52,14 @@
                 <option value="Festival">Festival</option>
                 <option value="Other">Other</option>
             </select>
-            <input  v-model="event.totalTickets" type="number" placeholder="Total Tickets " class="input-field" required />
-            <input  v-model="event.availableTickets" type="number" placeholder="Available Tickets" class="input-field" required />
+            <input v-model="event.totalTickets" type="number" placeholder="Total Tickets " class="input-field" required />
+            <input v-model="event.availableTickets" type="number" placeholder="Available Tickets" class="input-field" required />
+            <!-- Instagram Link -->
+            <input v-model="event.instagramLink" type="url" placeholder="Instagram Reel Link" class="input-field" />
+
+            <!-- YouTube Link -->
+            <input v-model="event.youtubeLink" type="url" placeholder="YouTube Video Link" class="input-field" />
+
             <!-- Upload Images -->
             <div class="p-3 border border-dashed border-gray-400 rounded-lg hover:border-yellow-400 transition">
                 <input type="file" @change="handleImageUpload" multiple accept="image/*" class="w-full text-sm text-gray-300" />
@@ -87,10 +93,13 @@ import axios from "axios";
 import {
     useRouter
 } from 'vue-router';
+import { getAuth } from "firebase/auth";
 
 export default {
     setup() {
         const router = useRouter();
+        const auth = getAuth();
+        const user = auth.currentUser;
         const event = ref({
             name: "",
             location: "",
@@ -102,6 +111,8 @@ export default {
             price: "",
             totalTickets: "",
             availableTickets: "",
+            instagramLink: "",
+            youtubeLink: "",
             images: []
         });
         const imagePreviews = ref([]);
@@ -145,7 +156,9 @@ export default {
                         formData.append(key, event.value[key]);
                     }
                 });
-                console.info("form data", formData )
+                formData.append("organizerUID", user.uid);
+                formData.append("organizerPhone", user.phoneNumber);
+                console.info("form data", formData)
                 await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/events/submit`, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data"
@@ -162,6 +175,8 @@ export default {
                     totalTickets: "",
                     availableTickets: "",
                     price: "",
+                    instagramLink: "",
+                    youtubeLink: "",
                     images: []
                 };
                 imagePreviews.value = [];

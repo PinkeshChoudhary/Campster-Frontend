@@ -10,6 +10,12 @@
       <div v-for="event in events" :key="event._id" 
         class="bg-[#1E1E1E] shadow-yellow-500/50 shadow-xl rounded-2xl overflow-hidden transform transition duration-300 hover:scale-105 relative">
         <img :src="event.images[0]" class="w-full h-72 object-cover rounded-t-2xl">
+           <!-- Premium Verified Tag -->
+           <div v-if="event.isverified" 
+          class="absolute top-4 left-4 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-2  rounded-full text-xs font-bold shadow-lg flex items-center gap-2 premium-shine">
+          <i class="fas fa-circle-check text-white text-sm"></i> 
+          <span class="text-white">Campster Verified</span>
+        </div>
         <div class="absolute top-4 right-4 bg-yellow-500 text-black px-4 py-2 rounded-full text-sm font-medium shadow-lg">
           <i class="fas fa-ticket-alt"></i> {{ event.ticketType && event.price ? `₹${event.price} / Ticket` : "FREE" }}
         </div>
@@ -75,5 +81,15 @@ onMounted(fetchEvents);
 
 .animate-fadeInUp {
   animation: fadeInUp 0.8s ease-out forwards;
+}
+/* PREMIUM SHINING EFFECT */
+@keyframes shine {
+  0% { box-shadow: 0px 0px 5px rgba(255, 223, 0, 0.5); }
+  50% { box-shadow: 0px 0px 15px rgba(255, 223, 0, 0.9); }
+  100% { box-shadow: 0px 0px 5px rgba(255, 223, 0, 0.5); }
+}
+
+.premium-shine {
+  animation: shine 2s infinite alternate ease-in-out;
 }
 </style>

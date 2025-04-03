@@ -61,6 +61,7 @@
             </p>
         </div>
     </div>
+    <EventVerified />
     <AddGlamping />
 </template>
 
@@ -70,10 +71,12 @@ import { useStore } from "../store/store";
 import axios from "axios";
 import { io } from "socket.io-client";
 import AddGlamping from "./AddGlamping.vue";
+import EventVerified from "./EventVerified.vue";
 
 export default {
     components: {
         AddGlamping,
+        EventVerified,
     },
     setup() {
         const store = useStore();
