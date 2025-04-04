@@ -1,10 +1,12 @@
 <template>
-  <div class="p-4 mt-14 mb-10">
-    <h2 
-  class="text-3xl md:text-4xl font-bold text-gray-500 text-center mb-6 opacity-0 animate-fadeInUp"
->
-  Glamping Sites ⛺✨
-</h2>
+  <div class="p-4 mt-6 mb-10">
+    <div class="0 p-6 rounded-2xl shadow-lg">
+  <h2 
+    class="text-xl md:text-2xl font-extrabold text-gray-700 text-center opacity-0 animate-fadeInUp"
+  >
+    Resorts & Glamping Sites
+  </h2>
+</div>
 
     
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
