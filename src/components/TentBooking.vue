@@ -108,7 +108,7 @@
         }
   
         try {
-          const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/tents/available1`, {
+          const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/tents/available`, {
             params: {
               size: selectedSize,
               color: selectedColor.value,
@@ -142,7 +142,6 @@
           return;
         }
         const user = auth.currentUser;
-        console.info("userid",user.uid)
         try {
           const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/bookings/rent`, {
             userPhone: user.phoneNumber,
