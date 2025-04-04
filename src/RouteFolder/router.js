@@ -14,6 +14,7 @@ import OtpLogin from '../components/OtpLogin.vue';
 import { getAuth } from 'firebase/auth';
 import TicketEventOrganizer from '../components/TicketEventOrganizer.vue';
 import EventDetails from '../components/EventDetails.vue';
+import ContactUs from '../components/ContactUs.vue';
 
 
 
@@ -49,6 +50,11 @@ const routes = [
     path: '/organizer',
     name: 'Organizer',
     component: TicketEventOrganizer,
+  },
+  {
+    path: '/contact',
+    name: 'Contact',
+    component: ContactUs,
   },
   {
     path: '/login',

@@ -61,6 +61,7 @@
             </p>
         </div>
     </div>
+    <AdminContactMessage />
     <EventVerified />
     <AddGlamping />
 </template>
@@ -72,11 +73,13 @@ import axios from "axios";
 import { io } from "socket.io-client";
 import AddGlamping from "./AddGlamping.vue";
 import EventVerified from "./EventVerified.vue";
+import AdminContactMessage from "./AdminContactMessage.vue";
 
 export default {
     components: {
         AddGlamping,
         EventVerified,
+        AdminContactMessage,
     },
     setup() {
         const store = useStore();

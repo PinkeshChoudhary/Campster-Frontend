@@ -23,7 +23,7 @@
       <div class="p-6">
         <h2 class="text-2xl font-bold text-gray-800">{{ site.name }}</h2>
         <p class="text-gray-600">{{ site.location }}</p>
-        <p class="text-lg font-semibold text-yellow-600 mt-2">₹ {{ site.pricePerNight }} / NPP</p>
+        <p class="text-lg font-semibold text-yellow-600 mt-2">₹ {{ site.pricePerNight }} / Night</p>
   
         <p class="mt-4 text-gray-700">{{ site.description }}</p>
   
