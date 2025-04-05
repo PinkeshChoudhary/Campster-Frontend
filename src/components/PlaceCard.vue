@@ -3,14 +3,11 @@
     <div class="relative">
         <img :src="place.images[0]" alt="Place image" class="w-full h-60 object-cover rounded-2xl">
         <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
-        <div v-if="distance"
-  class="absolute bottom-3 right-3 px-2.5 py-0.5 rounded-full bg-white/80 text-gray-700 text-[11px] font-medium shadow backdrop-blur-sm flex items-center gap-1">
+        <div v-if="distance" class="absolute bottom-3 right-3 px-2.5 py-0.5 rounded-full bg-white/80 text-gray-700 text-[11px] font-medium shadow backdrop-blur-sm flex items-center gap-1">
 
-  <i class="fas fa-location-arrow text-[10px] text-orange-500"></i>
-  {{ distance }} km
-</div>
-
-
+            <i class="fas fa-location-arrow text-[10px] text-orange-500"></i>
+            {{ distance }} km
+        </div>
 
         <div v-if="place.paid" class="absolute top-3 left-3 bg-yellow-100/80 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1">
             <i class="fas fa-crown text-yellow-700"></i>
@@ -59,13 +56,14 @@ export default {
 
         const calculateDistance = (lat1, lon1, lat2, lon2) => {
             const toRad = angle => (angle * Math.PI) / 180;
-            const R = 6371;
+            const R = 6371; // Radius of Earth in km
+
             const dLat = toRad(lat2 - lat1);
             const dLon = toRad(lon2 - lon1);
+
             const a =
                 Math.sin(dLat / 2) ** 2 +
-                Math.cos(toRad(lat1)) *
-                Math.cos(toRad(lat2)) *
+                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
                 Math.sin(dLon / 2) ** 2;
 
             const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
