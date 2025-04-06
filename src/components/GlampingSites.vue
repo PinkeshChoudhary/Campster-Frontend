@@ -13,10 +13,10 @@
     <!-- Icon Button Toggle -->
     <div 
       @click="toggleDropdown" 
-      class="w-11 h-11 bg-[#1E1E1E] border border-yellow-500 rounded-full flex items-center justify-center cursor-pointer shadow-md transition hover:border-yellow-400"
+      class="w-11 h-11 bg-[#1E1E1E] border border-blue-500 rounded-full flex items-center justify-center cursor-pointer shadow-md transition hover:border-yellow-400"
     >
       <svg 
-        class="w-5 h-5 text-yellow-500 transition-transform duration-300"
+        class="w-5 h-5 text-blue-500 transition-transform duration-300"
         :class="{ 'rotate-180': isDropdownOpen }" 
         fill="none" 
         stroke="currentColor" 
