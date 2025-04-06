@@ -15,6 +15,7 @@ import { getAuth } from 'firebase/auth';
 import TicketEventOrganizer from '../components/TicketEventOrganizer.vue';
 import EventDetails from '../components/EventDetails.vue';
 import ContactUs from '../components/ContactUs.vue';
+import CommunityChat from '../components/CommunityChat.vue';
 
 
 
@@ -72,6 +73,12 @@ const routes = [
     name: 'Booking',
     component: TentBooking,
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/ChatGround',
+    name: 'ChatGround',
+    component: CommunityChat,
+    // meta: { requiresAuth: true }
   },
   { path: "/my-bookings",
     name: 'MyBooking',
