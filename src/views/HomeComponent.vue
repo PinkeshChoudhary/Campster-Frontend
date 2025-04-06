@@ -17,7 +17,7 @@
             <PlaceCard v-for="place in approvedPlaces" :key="place._id" :place="place" />
         </div>
         <router-link to="/ChatGround">
-            <div class="fixed bottom-5 right-5 z-50 mt-5">
+            <div class="fixed bottom-5 right-5 z-50 pb-28 mt-5">
                 <button class="relative flex items-center justify-center w-14 h-14 rounded-full border-4 border-white bg-gradient-to-br from-yellow-600 to-black-700 text-white font-bold shadow-xl transition-all duration-300 hover:scale-105 active:scale-95">
                     <div class="text-center leading-tight text-[10px]">
                         <span class="block">JOIN</span>
@@ -30,7 +30,7 @@
         <router-link to="/tent">
             <div class="fixed pb-14 bottom-5 right-5 ">
                 <button class="relative flex items-center justify-center w-14 h-14 rounded-full border-4 border-white bg-gradient-to-br from-blue-600 to-purple-700 text-white font-bold shadow-xl transition-all duration-300 hover:scale-105 active:scale-95">
-                    <div class="text-center">
+                    <div class="text-center leading-tight">
                         <span class="block text-xs">RENT</span>
                         <span class="block text-xs bg-white text-black px-1 rounded-md  active:bg-black active:text-white">TENT</span>
                     </div>

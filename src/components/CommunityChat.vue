@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen bg-zinc-900 text-white px-4 sm:px-6 py-6 space-y-6 pt-20">
+    <div class="min-h-screen bg-zinc-900 text-white px-4 mb-5 sm:px-6 py-6 space-y-6 pt-20">
   
       <!-- City Selection as Buttons -->
       <div>
