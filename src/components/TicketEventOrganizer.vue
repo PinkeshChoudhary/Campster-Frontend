@@ -46,11 +46,14 @@
             <input v-if="event.ticketType === 'paid'" v-model="event.price" type="number" placeholder="Ticket Price" class="input-field" required />
             <select v-model="event.category" class="input-field" required>
                 <option value="Music">Music</option>
+                <option value="Camping">Camping</option>
+                <option value="Trekking">Trekking</option>
+                <option value="Stargazing">Stargazing</option>
+                <option value="Bonfire Nights">Bonfire Nights</option>
+                <option value="Food Festival">Food Festival</option>
+                <option value="Wildlife Safari">Wildlife Safari</option>
                 <option value="Sports">Sports</option>
-                <option value="Conference">Conference</option>
-                <option value="Workshop">Workshop</option>
-                <option value="Festival">Festival</option>
-                <option value="Other">Other</option>
+
             </select>
             <input v-model="event.totalTickets" type="number" placeholder="Total Tickets " class="input-field" required />
             <input v-model="event.availableTickets" type="number" placeholder="Available Tickets" class="input-field" required />

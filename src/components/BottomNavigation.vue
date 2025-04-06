@@ -21,7 +21,7 @@
     <!-- Glamping Sites -->
     <router-link to="/glamping" :class="activeClass('/glamping')" class="nav-item">
       <i class="fas fa-campground icon"></i>
-      <span class="text-xxs">Glamping</span>
+      <span class="text-xxs">Stays</span>
     </router-link>
 
     <!-- Profile -->
