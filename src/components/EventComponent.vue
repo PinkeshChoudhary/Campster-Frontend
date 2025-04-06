@@ -29,7 +29,7 @@
     <!-- Dropdown List -->
     <div 
       v-if="isDropdownOpen" 
-      class="absolute right-0 z-50 mt-2 bg-[#1E1E1E] border border-yellow-500 rounded-lg w-52 max-h-60 overflow-y-auto shadow-lg custom-scrollbar"
+      class="absolute right-0 z-50 mt-2 bg-[#1E1E1E] border text-white border-yellow-500 rounded-lg w-52 max-h-60 overflow-y-auto shadow-lg custom-scrollbar"
      >
       <div 
         v-for="cat in categories" 

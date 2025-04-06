@@ -15,6 +15,19 @@
       <input v-model="location" type="text" placeholder="Enter location"
         class="w-full p-3 border rounded-md focus:ring-2 focus:ring-yellow-500">
     </div>
+    <div class="mb-4">
+  <label for="type" class="block text-sm font-medium  mb-1">Type of Stay</label>
+  <select id="type" v-model="typeOfStay" class="w-full bg-gray-800 text-white p-2 rounded-md">
+  <option disabled value="">Select type</option>
+  <option>Farm House</option>
+  <option>Resort</option>
+  <option>Tent Stay</option>
+  <option>Villa</option>
+  <option>Dome Tent</option>
+  <option>A-Frame Cabin</option>
+  </select>
+</div>
+
 
     <!-- Price -->
     <div class="mb-4">
@@ -99,6 +112,7 @@ const name = ref("");
 const location = ref("");
 const pricePerNight = ref("");
 const description = ref("");
+const typeOfStay = ref("");
 const amenities = ref({
   wifi: false,
   pool: false,
@@ -152,7 +166,7 @@ const handleImageUpload = (event) => {
 };
 
 const addGlampingSite = async () => {
-  if (!name.value || !location.value || !pricePerNight.value || !description.value || !images.value.length) {
+  if (!name.value || !location.value || !pricePerNight.value || !description.value  || !typeOfStay.value || !images.value.length) {
     alert("Please fill all fields and upload at least one image.");
     return;
   }
@@ -161,6 +175,7 @@ const addGlampingSite = async () => {
   formData.append("name", name.value);
   formData.append("location", location.value);
   formData.append("pricePerNight", pricePerNight.value);
+  formData.append("typeOfStay", typeOfStay.value);
   formData.append("description", description.value);
   formData.append("amenities", JSON.stringify(amenities.value));
   formData.append("permissions", JSON.stringify(permissions.value));
@@ -182,9 +197,10 @@ const resetForm = () => {
   location.value = "";
   pricePerNight.value = "";
   description.value = "";
+  typeOfStay.value = "";
   amenities.value = "";
   amenities.value = {
-    wifi: false,
+   wifi: false,
   pool: false,
   bbq: false,
   parking: false,

@@ -31,6 +31,7 @@
         </router-link>
     </div>
 </div>
+<AddGlamping />
 </template>
 
 <script>
@@ -53,6 +54,7 @@ import {
     useUserStore
 } from "../store/user";
 import CityFilter from '../components/CityFilter.vue';
+import AddGlamping from '../components/AddGlamping.vue';
 
 export default {
     components: {
@@ -60,6 +62,7 @@ export default {
         AdminDashboard,
         SlideShow,
         CityFilter,
+        AddGlamping,
     },
     setup() {
         const store = useStore();
