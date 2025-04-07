@@ -29,7 +29,7 @@ const routes = [
     path: '/profile',
     name: 'Profile',
     component: UserProfile,
-    // meta: { requiresAuth: true }
+    meta: { requiresAuth: true }
   },
   {
     path: '/glamping',
