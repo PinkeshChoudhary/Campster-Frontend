@@ -28,7 +28,7 @@
         </router-link>
 
         <router-link to="/tent">
-            <div class="fixed pb-14 bottom-5 right-5 ">
+            <div class="fixed top-28 right-5 ">
                 <button class="relative flex items-center justify-center w-14 h-14 rounded-full border-4 border-white bg-gradient-to-br from-blue-600 to-purple-700 text-white font-bold shadow-xl transition-all duration-300 hover:scale-105 active:scale-95">
                     <div class="text-center leading-tight">
                         <span class="block text-xs">RENT</span>

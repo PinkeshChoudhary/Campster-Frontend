@@ -116,7 +116,6 @@ export default {
                 email: userStore.email,
                 gender: userStore.gender,
                 phone: userStore.phone,
-                avatarUrl: avatarUrl.value,
             });
             showPopup.value = false;
             router.push("/");
