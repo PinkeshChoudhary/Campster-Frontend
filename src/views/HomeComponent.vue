@@ -124,6 +124,8 @@ export default {
                         if (data.success) {
                             userStore.name = data.user.name || "";
                             userStore.email = data.user.email || "";
+                            userStore.gender = data.user.gender || "";
+
                         } else {
                             showPopup.value = true;
                         }
