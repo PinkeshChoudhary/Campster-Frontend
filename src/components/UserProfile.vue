@@ -69,16 +69,18 @@ export default {
         const userStore = useUserStore();
         const router = useRouter();
 
-        const avatarUrl = ref(`https://avatars.dicebear.com/api/avataaars/${Math.random().toString(36).substring(7)}.svg`);
+        const seed = Math.random().toString(36).substring(7);
+        const avatarUrl = ref(`https://api.dicebear.com/7.x/bottts/svg?seed=${seed}`);
+
         const completion = computed(() => {
-      let filled = 0;
-      if (userStore.name) filled++;
-      if (dob.value) filled++;
-      if (userStore.email) filled++;
-      if (userStore.phone) filled++;
-      if (userStore.gender) filled++;
-      return Math.round((filled / 5) * 100);
-    });
+            let filled = 0;
+            if (userStore.name) filled++;
+            if (dob.value) filled++;
+            if (userStore.email) filled++;
+            if (userStore.phone) filled++;
+            if (userStore.gender) filled++;
+            return Math.round((filled / 5) * 100);
+        });
 
         onMounted(async () => {
             auth.onAuthStateChanged(async (user) => {
