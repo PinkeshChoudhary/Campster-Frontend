@@ -13,12 +13,12 @@
         <form @submit.prevent="submitContact">
           <!-- Name -->
           <div class="mb-4">
-            <input v-model="contact.name" type="text" placeholder="Your Name" class="input-field" required />
+            <input v-model="contact.name" type="text" placeholder=" Name" class="input-field" required />
           </div>
   
           <!-- Email -->
           <div class="mb-4">
-            <input v-model="contact.email" type="email" placeholder="Your Email" class="input-field" required />
+            <input v-model="contact.email" type="email" placeholder="Email" class="input-field" required />
           </div>
   
           <!-- Message -->
