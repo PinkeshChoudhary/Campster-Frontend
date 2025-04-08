@@ -77,7 +77,7 @@
         </ul>
 
         <!-- Login Button -->
-<div class="mt-8">
+<div  v-if="!userStore.phone"class="mt-8">
   <button
     @click="navigate('login')"
     class="w-full bg-yellow-500 text-black font-semibold py-3 rounded-lg shadow hover:bg-yellow-600 transition"
@@ -99,6 +99,7 @@
 import { ref, onMounted, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "../../store/user"; // Import the user store
+
 
 const menuOpen = ref(false);
 const profileExpanded = ref(false);
