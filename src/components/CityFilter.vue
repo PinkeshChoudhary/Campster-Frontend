@@ -1,55 +1,98 @@
 <template>
-    <div class="flex space-x-4 p-4 overflow-x-auto">
-      <!-- City Circles -->
+  <div class=" flex justify-end" ref="dropdownRef">
+    <div class="relative">
+      <!-- Icon Button Toggle -->
       <div 
-        v-for="city in cities" 
-        :key="city.name"
-        class="flex flex-col items-center cursor-pointer"
-        @click="selectCity(city.name)"
+        @click="toggleDropdown" 
+        class="w-11 h-11 bg-[#1E1E1E] border border-yellow-500 rounded-full flex items-center justify-center cursor-pointer shadow-md transition hover:border-yellow-400"
       >
-      <div 
-  class="w-20 h-20 flex items-center justify-center rounded-full text-center text-base font-bold p-2 shadow-lg transition-all duration-300 cursor-pointer"
-  :class="{
-    'bg-gradient-to-r from-gray-200 to-gray-400 text-black': selectedCity !== city.name,
-    'bg-gradient-to-r from-yellow-500 to-yellow-600 text-white scale-110': selectedCity === city.name
-  }"
->
-  {{ city.name }}
-</div>
+        <svg 
+          class="w-5 h-5 text-yellow-500 transition-transform duration-300"
+          :class="{ 'rotate-180': isDropdownOpen }" 
+          fill="none" 
+          stroke="currentColor" 
+          viewBox="0 0 24 24" 
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
 
+      <!-- Dropdown List -->
+      <div 
+        v-if="isDropdownOpen" 
+        class="absolute right-0 z-50 mt-2 bg-[#1E1E1E] border text-white border-yellow-500 rounded-lg w-52 max-h-60 overflow-y-auto shadow-lg custom-scrollbar"
+      >
+        <div 
+          v-for="city in cities" 
+          :key="city.name"
+          @click="selectCity(city.name)"
+          class="px-4 py-2 text-sm cursor-pointer hover:bg-yellow-500 hover:text-black transition duration-150"
+          :class="{ 'bg-yellow-500 text-black font-semibold': selectedCity === city.name }"
+        >
+          {{ city.name }}
+        </div>
       </div>
     </div>
-  </template>
-  
-  <script setup>
-  import { ref, defineEmits } from "vue";
-  
-  const selectedCity = ref(""); // Track selected city
-  const emit = defineEmits(["places-updated"]); // Emit event to parent
-  
-  const cities = ref([
-    { name: "Udaipur" },
-    { name: "Mount Abu" },
-    { name: "Jaipur" },
-    { name: "Jaisalmer" },
-  ]);
-  
-  const selectCity = async (city) => {
-    selectedCity.value = city;
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/places/location?city=${selectedCity.value}`);
+  </div>
+</template>
 
-      const data = await response.json();
-      emit("places-updated", data); // Send data to parent
-    } catch (error) {
-      console.error("Error fetching places:", error);
-    }
-  };
-  </script>
-  
-  <style scoped>
-  div {
-    transition: all 0.3s ease-in-out;
+<script setup>
+import { ref, onMounted, onBeforeUnmount, defineEmits } from "vue";
+
+const selectedCity = ref("");
+const isDropdownOpen = ref(false);
+const emit = defineEmits(["places-updated"]);
+const dropdownRef = ref(null);
+
+const cities = ref([
+  { name: "Udaipur" },
+  { name: "Mount Abu" },
+  { name: "Jaipur" },
+  { name: "Jaisalmer" },
+]);
+
+const toggleDropdown = () => {
+  isDropdownOpen.value = !isDropdownOpen.value;
+};
+
+const closeDropdown = (e) => {
+  if (dropdownRef.value && !dropdownRef.value.contains(e.target)) {
+    isDropdownOpen.value = false;
   }
-  </style>
-  
+};
+
+onMounted(() => {
+  document.addEventListener("click", closeDropdown);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("click", closeDropdown);
+});
+
+const selectCity = async (city) => {
+  selectedCity.value = city;
+  isDropdownOpen.value = false;
+
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/places/location?city=${city}`);
+    const data = await response.json();
+    emit("places-updated", data);
+  } catch (error) {
+    console.error("Error fetching places:", error);
+  }
+};
+</script>
+
+<style scoped>
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #facc15; /* Tailwind yellow-500 */
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+</style>

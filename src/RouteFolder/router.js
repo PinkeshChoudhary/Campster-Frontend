@@ -16,6 +16,12 @@ import TicketEventOrganizer from '../components/TicketEventOrganizer.vue';
 import EventDetails from '../components/EventDetails.vue';
 import ContactUs from '../components/ContactUs.vue';
 import CommunityChat from '../components/CommunityChat.vue';
+<<<<<<< Updated upstream
+=======
+import BingoBoard from '../components/bingo/BingoBoard.vue';
+import BingoDashBoard from '../components/bingo/BingoDashBoard.vue';
+import BingoLobby from '../components/bingo/BingoLobby.vue';
+>>>>>>> Stashed changes
 
 
 
@@ -58,6 +64,21 @@ const routes = [
     component: ContactUs,
   },
   {
+<<<<<<< Updated upstream
+=======
+    path: '/bingo/:gameId/:playerId',
+    name: 'BingoBoard',
+    component: BingoBoard,
+    props: true, // this makes route params directly available as props if you want
+  },
+  {
+    path: '/bingolobby',
+    name: 'BingoLobby',
+    component: BingoLobby,
+  },
+
+  {
+>>>>>>> Stashed changes
     path: '/login',
     name: 'Login',
     component: OtpLogin,

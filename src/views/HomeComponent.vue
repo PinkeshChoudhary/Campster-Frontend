@@ -9,6 +9,7 @@
     <div v-else>
         <!-- Slideshow remains visible -->
         <SlideShow class="mt-10" />
+<<<<<<< Updated upstream
         <div class="mt-10 space-y-4 px-4">
         <router-link to="/ChatGround">
   <div class="mx-4 my-6 p-4 bg-gradient-to-br from-yellow-400 to-blue-600 text-white rounded-xl shadow-md hover:scale-[1.02] transition-all cursor-pointer">
@@ -29,6 +30,9 @@
 </router-link>
 
 </div>
+=======
+        <HomeScrollCards />
+>>>>>>> Stashed changes
 
         <CityFilter @places-updated="updatePlaces" class="p-5" />
         <h4 class="text-lg md:text-xl font-semibold text-yellow-500 pt-5 mb-5 text-center opacity-0 animate-fadeInUp">
@@ -62,6 +66,11 @@ import {
     useUserStore
 } from "../store/user";
 import CityFilter from '../components/CityFilter.vue';
+<<<<<<< Updated upstream
+=======
+import BingoLobby from '../components/bingo/BingoLobby.vue';
+import HomeScrollCards from '../components/HomeScrollCards.vue';
+>>>>>>> Stashed changes
 
 export default {
     components: {
@@ -69,6 +78,10 @@ export default {
         AdminDashboard,
         SlideShow,
         CityFilter,
+<<<<<<< Updated upstream
+=======
+        HomeScrollCards,
+>>>>>>> Stashed changes
     },
     setup() {
         const store = useStore();
