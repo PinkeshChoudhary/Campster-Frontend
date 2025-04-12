@@ -9,6 +9,7 @@
     <div v-else>
         <!-- Slideshow remains visible -->
         <SlideShow class="mt-10" />
+        <BingoLobby />
         <div class="mt-10 space-y-4 px-4">
         <router-link to="/ChatGround">
   <div class="mx-4 my-6 p-4 bg-gradient-to-br from-yellow-400 to-blue-600 text-white rounded-xl shadow-md hover:scale-[1.02] transition-all cursor-pointer">
@@ -62,6 +63,7 @@ import {
     useUserStore
 } from "../store/user";
 import CityFilter from '../components/CityFilter.vue';
+import BingoLobby from '../components/bingo/BingoLobby.vue';
 
 export default {
     components: {
@@ -69,6 +71,7 @@ export default {
         AdminDashboard,
         SlideShow,
         CityFilter,
+        BingoLobby,
     },
     setup() {
         const store = useStore();
