@@ -1,5 +1,5 @@
 <template>
-    <div class=" bg-gray-900 text-white flex flex-col items-center justify-center p-6">
+    <div class=" bg-gray-900 text-white flex flex-col items-center justify-center pt-20  p-6">
       <div class="bg-gray-800 shadow-xl rounded-xl p-8 w-full max-w-md">
         <h1 class="text-3xl font-bold mb-6 text-center text-blue-400">🎲 Join a Bingo Game</h1>
   

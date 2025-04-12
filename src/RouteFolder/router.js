@@ -18,6 +18,7 @@ import ContactUs from '../components/ContactUs.vue';
 import CommunityChat from '../components/CommunityChat.vue';
 import BingoBoard from '../components/bingo/BingoBoard.vue';
 import BingoDashBoard from '../components/bingo/BingoDashBoard.vue';
+import BingoLobby from '../components/bingo/BingoLobby.vue';
 
 
 
@@ -66,9 +67,9 @@ const routes = [
     props: true, // this makes route params directly available as props if you want
   },
   {
-    path: '/bingoDashboard',
-    name: 'BingoDashBoard',
-    component: BingoDashBoard,
+    path: '/bingolobby',
+    name: 'BingoLobby',
+    component: BingoLobby,
   },
 
   {
