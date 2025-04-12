@@ -9,30 +9,7 @@
     <div v-else>
         <!-- Slideshow remains visible -->
         <SlideShow class="mt-10" />
-<<<<<<< Updated upstream
-        <div class="mt-10 space-y-4 px-4">
-        <router-link to="/ChatGround">
-  <div class="mx-4 my-6 p-4 bg-gradient-to-br from-yellow-400 to-blue-600 text-white rounded-xl shadow-md hover:scale-[1.02] transition-all cursor-pointer">
-    <div class="flex justify-between items-center">
-      <div>
-        <h3 class="text-lg font-bold">Join the Community Chat</h3>
-        <p class="text-sm opacity-90">Ask questions, share stories & meet fellow travelers.</p>
-      </div>
-    </div>
-  </div>
-</router-link>
-
-<router-link to="/tent">
-  <button class="flex items-center justify-center gap-2 w-full py-3 px-6 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-full shadow-lg hover:scale-105 transition-all duration-300">
-    <i class="fas fa-tent text-white text-lg"></i>
-    Rent a Tent
-  </button>
-</router-link>
-
-</div>
-=======
         <HomeScrollCards />
->>>>>>> Stashed changes
 
         <CityFilter @places-updated="updatePlaces" class="p-5" />
         <h4 class="text-lg md:text-xl font-semibold text-yellow-500 pt-5 mb-5 text-center opacity-0 animate-fadeInUp">
@@ -66,11 +43,8 @@ import {
     useUserStore
 } from "../store/user";
 import CityFilter from '../components/CityFilter.vue';
-<<<<<<< Updated upstream
-=======
 import BingoLobby from '../components/bingo/BingoLobby.vue';
 import HomeScrollCards from '../components/HomeScrollCards.vue';
->>>>>>> Stashed changes
 
 export default {
     components: {
@@ -78,10 +52,7 @@ export default {
         AdminDashboard,
         SlideShow,
         CityFilter,
-<<<<<<< Updated upstream
-=======
         HomeScrollCards,
->>>>>>> Stashed changes
     },
     setup() {
         const store = useStore();
