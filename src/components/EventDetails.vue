@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full min-h-screen flex flex-col items-center px-6 pb-16 pt-16 bg-[#121212] text-white">
+    <div class="w-full min-h-screen flex flex-col items-center px-6 pb-16 pt-16 bg-black text-white">
       <button @click="goBack" class="self-start flex items-center text-gray-400 hover:text-yellow-500 transition duration-200 mb-6">
         <i class="fas fa-arrow-left text-2xl mr-3"></i> Back
       </button>
@@ -7,7 +7,7 @@
       <div class="w-full max-w-5xl flex-grow">
         <img :src="event?.images?.[0]" alt="Event Image" class="w-full h-[400px] object-cover rounded-xl shadow-lg" />
   
-        <div class="mt-8 bg-[#1E1E1E] p-6 rounded-lg shadow-md">
+        <div class="mt-8 bg-black p-6 rounded-lg shadow-md">
           <h2 class="text-3xl font-bold text-white">{{ event?.name }}</h2>
   
           <div class="mt-6 flex space-x-4">
@@ -39,7 +39,7 @@
           <p class="mt-4 text-xl font-semibold" :class="event?.isPaid ? 'text-green-400' : 'text-gray-300'">
             {{ event?.ticketType === "paid" ? `₹${event.price} / Ticket` : "Free Event" }}
           </p>
-          <p class="mt-4 text-gray-300 leading-relaxed bg-[#2A2A2A] p-4 rounded-lg shadow-md">{{ event?.description }}</p>
+          <p class="mt-4 text-gray-300 leading-relaxed bg-black rounded-lg shadow-md">{{ event?.description }}</p>
         </div>
       </div>
   

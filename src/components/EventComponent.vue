@@ -1,15 +1,16 @@
 <template>
-  <div class="p-8 mt-16 mb-12 max-w-7xl mx-auto bg-[#121212] text-white">
-    <h4 class="text-2xl md:text-xl font-extrabold text-yellow-500 text-center mb-8 tracking-wide animate-fadeInUp">
+  <div class="p-6 mt-16 mb-12 max-w-4xl mx-auto bg-black text-white">
+    <!-- Heading -->
+    <h4 class="text-2xl font-extrabold text-yellow-500 text-center mb-8 tracking-wide animate-fadeInUp">
       <i class="fas fa-calendar-alt"></i> Discover Unforgettable Events, Camps & Treks
     </h4>
 
-    <!-- Dropdown -->
-    <div class="mb-8 flex justify-end pr-4" ref="dropdownRef">
+    <!-- Filter Dropdown -->
+    <div class="mb-6 flex justify-end pr-4" ref="dropdownRef">
       <div class="relative">
         <div 
           @click="toggleDropdown" 
-          class="w-11 h-11 bg-[#1E1E1E] border border-yellow-500 rounded-full flex items-center justify-center cursor-pointer shadow-md transition hover:border-yellow-400"
+          class="w-10 h-10 bg-black border border-yellow-500 rounded-full flex items-center justify-center cursor-pointer shadow-md transition hover:border-yellow-400"
         >
           <svg 
             class="w-5 h-5 text-yellow-500 transition-transform duration-300"
@@ -22,15 +23,16 @@
           </svg>
         </div>
 
+        <!-- Dropdown Menu -->
         <div 
           v-if="isDropdownOpen" 
-          class="absolute right-0 z-50 mt-2 bg-[#1E1E1E] border text-white border-yellow-500 rounded-lg w-52 max-h-60 overflow-y-auto shadow-lg custom-scrollbar"
+          class="absolute right-0 z-50 mt-2 bg-[#1E1E1E] border border-yellow-500 rounded-lg w-48 max-h-60 overflow-y-auto shadow-lg custom-scrollbar text-sm"
         >
           <div 
             v-for="cat in categories"
             :key="cat"
             @click="toggleCategory(cat)"
-            class="px-4 py-2 text-sm cursor-pointer hover:bg-yellow-500 hover:text-black transition duration-150"
+            class="px-4 py-2 cursor-pointer hover:bg-yellow-500 hover:text-black transition duration-150"
             :class="{ 'bg-yellow-500 text-black font-semibold': selectedCategories.includes(cat) }"
           >
             {{ cat }}
@@ -39,58 +41,45 @@
       </div>
     </div>
 
-    <!-- Event Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+    <!-- Event List -->
+    <div class="space-y-6">
       <div 
         v-for="event in filteredEvents" 
         :key="event._id" 
-        class="bg-[#1E1E1E] shadow-yellow-500/50 shadow-xl rounded-2xl overflow-hidden transform transition duration-300 hover:scale-105 relative group"
+        @click="viewDetails(event._id)"
+        class="flex items-start bg-black hover:bg-[#262626] cursor-pointer rounded-lg shadow-md hover:shadow-yellow-500/40 transition duration-200"
       >
-        <div class="relative">
-          <img :src="event.images[0]" class="w-full h-72 object-cover rounded-t-2xl" />
-
-          <!-- Verified Badge -->
-          <div 
-            v-if="event.isverified"
-            class="absolute top-4 left-4 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-2 rounded-full text-xs font-bold shadow-lg flex items-center gap-2 premium-shine"
-          >
-            <i class="fas fa-circle-check text-white text-sm"></i>
-            <span class="text-white">Campster Verified</span>
-          </div>
-
-          <!-- Price Tag Bottom Right -->
-          <div 
-            class="absolute bottom-2 right-2 bg-yellow-500 text-black px-3 py-1 rounded-full text-xs font-medium shadow-md"
-          >
-            <i class="fas fa-ticket-alt mr-1"></i>
-            {{ event.ticketType && event.price ? `₹${event.price}` : "FREE" }}
-          </div>
+        <!-- Square Thumbnail -->
+        <div class="w-24 h-24 bg-[#111] flex-shrink-0 overflow-hidden rounded-l-lg">
+          <img 
+            :src="event.images[0]" 
+            class="w-full h-full object-cover" 
+            alt="event thumbnail"
+          />
         </div>
 
-        <div class="p-5 pt-4 flex flex-col gap-2 relative">
-          <h3 class="text-xl font-bold text-white">{{ event.name }}</h3>
-          <p class="text-gray-400 flex items-center text-sm">
-            <i class="fas fa-map-marker-alt mr-2"></i>{{ event.location }}
+        <!-- Event Info -->
+        <div class="flex-1 px-4 py-3">
+          <p class="text-xs text-yellow-400 font-semibold mb-1">
+            {{ formatDate(event.date) }}
           </p>
-          <p class="text-gray-300 text-sm flex items-center">
-            <i class="fas fa-calendar-day mr-2"></i> {{ formatDate(event.date) }}
-            <i class="fas fa-clock ml-4 mr-2"></i> {{ event.time }}
+          <h3 class="text-sm font-bold text-white leading-tight truncate">
+            {{ event.name }}
+          </h3>
+          <p class="text-xs text-gray-400 mt-1 truncate">
+            {{ event.location }}
           </p>
-
-          <!-- View Details Small Button -->
-          <div class="absolute bottom-4 right-5">
-            <button
-              @click="viewDetails(event._id)"
-              class="text-xs bg-yellow-500 text-black px-3 py-1 rounded-full font-semibold shadow-md hover:bg-yellow-600 transition"
-            >
-              <i class="fas fa-info-circle mr-1"></i> Details
-            </button>
-          </div>
+          <p class="text-xs text-gray-300 mt-1">
+             <span class="text-white font-semibold">
+              {{ event.ticketType && event.price ? `₹${event.price}` : "FREE" }}
+            </span>
+          </p>
         </div>
       </div>
     </div>
   </div>
 </template>
+
 
 <script setup>
 import { ref, onMounted, computed, onBeforeUnmount } from "vue";

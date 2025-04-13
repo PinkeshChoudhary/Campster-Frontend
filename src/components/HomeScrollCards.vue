@@ -4,7 +4,7 @@
   
         <!-- Play Games -->
         <router-link to="/bingolobby" class="min-w-[300px] max-w-xs transform hover:scale-[1.03] transition duration-300">
-          <div class="p-6 bg-gradient-to-br from-pink-500 to-red-500 text-white rounded-2xl shadow-xl flex flex-col items-start justify-between h-full">
+          <div class="p-6 bg-gradient-to-br from-blue-500 to-red-500 text-white rounded-2xl shadow-xl flex flex-col items-start justify-between h-full">
             <div class="mb-2">
               <div class="text-3xl mb-3">
                 🎮
@@ -30,7 +30,7 @@
   
         <!-- Rent a Tent -->
         <router-link to="/tent" class="min-w-[300px] max-w-xs transform hover:scale-[1.03] transition duration-300">
-          <div class="p-6 bg-gradient-to-br from-purple-600 to-indigo-600 text-white rounded-2xl shadow-xl flex flex-col items-start justify-between h-full">
+          <div class="p-6 bg-gradient-to-br from-pink-600 to-indigo-600 text-white rounded-2xl shadow-xl flex flex-col items-start justify-between h-full">
             <div class="text-3xl mb-3">
               ⛺
             </div>
