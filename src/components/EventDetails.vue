@@ -5,7 +5,7 @@
       </button>
   
       <div class="w-full max-w-5xl flex-grow">
-        <img :src="event?.images?.[0]" alt="Event Image" class="w-full h-[400px] object-cover rounded-xl shadow-lg" />
+        <img :src="event?.images?.[0]" alt="Event Image" class="w-full h-[400px] object-fit" />
   
         <div class="mt-8 bg-black p-6 rounded-lg shadow-md">
           <h2 class="text-3xl font-bold text-white">{{ event?.name }}</h2>
@@ -37,7 +37,7 @@
           </div>
   
           <p class="mt-4 text-xl font-semibold" :class="event?.isPaid ? 'text-green-400' : 'text-gray-300'">
-            {{ event?.ticketType === "paid" ? `₹${event.price} / Ticket` : "Free Event" }}
+            {{ event?.ticketType === "paid" ? `₹${event.price} / Ticket` : "" }}
           </p>
           <p class="mt-4 text-gray-300 leading-relaxed bg-black rounded-lg shadow-md">{{ event?.description }}</p>
         </div>

@@ -2,7 +2,7 @@
   <div class="p-6 mt-16 mb-12 max-w-4xl mx-auto bg-black text-white">
     <!-- Heading -->
     <h4 class="text-2xl font-extrabold text-yellow-500 text-center mb-8 tracking-wide animate-fadeInUp">
-      <i class="fas fa-calendar-alt"></i> Discover Unforgettable Events, Camps & Treks
+      <i class="fas fa-calendar-alt"></i> Discover Unforgettable Events & Activities
     </h4>
 
     <!-- Filter Dropdown -->
@@ -71,7 +71,7 @@
           </p>
           <p class="text-xs text-gray-300 mt-1">
              <span class="text-white font-semibold">
-              {{ event.ticketType && event.price ? `₹${event.price}` : "FREE" }}
+              {{ event.ticketType && event.price ? `₹${event.price}` : "" }}
             </span>
           </p>
         </div>
