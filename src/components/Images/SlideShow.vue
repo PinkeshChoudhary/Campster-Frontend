@@ -1,37 +1,18 @@
 <template>
   <div class="relative w-full overflow-hidden images mt-0 pt-0" :style="{ height: `calc(100vh - 80px - 120px)` }">
     <div
-      class="absolute inset-0 bg-contain bg-center bg-no-repeat transition-opacity duration-1000 object-fill"
+      class="absolute inset-0 bg-contain bg-center bg-no-repeat object-fill"
       :style="{ backgroundImage: `url(${currentImage})` }"
     ></div>
   </div>
 </template>
 
-
 <script>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 
 export default {
   setup() {
-    const backgroundImages = [
-      '/homeimage.avif',
-      '/couplecamp.avif',
-      '/friendscam.avif',
-      '/mancamping.avif'
-    ]; 
-    const currentImage = ref(backgroundImages[0]);
-    let imageIndex = 0;
-
-    const changeBackgroundImage = () => {
-      setInterval(() => {
-        imageIndex = (imageIndex + 1) % backgroundImages.length;
-        currentImage.value = backgroundImages[imageIndex];
-      }, 5000); // Increased duration for a smoother transition
-    };
-
-    onMounted(() => {
-      changeBackgroundImage();
-    });
+    const currentImage = ref('/friendscam.avif'); 
 
     return {
       currentImage,
@@ -42,10 +23,16 @@ export default {
 
 <style scoped>
 .absolute {
-  transition: background-image 1s ease-in-out;
   background-size: cover !important;
   background-position: center center !important;
   background-repeat: no-repeat;
   z-index: -1;
 }
 </style>
+
+<!-- const backgroundImages = [
+'/homeimage.avif',
+'/couplecamp.avif',
+'/friendscam.avif',
+'/mancamping.avif'
+];  -->
