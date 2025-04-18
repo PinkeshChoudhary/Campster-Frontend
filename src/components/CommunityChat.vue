@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen bg-zinc-900 text-white px-4 mb-5 sm:px-6 py-6 space-y-6 pt-20">
+    <div class="min-h-screen bg-black text-white px-4 mb-5 sm:px-6 py-6 space-y-6 pt-20">
   
       <!-- City Selection as Buttons -->
       <div>
@@ -14,7 +14,7 @@
             @click="selectCity(city)"
             :class="[
               'px-4 py-3 rounded-xl font-semibold transition-all text-white shadow-md',
-              selectedCity === city ? 'bg-blue-600 ring-2 ring-blue-300 scale-105' : 'bg-zinc-800 hover:bg-zinc-700'
+              selectedCity === city ? 'bg-yellow-500 ring-2 ring-blue-300 scale-105' : 'bg-zinc-800 hover:bg-zinc-700'
             ]"
           >
             {{ city }}
@@ -23,7 +23,7 @@
       </div>
   
       <!-- New Message -->
-      <div v-if="selectedCity" class="bg-zinc-800 rounded-xl p-4 shadow-lg">
+      <div v-if="selectedCity" class="bg-black rounded-xl p-4 shadow-lg">
         <textarea
           v-model="newMessage"
           rows="2"
@@ -43,7 +43,7 @@
         <div
           v-for="msg in messages"
           :key="msg._id"
-          class="bg-zinc-800 p-4 rounded-xl shadow-md">
+          class="bg-black p-4 rounded-xl shadow-md">
           <div class="flex gap-3 items-start">
             <!-- Profile Circle -->
             <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow">
@@ -64,7 +64,7 @@
             <div
               v-for="(reply, idx) in msg.replies"
               :key="idx"
-              class="bg-zinc-700 p-3 rounded-lg flex gap-3 items-start">
+              class="bg-black p-3 rounded-lg flex gap-3 items-start">
               <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-xs">
                 {{ getInitials(reply.username) }}
               </div>
