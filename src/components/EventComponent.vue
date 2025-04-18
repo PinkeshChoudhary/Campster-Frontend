@@ -1,8 +1,8 @@
 <template>
   <div class="p-6 mt-16 mb-12 max-w-4xl mx-auto bg-black text-white">
     <!-- Heading -->
-    <h4 class="text-2xl font-extrabold text-yellow-500 text-center mb-8 tracking-wide animate-fadeInUp">
-      <i class="fas fa-calendar-alt"></i> Discover Unforgettable Events & Activities
+    <h4 class="text-2xl font-bold text-yellow-500 text-center  tracking-wide">
+      <i class="fas fa-calendar-alt"></i> Discover  Events & Activities
     </h4>
 
     <!-- Filter Dropdown -->

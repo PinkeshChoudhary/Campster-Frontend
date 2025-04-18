@@ -5,7 +5,7 @@
     </svg>
   </button>
 
-  <div class="max-w-4xl mx-auto bg-gray-900 text-white shadow-lg rounded-lg overflow-hidden pb-10">
+  <div class="max-w-4xl mx-auto bg-black text-white shadow-lg rounded-lg overflow-hidden pb-10">
     <!-- First Image -->
     <div v-if="site?.images?.length" class="relative">
       <img :src="site.images[0]" alt="Main Image" class="w-full h-80 object-cover" />
