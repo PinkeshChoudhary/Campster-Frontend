@@ -4,18 +4,18 @@
     <div v-if="isAdmin">
         <AdminDashboard />
     </div>
-
-    <!-- Non-admin view: Display approved post -->
     <div v-else>
         <!-- Slideshow remains visible -->
         <SlideShow class="mt-10" />
         <HomeScrollCards />
-        <button
-    @click="goToTripPlanner"
-    class="px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700 transition"
-  >
-    Trip Planner
-  </button>
+<div
+  @click="goToTripPlanner"
+  class="w-full overflow-x-auto whitespace-nowrap cursor-pointer rounded bg-gradient-to-r from-yellow-500 to-yellow-700 p-3 shadow hover:brightness-105 transition-all duration-300 scrollbar-thin scrollbar-thumb-blue-400 scrollbar-track-blue-100"
+>
+  <div class="inline-block text-white text-center font-semibold px-6">
+    ➤ Plan Your Trip →
+  </div>
+</div>
 
         <CityFilter @places-updated="updatePlaces" class="p-5" />
         <h4 class="text-lg md:text-xl  text-yellow-500 pt-5 mb-5 text-center opacity-0 animate-fadeInUp">

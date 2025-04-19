@@ -62,27 +62,30 @@
   
   // Arrow function for distance calculation
   const getDistance = (lat1, lon1, lat2, lon2) => {
-    const toRad = (x) => x * Math.PI / 180;
-    const R = 6371; // Radius of Earth in km
-    const dLat = toRad(lat2 - lat1);
-    const dLon = toRad(lon2 - lon1);
-    const a =
-      Math.sin(dLat / 2) ** 2 +
-      Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-      Math.sin(dLon / 2) ** 2;
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c; // Distance in km
-  };
-  
-  // Arrow function for sorting places by distance
-  const sortByDistance = (places, userLoc) => {
-    return [...places].sort((a, b) => {
-      const distA = getDistance(userLoc.lat, userLoc.lng, a.location.lat, a.location.lng);
-      const distB = getDistance(userLoc.lat, userLoc.lng, b.location.lat, b.location.lng);
-      return distA - distB;
-    });
-  };
-  
+  const toRad = (x) => x * Math.PI / 180;
+  const R = 6371; // Radius of Earth in km
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+    Math.sin(dLon / 2) ** 2;
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c; // Distance in km
+};
+
+const sortByDistance = (places, userLoc) => {
+  return [...places].sort((a, b) => {
+    const [latA, lonA] = a.locationCoordinates.split(',').map(Number);
+    const [latB, lonB] = b.locationCoordinates.split(',').map(Number);
+    
+    const distA = getDistance(userLoc.lat, userLoc.lng, latA, lonA);
+    const distB = getDistance(userLoc.lat, userLoc.lng, latB, lonB);
+
+    return distA - distB;
+  });
+};
+
   // Arrow function for snake sorting
   const snakeSort = (list) => {
     const result = [];
