@@ -19,6 +19,7 @@ import CommunityChat from '../components/CommunityChat.vue';
 import BingoBoard from '../components/bingo/BingoBoard.vue';
 import BingoDashBoard from '../components/bingo/BingoDashBoard.vue';
 import BingoLobby from '../components/bingo/BingoLobby.vue';
+import TripPlanner from '../components/tripPlanner/TripPlanner.vue';
 
 
 
@@ -122,6 +123,12 @@ const routes = [
     name: 'MyPost', // New route for uploading a place
     component: MyPosts,
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/Tripplanner',
+    name: 'TripPlanner', // New route for uploading a place
+    component: TripPlanner,
+    // meta: { requiresAuth: true }
   },
 ];
 

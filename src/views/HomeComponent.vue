@@ -10,6 +10,12 @@
         <!-- Slideshow remains visible -->
         <SlideShow class="mt-10" />
         <HomeScrollCards />
+        <button
+    @click="goToTripPlanner"
+    class="px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700 transition"
+  >
+    Trip Planner
+  </button>
 
         <CityFilter @places-updated="updatePlaces" class="p-5" />
         <h4 class="text-lg md:text-xl  text-yellow-500 pt-5 mb-5 text-center opacity-0 animate-fadeInUp">
@@ -45,6 +51,7 @@ import {
 import CityFilter from '../components/CityFilter.vue';
 import BingoLobby from '../components/bingo/BingoLobby.vue';
 import HomeScrollCards from '../components/HomeScrollCards.vue';
+import router from '../RouteFolder/router';
 
 export default {
     components: {
@@ -61,6 +68,9 @@ export default {
         const auth = getAuth();
         const userStore = useUserStore();
 
+        const goToTripPlanner = () => {
+            router.push('/Tripplanner');
+        }
         const checkIfAdmin = async () => {
             try {
                 console.info("userid", auth.currentUser.uid)
@@ -87,7 +97,6 @@ export default {
         };
 
         const updatePlaces = (newPlaces) => {
-            console.info("newplaces", newPlaces)
             store.setApprovedPlaces(newPlaces);
         };
 
@@ -127,6 +136,7 @@ export default {
             approvedPlaces,
             updatePlaces,
             // currentImage,
+            goToTripPlanner,
         };
     },
 };
