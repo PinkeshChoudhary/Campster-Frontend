@@ -28,7 +28,7 @@
             <img
               :src="place.images?.[0] || userPlaceholder"
               class="w-full h-full object-cover"
-              :alt="place.name"
+              :alt="place.destination"
             />
           </div>
         </div>
@@ -106,9 +106,9 @@ const sortByDistance = (places, userLoc) => {
     const snakeSorted = snakeSort(sorted);
     return [
       {
-        destination: 'starting point',
+        destination: 'Starting Point',
         location: userLocation.value,
-        images: ['https://img.icons8.com/emoji/96/person-walking-light-skin-tone.png'] // placeholder for user
+        images: ['/person-walking.png'] // placeholder for user
       },
       ...snakeSorted
     ];
@@ -120,6 +120,6 @@ const sortByDistance = (places, userLoc) => {
     window.open(url, '_blank');
   };
   
-  const userPlaceholder = 'https://img.icons8.com/color/96/marker.png';
+  const userPlaceholder = '/person-walking.avif';
   </script>
   
