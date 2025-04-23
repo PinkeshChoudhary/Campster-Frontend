@@ -19,12 +19,10 @@
   <label for="type" class="block text-sm font-medium  mb-1">Type of Stay</label>
   <select id="type" v-model="typeOfStay" class="w-full bg-gray-800 text-white p-2 rounded-md">
   <option disabled value="">Select type</option>
-  <option>Farm House</option>
+  <option>Cafes</option>
   <option>Resort</option>
-  <option>Tent Stay</option>
+  <option>Tent & Camps</option>
   <option>Villa</option>
-  <option>Dome Tent</option>
-  <option>A-Frame Cabin</option>
   </select>
 </div>
 
