@@ -20,6 +20,8 @@ import BingoBoard from '../components/bingo/BingoBoard.vue';
 import BingoDashBoard from '../components/bingo/BingoDashBoard.vue';
 import BingoLobby from '../components/bingo/BingoLobby.vue';
 import TripPlanner from '../components/tripPlanner/TripPlanner.vue';
+import BlogDetails from '../components/blog/BlogDetails.vue';
+import BlogList from '../components/blog/BlogList.vue';
 
 
 
@@ -123,6 +125,16 @@ const routes = [
     name: 'MyPost', // New route for uploading a place
     component: MyPosts,
     meta: { requiresAuth: true }
+  },
+  {
+    path: "/blog",
+    name: "BlogList",
+    component: BlogList,
+  },
+  {
+    path: "/blog/:id",
+    name: "BlogDetail",
+    component: BlogDetails
   },
   {
     path: '/Tripplanner',
