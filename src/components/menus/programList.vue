@@ -68,6 +68,9 @@
           <li @click="navigate('my-bookings')" class=" text-yellow-500 menu-item flex items-center space-x-3 py-3 border-b border-gray-400 hover:bg-gray-200 rounded-lg transition">
             <span>My Bookings</span>
           </li>
+          <li @click="navigate('myPost')" class=" text-yellow-500 menu-item flex items-center space-x-3 py-3 border-b border-gray-400 hover:bg-gray-200 rounded-lg transition">
+            <span>My Post</span>
+          </li>
           <li @click="navigate('contact')" class="text-yellow-500 menu-item flex items-center space-x-3 py-3 border-b border-gray-400 hover:bg-gray-200 rounded-lg transition">
             <span>Contact Us</span>
           </li>

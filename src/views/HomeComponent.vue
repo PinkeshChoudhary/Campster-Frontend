@@ -3,6 +3,7 @@
     <!-- Admin view: Display pending places -->
     <div v-if="isAdmin">
         <AdminDashboard />
+        <BlockBlogEditor />
     </div>
     <div v-else>
         <!-- Slideshow remains visible -->
@@ -52,6 +53,8 @@ import CityFilter from '../components/CityFilter.vue';
 import BingoLobby from '../components/bingo/BingoLobby.vue';
 import HomeScrollCards from '../components/HomeScrollCards.vue';
 import router from '../RouteFolder/router';
+import BlockBlogEditor from '../components/blog/BlockBlogEditor.vue';
+import BlogList from '../components/blog/BlogList.vue';
 
 export default {
     components: {
@@ -60,6 +63,8 @@ export default {
         SlideShow,
         CityFilter,
         HomeScrollCards,
+        BlockBlogEditor,
+        BlogList,
     },
     setup() {
         const store = useStore();

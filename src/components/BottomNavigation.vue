@@ -21,8 +21,8 @@
     </router-link>
 
     <!-- Profile -->
-    <router-link to="/myPost" :class="activeClass('/myPost')" class="nav-item">
-      <i class="fas fa-user icon"></i>
+    <router-link to="/blog" :class="activeClass('/blog')" class="nav-item">
+      <i class="fas fa-newspaper icon"></i>
     </router-link>
   </div>
 </template>
