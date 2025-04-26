@@ -78,7 +78,6 @@ export default {
         }
         const checkIfAdmin = async () => {
             try {
-                console.info("userid", auth.currentUser.uid)
                 const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/adminfire/dashboard`, {
                     params: {
                         uid: auth.currentUser.uid

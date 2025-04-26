@@ -161,7 +161,6 @@ export default {
                 });
                 formData.append("organizerUID", user.uid);
                 formData.append("organizerPhone", user.phoneNumber);
-                console.info("form data", formData)
                 await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/events/submit`, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data"

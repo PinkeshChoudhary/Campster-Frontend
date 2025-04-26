@@ -40,7 +40,6 @@
     if (!playerId.value) return alert("Enter your ID first!");
   
    const res =  await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/bingo/join`, { playerName: playerId.value });
-   console.info("response h ue " , res)
    const gameId = res.data.gameId;
     router.push({ name: "BingoBoard", params: { gameId, playerId: playerId.value } });
   };

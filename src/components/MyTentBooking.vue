@@ -78,7 +78,6 @@ onMounted(async () => {
   }
 
   try {
-    console.info("userid", userId.uid);
     const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/bookings/my-bookings/${userId.uid}`);
     bookings.value = response.data;
   } catch (error) {

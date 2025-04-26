@@ -107,7 +107,6 @@ export default {
             checkLikedStatus();
 
             if (navigator.geolocation && props.place.locationCoordinates) {
-                console.info('onmountused', navigator.geolocation.getCurrentPosition)
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
                         const userLat = position.coords.latitude;
@@ -117,11 +116,8 @@ export default {
                         const placeLat = parseFloat(placeLatStr.trim());
                         const placeLon = parseFloat(placeLonStr.trim());
 
-                        console.info('Coordinates', userLat, userLon, placeLat, placeLon);
-
                         if (!isNaN(placeLat) && !isNaN(placeLon)) {
                             const dist = calculateDistance(userLat, userLon, placeLat, placeLon);
-                            console.info('Distance:', dist);
                             distance.value = dist.toFixed(1);
                         }
                     },

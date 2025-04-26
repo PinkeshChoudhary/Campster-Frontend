@@ -102,7 +102,6 @@
 
       const checkAvailability = debounce(async () => {
         if ( !selectedColor.value || !fromDate.value || !toDate.value) {
-          console.info(selectedColor, selectedSize )
           availability.value = null;
           return;
         }
