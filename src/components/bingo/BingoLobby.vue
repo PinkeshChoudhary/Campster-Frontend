@@ -18,12 +18,15 @@
   import axios from "axios";
   import { useRouter } from "vue-router";
   import { getAuth } from "firebase/auth";
+  import { useUserStore } from "../store/user";
   
   const games = ref([]);
   const auth = getAuth();
   const userAuth = auth.currentUser;
   const playerId = ref("");
   const router = useRouter();
+  const userStore = useUserStore();
+  const user = userStore?.name || 'Guest'
   
   onMounted(async () => {
   });
@@ -33,7 +36,7 @@
   
    const res =  await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/bingo/join`, { playerName: userAuth?.uid });
    const gameId = res.data.gameId;
-    router.push({ name: "BingoBoard", params: { gameId, playerId: userAuth?.uid  } });
+    router.push({ name: "BingoBoard", params: { gameId, playerId: user  } });
   };
   </script>
   
