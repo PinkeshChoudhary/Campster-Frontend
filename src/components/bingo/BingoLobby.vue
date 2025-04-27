@@ -36,6 +36,7 @@
   
    const res =  await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/bingo/join`, { playerName: userAuth?.uid });
    const gameId = res.data.gameId;
+   console.info('user nme', user)
     router.push({ name: "BingoBoard", params: { gameId, playerId: user  } });
   };
   </script>
