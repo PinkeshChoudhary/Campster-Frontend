@@ -18,7 +18,7 @@
   import axios from "axios";
   import { useRouter } from "vue-router";
   import { getAuth } from "firebase/auth";
-  import { useUserStore } from "../store/user";
+  import { useUserStore } from "../../store/user";
   
   const games = ref([]);
   const auth = getAuth();
