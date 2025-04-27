@@ -1,17 +1,6 @@
 <template>
     <div class=" bg-gray-900 text-white flex flex-col items-center justify-center pt-20  p-6">
-      <div class="bg-gray-800 shadow-xl rounded-xl p-8 w-full max-w-md">
-        <h1 class="text-3xl font-bold mb-6 text-center text-blue-400">🎲 Join a Bingo Game</h1>
-  
-        <!-- Player Name Input -->
-        <label class="block mb-2 text-sm font-medium text-gray-300" for="playerId">Your Name or ID</label>
-        <input
-          v-model="playerId"
-          type="text"
-          id="playerId"
-          placeholder="Enter your name or ID"
-          class="w-full p-3 mb-6 rounded-lg border border-gray-600 bg-gray-700 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+      <div class="bg-black shadow-xl rounded-xl p-8 w-full max-w-md">
         <!-- Join Button -->
         <button
           @click="joinGame"
@@ -28,8 +17,11 @@
   import { ref, onMounted } from "vue";
   import axios from "axios";
   import { useRouter } from "vue-router";
+  import { getAuth } from "firebase/auth";
   
   const games = ref([]);
+  const auth = getAuth();
+  const userAuth = auth.currentUser;
   const playerId = ref("");
   const router = useRouter();
   
@@ -37,9 +29,9 @@
   });
   
   const joinGame = async () => {
-    if (!playerId.value) return alert("Enter your ID first!");
+    if (!userAuth?.uid) return alert("Please Login First");
   
-   const res =  await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/bingo/join`, { playerName: playerId.value });
+   const res =  await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/bingo/join`, { playerName: userAuth?.uid });
    const gameId = res.data.gameId;
     router.push({ name: "BingoBoard", params: { gameId, playerId: playerId.value } });
   };
