@@ -88,7 +88,7 @@ const getTravelPlan = async () => {
   try {
     // Construct the full API URL using the base URL from environment variables
     const apiUrl = `${import.meta.env.VITE_API_BASE_URL}/api/travel-plan`;
-    const updatedPrompt = travelPrompt.value + 'in short';
+    const updatedPrompt = travelPrompt.value + 'in short and in points';
 
     const response = await fetch(apiUrl, {
       method: 'POST',
