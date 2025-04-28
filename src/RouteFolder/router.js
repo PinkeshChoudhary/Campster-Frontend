@@ -22,6 +22,7 @@ import BingoLobby from '../components/bingo/BingoLobby.vue';
 import TripPlanner from '../components/tripPlanner/TripPlanner.vue';
 import BlogDetails from '../components/blog/BlogDetails.vue';
 import BlogList from '../components/blog/BlogList.vue';
+import ButtonAI from '../components/generativeAI/ButtonAI.vue';
 
 
 
@@ -140,6 +141,12 @@ const routes = [
     path: '/Tripplanner',
     name: 'TripPlanner', // New route for uploading a place
     component: TripPlanner,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/generativeAI',
+    name: 'generativeAI', // New route for uploading a place
+    component: ButtonAI,
     // meta: { requiresAuth: true }
   },
 ];

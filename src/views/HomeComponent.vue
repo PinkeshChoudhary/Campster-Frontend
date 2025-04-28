@@ -1,7 +1,6 @@
 <template>
 <div class="p-4 pb-20">
     <!-- Admin view: Display pending places -->
-     <ButtonAI />
     <div v-if="isAdmin">
         <AdminDashboard />
         <BlockBlogEditor />
@@ -10,12 +9,21 @@
         <!-- Slideshow remains visible -->
         <SlideShow class="mt-10" />
         <HomeScrollCards />
+        <button 
+  class="fixed bottom-20 right-0 z-50 flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-yellow-400 font-semibold py-3 px-6 rounded-full shadow-lg"
+  @click="goToGenerativeAI"
+>
+  <i class="fas fa-paper-plane text-2xl"></i> 
+  Ask SakhiAI
+</button>
+
+
 <div
   @click="goToTripPlanner"
   class="w-full overflow-x-auto whitespace-nowrap cursor-pointer rounded bg-gradient-to-r from-yellow-500 to-yellow-700 p-3 shadow hover:brightness-105 transition-all duration-300 scrollbar-thin scrollbar-thumb-blue-400 scrollbar-track-blue-100"
 >
   <div class="inline-block text-white text-center font-semibold px-6">
-    ➤ Plan Your Trip →
+ Map Your Destinations
   </div>
 </div>
 
@@ -79,6 +87,10 @@ export default {
         const goToTripPlanner = () => {
             router.push('/Tripplanner');
         }
+
+        const goToGenerativeAI = () => {
+       router.push('/generativeAI')
+}
         const checkIfAdmin = async () => {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/adminfire/dashboard`, {
@@ -144,6 +156,7 @@ export default {
             updatePlaces,
             // currentImage,
             goToTripPlanner,
+            goToGenerativeAI,
         };
     },
 };
