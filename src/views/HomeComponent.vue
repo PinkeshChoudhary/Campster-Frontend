@@ -1,6 +1,7 @@
 <template>
 <div class="p-4 pb-20">
     <!-- Admin view: Display pending places -->
+     <ButtonAI />
     <div v-if="isAdmin">
         <AdminDashboard />
         <BlockBlogEditor />
@@ -55,6 +56,7 @@ import HomeScrollCards from '../components/HomeScrollCards.vue';
 import router from '../RouteFolder/router';
 import BlockBlogEditor from '../components/blog/BlockBlogEditor.vue';
 import BlogList from '../components/blog/BlogList.vue';
+import ButtonAI from '../components/generativeAI/ButtonAI.vue';
 
 export default {
     components: {
@@ -65,6 +67,7 @@ export default {
         HomeScrollCards,
         BlockBlogEditor,
         BlogList,
+        ButtonAI,
     },
     setup() {
         const store = useStore();
