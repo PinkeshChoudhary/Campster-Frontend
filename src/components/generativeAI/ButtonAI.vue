@@ -39,7 +39,7 @@
           <input
             type="text"
             v-model="travelPrompt"
-            placeholder="Ask about travel / Paste Reels, Shorts, Blogs"
+            placeholder="Ask about travel , Blogs"
             class="w-full bg-gray-800/80 backdrop-blur-md border border-gray-700 rounded-2xl p-4 sm:p-5 focus:ring-2 focus:ring-yellow-500 focus:outline-none placeholder-gray-500 text-sm sm:text-base text-white shadow-inner transition"
           />
           <button 
