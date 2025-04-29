@@ -9,7 +9,7 @@
         <!-- Slideshow remains visible -->
         <SlideShow class="mt-10" />
         <HomeScrollCards />
-        <img src="/sakhionlt.png" alt="SakhiAI" class="fixed bottom-20 right-4 z-50 w-32 h-32   cursor-pointer hover:scale-105 transition-transform" @click="goToGenerativeAI" />
+        <img src="/sakhi.png" alt="SakhiAI" class="fixed bottom-20 right-4 z-50 w-32 h-32   cursor-pointer hover:scale-105 transition-transform" @click="goToGenerativeAI" />
 
         <div @click="goToTripPlanner" class="w-full overflow-x-auto whitespace-nowrap cursor-pointer rounded bg-gradient-to-r from-yellow-500 to-yellow-700 p-3 shadow hover:brightness-105 transition-all duration-300 scrollbar-thin scrollbar-thumb-blue-400 scrollbar-track-blue-100">
             <div class="inline-block text-white text-center font-semibold px-6">
