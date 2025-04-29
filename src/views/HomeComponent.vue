@@ -9,23 +9,13 @@
         <!-- Slideshow remains visible -->
         <SlideShow class="mt-10" />
         <HomeScrollCards />
-        <button 
-  class="fixed bottom-20 right-0 z-50 flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-yellow-400 font-semibold py-3 px-6 rounded-full shadow-lg"
-  @click="goToGenerativeAI"
->
-  <i class="fas fa-paper-plane text-2xl"></i> 
-  Ask SakhiAI
-</button>
+        <img src="/sakhionlt.png" alt="SakhiAI" class="fixed bottom-20 right-4 z-50 w-32 h-32  shadow-lg cursor-pointer hover:scale-105 transition-transform" @click="goToGenerativeAI" />
 
-
-<div
-  @click="goToTripPlanner"
-  class="w-full overflow-x-auto whitespace-nowrap cursor-pointer rounded bg-gradient-to-r from-yellow-500 to-yellow-700 p-3 shadow hover:brightness-105 transition-all duration-300 scrollbar-thin scrollbar-thumb-blue-400 scrollbar-track-blue-100"
->
-  <div class="inline-block text-white text-center font-semibold px-6">
- Map Your Destinations
-  </div>
-</div>
+        <div @click="goToTripPlanner" class="w-full overflow-x-auto whitespace-nowrap cursor-pointer rounded bg-gradient-to-r from-yellow-500 to-yellow-700 p-3 shadow hover:brightness-105 transition-all duration-300 scrollbar-thin scrollbar-thumb-blue-400 scrollbar-track-blue-100">
+            <div class="inline-block text-white text-center font-semibold px-6">
+                Map Your Destinations
+            </div>
+        </div>
 
         <CityFilter @places-updated="updatePlaces" class="p-5" />
         <h4 class="text-lg md:text-xl  text-yellow-500 pt-5 mb-5 text-center opacity-0 animate-fadeInUp">
@@ -89,8 +79,8 @@ export default {
         }
 
         const goToGenerativeAI = () => {
-       router.push('/generativeAI')
-}
+            router.push('/generativeAI')
+        }
         const checkIfAdmin = async () => {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/adminfire/dashboard`, {

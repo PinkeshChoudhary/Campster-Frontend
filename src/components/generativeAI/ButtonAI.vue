@@ -1,7 +1,7 @@
 <template>
     <div class="bg-black min-h-screen px-4 py-20 sm:px-6 md:px-16 md:py-20">
       <div class="w-full max-w-5xl mx-auto text-gray-300 animate-fade-in-down">
-  
+        <img src="/sakhionlt.png" alt="SakhiAI" class="mx-auto w-32 sm:w-40 md:w-48 mb-6" />
         <!-- Welcome Text -->
         <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-center text-yellow-400 mb-8 sm:mb-10 drop-shadow-md">
           Welcome to SakhiAI
