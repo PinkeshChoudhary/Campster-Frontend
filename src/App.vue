@@ -7,7 +7,7 @@
     </div>
   </div>
   <div v-else>
-    <PopUP />
+    <!-- <PopUP /> -->
     <Navbar />
     <div class="container mx-auto">
       <RouterView />

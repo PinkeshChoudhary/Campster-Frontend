@@ -11,13 +11,19 @@
         <HomeScrollCards />
         <img src="/sakhionlt.png" alt="SakhiAI" class="fixed bottom-20 right-4 z-50 w-32 h-32   cursor-pointer hover:scale-105 transition-transform" @click="goToGenerativeAI" />
 
-        <div @click="goToTripPlanner" class="w-full overflow-x-auto whitespace-nowrap cursor-pointer rounded bg-gradient-to-r from-yellow-500 to-yellow-700 p-3 shadow hover:brightness-105 transition-all duration-300 scrollbar-thin scrollbar-thumb-blue-400 scrollbar-track-blue-100">
-            <div class="inline-block text-white text-center font-semibold px-6">
-                Map Your Destinations
-            </div>
-        </div>
+        <div class="flex items-center justify-center space-x-4">
+  <div
+    @click="goToTripPlanner"
+    class="inline-block overflow-x-auto whitespace-nowrap cursor-pointer rounded bg-gradient-to-r from-yellow-500 to-yellow-700 p-3 shadow hover:brightness-105 transition-all duration-300 scrollbar-thin scrollbar-thumb-blue-400 scrollbar-track-blue-100"
+  >
+    <div class="inline-block text-white text-center text-justify font-semibold px-3">
+      Map Your Destinations
+    </div>
+  </div>
 
-        <CityFilter @places-updated="updatePlaces" class="p-5" />
+  <CityFilter @places-updated="updatePlaces" class="p-5" />
+</div>
+
         <h4 class="text-lg md:text-xl  text-yellow-500 pt-5 mb-5 text-center opacity-0 animate-fadeInUp">
             Your Next Adventure Awaits – Explore Local Wonders
         </h4>
