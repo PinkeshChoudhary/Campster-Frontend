@@ -13,9 +13,9 @@
 
         <CityFilter @places-updated="updatePlaces" class="" />
 
-        <h4 class="text-lg md:text-xl text-yellow-500 pt-5 mb-5 text-center opacity-0 animate-fadeInUp">
+        <!-- <h4 class="text-lg md:text-xl text-yellow-500 pt-5 mb-5 text-center opacity-0 animate-fadeInUp">
             Your Next Adventure Awaits – Explore Local Wonders
-        </h4>
+        </h4> -->
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <PlaceCard v-for="place in approvedPlaces" :key="place._id" :place="place" />
