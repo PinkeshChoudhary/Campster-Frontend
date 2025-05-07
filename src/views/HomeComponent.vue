@@ -9,27 +9,32 @@
         <!-- Slideshow remains visible -->
         <SlideShow class="mt-10" />
         <HomeScrollCards />
-        <img src="/sakhionlt.png" alt="SakhiAI" class="fixed bottom-20 right-4 z-50 w-32 h-32   cursor-pointer hover:scale-105 transition-transform" @click="goToGenerativeAI" />
+        <img src="/sakhionlt.png" alt="SakhiAI" class="fixed bottom-20 right-4 z-50 w-32 h-32 cursor-pointer hover:scale-105 transition-transform" @click="goToGenerativeAI" />
 
-        <div class="flex items-center justify-center space-x-4">
-  <div
-    @click="goToTripPlanner"
-    class="inline-block overflow-x-auto whitespace-nowrap cursor-pointer rounded bg-gradient-to-r from-yellow-500 to-yellow-700 p-3 shadow hover:brightness-105 transition-all duration-300 scrollbar-thin scrollbar-thumb-blue-400 scrollbar-track-blue-100"
-  >
-    <div class="inline-block text-white text-center text-justify font-semibold px-3">
-      Map Your Destinations
-    </div>
-  </div>
+        <CityFilter @places-updated="updatePlaces" class="" />
 
-  <CityFilter @places-updated="updatePlaces" class="p-5" />
-</div>
-
-        <h4 class="text-lg md:text-xl  text-yellow-500 pt-5 mb-5 text-center opacity-0 animate-fadeInUp">
+        <h4 class="text-lg md:text-xl text-yellow-500 pt-5 mb-5 text-center opacity-0 animate-fadeInUp">
             Your Next Adventure Awaits – Explore Local Wonders
         </h4>
+
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <PlaceCard v-for="place in approvedPlaces" :key="place._id" :place="place" />
         </div>
+
+        <div class="mt-20 px-4">
+    <div class="max-w-5xl mx-auto relative rounded-3xl bg-gradient-to-br from-yellow-100 via-white to-yellow-50 shadow-2xl border border-yellow-400 p-4 sm:p-6 md:max-w-3xl">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-yellow-500 text-white px-4 py-1 rounded-full shadow-md text-sm font-bold animate-bounce z-10">
+            🚀 Start Planning
+        </div>
+        <div class="flex justify-center">
+            <img src="/mapimage.png" alt="Map Your Destinations" @click="goToTripPlanner" class="w-full md:w-[80vw] max-w-3xl md:max-w-2xl h-[40vh] md:h-[30vh] object-cover rounded-2xl border-4 border-yellow-500 shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer animate-pulse" />
+        </div>
+        <p class="mt-4 text-center text-yellow-700 font-medium text-base sm:text-lg">
+            Tap the map anytime to explore your perfect journey!
+        </p>
+    </div>
+</div>
+
 
     </div>
 </div>
