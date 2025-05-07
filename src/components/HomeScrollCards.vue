@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-x-auto py-6 px-4 bg-black">
+  <div class="overflow-x-auto py-6 px-4 bg-black scrollbar-none" style="-ms-overflow-style: none; scrollbar-width: none;">
     <div class="flex space-x-3 min-w-max">
       
       <!-- Rent a Tent -->
@@ -33,6 +33,12 @@
   </div>
 </template>
 
+<style scoped>
+/* Hide scrollbar for Webkit-based browsers */
+::-webkit-scrollbar {
+  display: none;
+}
+</style>
 
 <script setup>
 import BingoLobby from './bingo/BingoLobby.vue'

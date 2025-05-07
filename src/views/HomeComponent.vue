@@ -11,7 +11,7 @@
         <HomeScrollCards />
         <img src="/sakhionlt.png" alt="SakhiAI" class="fixed bottom-20 right-4 z-50 w-32 h-32 cursor-pointer hover:scale-105 transition-transform" @click="goToGenerativeAI" />
 
-        <CityFilter @places-updated="updatePlaces" class="" />
+        <CityFilter @places-updated="updatePlaces" class="pb-5" />
 
         <!-- <h4 class="text-lg md:text-xl text-yellow-500 pt-5 mb-5 text-center opacity-0 animate-fadeInUp">
             Your Next Adventure Awaits – Explore Local Wonders
