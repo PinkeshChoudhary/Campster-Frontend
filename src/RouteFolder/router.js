@@ -23,6 +23,7 @@ import TripPlanner from '../components/tripPlanner/TripPlanner.vue';
 import BlogDetails from '../components/blog/BlogDetails.vue';
 import BlogList from '../components/blog/BlogList.vue';
 import ButtonAI from '../components/generativeAI/ButtonAI.vue';
+import NewRentTent from '../renTent/newRentTent.vue';
 
 
 
@@ -84,8 +85,8 @@ const routes = [
   {
     path: '/tent',
     name: 'Tent',
-    component: TentList,
-    meta: { requiresAuth: true }
+    component: NewRentTent,
+    // meta: { requiresAuth: true }
   },
   {
     path: '/tentbooking',
