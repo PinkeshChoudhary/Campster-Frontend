@@ -1,49 +1,51 @@
 <template>
-    <div class="bg-gray-900 text-white p-4 rounded-b-lg shadow-xl">
-      <h2 class="text-xl font-bold mb-4">🎮 Game Info</h2>
-  
-      <!-- Scoreboard -->
-      <div class="mb-4">
-        <h3 class="text-lg font-semibold mb-2">Scoreboard</h3>
-        <ul>
-          <li
-            v-for="player in players"
-            :key="player.name"
-            class="mb-1"
-          >
-            {{ player.name }} - {{ player.score || 0 }} pts
-          </li>
-        </ul>
+  <div class="bg-gray-900 text-white p-4 rounded-b-lg shadow-xl">
+    <h2 class="text-xl font-bold mb-4">🎮 Game Info</h2>
+
+    <!-- Scoreboard with Hidden Identities -->
+    <div class="mb-6">
+      <h3 class="text-lg font-semibold mb-2">Scoreboard</h3>
+      <ul class="space-y-1">
+        <li
+          v-for="(player, index) in players"
+          :key="index"
+        >
+          🧑‍🎭 <span class="font-medium text-blue-400">Player {{ index === 0 ? 'A' : 'B' }}</span> — {{ player.score || 0 }} pts
+        </li>
+      </ul>
+    </div>
+
+    <!-- Anonymous Chat -->
+    <div>
+      <h3 class="text-lg font-semibold mb-2">💬 Anonymous Chat</h3>
+      <div class="h-32 overflow-y-auto bg-gray-800 p-3 rounded-lg mb-2 space-y-1 text-sm">
+        <div
+          v-for="(msg, idx) in messages"
+          :key="idx"
+        >
+          <span class="text-yellow-400 font-semibold">
+            {{ msg.sender === players[0].name ? 'Player A' : 'Player B' }}:
+          </span> {{ msg.message }}
+        </div>
       </div>
-  
-      <!-- Chat -->
-      <div>
-        <h3 class="text-lg font-semibold mb-2">Chat</h3>
-        <div class="h-32 overflow-y-auto bg-gray-800 p-2 rounded mb-2">
-          <div
-            v-for="(msg, idx) in messages"
-            :key="idx"
-          >
-            <strong>{{ msg.sender }}:</strong> {{ msg.message }}
-          </div>
-        </div>
-        <div class="flex gap-2">
-          <input
-            v-model="newMessage"
-            @keydown.enter="sendMessage"
-            class="w-full p-2 rounded bg-gray-700"
-            placeholder="Type message..."
-          />
-          <button
-            @click="sendMessage"
-            class="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700"
-          >
-            Send
-          </button>
-        </div>
+      <div class="flex gap-2">
+        <input
+          v-model="newMessage"
+          @keydown.enter="sendMessage"
+          class="w-full p-2 rounded bg-gray-700 focus:outline-none focus:ring focus:ring-blue-500"
+          placeholder="Send an anonymous message..."
+        />
+        <button
+          @click="sendMessage"
+          class="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700 transition-all"
+        >
+          Send
+        </button>
       </div>
     </div>
-  </template>
+  </div>
+</template>
+
   
   <script setup>
   import { ref, onMounted } from 'vue';
