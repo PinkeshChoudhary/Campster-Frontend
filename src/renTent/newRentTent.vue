@@ -3,7 +3,6 @@
       <!-- Header -->
       <div class="text-center mb-10">
         <h1 class="text-4xl font-bold text-white">🛖 Explore Our Tent Collection</h1>
-        <p class="text-lg text-gray-400">Select your perfect camping experience</p>
       </div>
   
       <!-- Image Masonry Gallery -->
