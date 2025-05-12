@@ -105,7 +105,7 @@ export default {
 
     const sharePlace = async () => {
       const shareText = `Check out this amazing place: ${props.place.destination}`;
-      const shareUrl = window.location.href;
+      const shareUrl = `${window.location.origin}/place/${props.place._id}`;
 
       if (navigator.share) {
         try {
