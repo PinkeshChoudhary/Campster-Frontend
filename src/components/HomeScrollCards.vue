@@ -22,11 +22,12 @@
 
       <!-- Play Games -->
       <router-link to="/bingolobby" class="min-w-[180px] max-w-[200px] transition-transform hover:scale-105">
-        <div class="p-3 bg-gradient-to-tr from-blue-700/30 to-pink-600/30 border border-blue-500/30 backdrop-blur-md text-white rounded-xl shadow-lg hover:ring-2 hover:ring-blue-400 transition-all h-full">
-          <div class="text-xl mb-1">🎮</div>
-          <h3 class="text-base font-semibold mb-1">Play Games</h3>
-          <p class="text-xs opacity-80">Have fun with fellow Campsters!</p>
-        </div>
+       <div class="p-3 bg-gradient-to-tr from-blue-700/30 to-pink-600/30 border border-blue-500/30 backdrop-blur-md text-white rounded-xl shadow-lg hover:ring-2 hover:ring-blue-400 transition-all h-full">
+  <div class="text-xl mb-1">🏆</div>
+  <h3 class="text-base font-semibold mb-1">Join Challenge</h3>
+  <p class="text-xs opacity-80">Compete with fellow Campsters — winner takes the prize!</p>
+</div>
+
       </router-link>
 
     </div>

@@ -18,14 +18,20 @@
 
         <div>
           <h2 class="text-xl font-bold text-white flex items-center gap-2 mt-4">
-             <span>Task Status Guide</span>
+            <span>Task Status Guide</span>
           </h2>
           <ul class="mt-2 space-y-2 text-sm">
             <li><span class="text-yellow-400 font-medium">🟡 Open</span>: Task is up for grabs by any player.</li>
             <li><span class="text-orange-400 font-medium">🟠 Pending</span>: Submitted and waiting for verification.</li>
-            <li><span class="text-green-400 font-medium"> Approved</span>: Task has been reviewed and accepted.</li>
+            <li><span class="text-green-400 font-medium">✅ Approved</span>: Task has been reviewed and accepted.</li>
           </ul>
         </div>
+
+        <!-- Completion Note -->
+       <div class="mt-4 text-sm text-blue-300 border-t border-gray-700 pt-3">
+  <span class="text-white font-medium">After all tasks are completed:</span> Our team will connect with the winner.
+</div>
+
       </div>
 
       <!-- Join Button -->
@@ -33,12 +39,13 @@
         @click="joinGame"
         class="w-full bg-yellow-500 text-black hover:bg-yellow-700 text-white font-semibold py-3 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg"
       >
-         Join Lobby
+        Join Lobby
       </button>
 
     </div>
   </div>
 </template>
+
 
   
   <script setup>
