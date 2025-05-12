@@ -10,7 +10,7 @@
           v-for="(player, index) in players"
           :key="index"
         >
-          🧑‍🎭 <span class="font-medium text-blue-400">Player {{ index === 0 ? 'A' : 'B' }}</span> — {{ player.score || 0 }} pts
+          🧑‍🎭 <span class="font-medium text-blue-400">Player {{ index === 0 ? 'A' : 'B' }}</span>
         </li>
       </ul>
     </div>
