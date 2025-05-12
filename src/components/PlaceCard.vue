@@ -7,11 +7,11 @@
         <i class="fas fa-location-arrow text-[10px] text-orange-500"></i>
         {{ distance }} km
       </div>
-<!-- 
+
       <div v-if="place.paid" class="absolute top-3 left-3 bg-yellow-100/80 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1">
         <i class="fas fa-crown text-yellow-700"></i>
         <span class="text-yellow-700 text-sm font-bold uppercase">Premium</span>
-      </div> -->
+      </div>
 
       <!-- Like Button -->
       <button @click.stop="likePlace" class="absolute top-3 left-3 p-2  bg-transparent rounded-full ">
@@ -23,12 +23,13 @@
         </svg>
       </button>
 
-      <button
-  @click="shareBlog(blog)"
+   <button
+  @click.stop="sharePlace"
   class="absolute top-2 right-2 bg-transparent text-black p-2 rounded-full hover:bg-gray-200 transition"
 >
   <i class="fas fa-share-alt text-black"></i>
 </button>
+
 
       <!-- Place Info -->
       <div class="absolute bottom-4 left-4 text-white font-semibold text-lg">
