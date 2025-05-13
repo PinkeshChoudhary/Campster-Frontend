@@ -85,12 +85,12 @@
         <transition name="fade-slide">
           <div v-if="showFullTerms" class="px-4 pb-6 text-gray-500 text-sm sm:text-base leading-relaxed space-y-3 border-t border-gray-700 pt-4">
             <ul class="list-disc list-inside">
-              <li>Campster is a platform for independent organizers to list their events.</li>
-              <li>Campster is not responsible for fraud, miscommunication, or cancellations by organizers.</li>
-              <li>For cancellations, refunds, or updates, please contact the event organizer directly.</li>
+              <li>Campster is a platform for independent creaters to list their events.</li>
+              <li>Campster is not responsible for fraud, miscommunication, or cancellations by creaters.</li>
+              <li>For cancellations, refunds, or updates, please contact the event creater directly.</li>
               <li>Campster does not verify every event. Attend at your own discretion.</li>
-              <li>Any disputes must be resolved between the user and the organizer.</li>
-              <li>We may remove events or ban organizers who violate platform policies.</li>
+              <li>Any disputes must be resolved between the user and the creater.</li>
+              <li>We may remove events or ban creaters who violate platform policies.</li>
             </ul>
           </div>
         </transition>
@@ -102,7 +102,7 @@
       <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-6 h-6">
         <path d="M12 2C6.477 2 2 6.477 2 12c0 1.937.546 3.78 1.487 5.347L2 22l4.887-1.41A9.953 9.953 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2Zm0 18a7.946 7.946 0 0 1-4.27-1.21l-.303-.19L5 19l.744-2.41-.19-.304A8 8 0 1 1 12 20Zm3.477-5.198c-.187-.094-1.106-.546-1.278-.61s-.296-.094-.42.093c-.125.188-.48.61-.589.736s-.218.14-.405.047a6.37 6.37 0 0 1-2.723-2.415c-.205-.352.205-.327.586-1.092.065-.137.032-.253-.032-.347-.063-.094-.42-1.01-.575-1.384-.152-.373-.306-.32-.42-.326l-.358-.006a.78.78 0 0 0-.566.266c-.194.213-.738.722-.738 1.759s.756 2.047.861 2.191c.107.143 1.49 2.308 3.609 3.234.504.218.899.349 1.206.446.508.161.97.139 1.337.084.407-.06 1.106-.452 1.262-.888s.156-.81.109-.888-.171-.125-.358-.219Z" />
       </svg>
-      Contact Organizer
+      Contact Creater
     </a>
   </div>
 </template>
