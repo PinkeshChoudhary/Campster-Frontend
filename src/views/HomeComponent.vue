@@ -9,7 +9,6 @@
         <!-- Slideshow remains visible -->
         <SlideShow class="mt-10" />
         <HomeScrollCards />
-        <img src="/sakhionlt.png" alt="SakhiAI" class="fixed bottom-20 right-4 z-50 w-32 h-32 cursor-pointer hover:scale-105 transition-transform" @click="goToGenerativeAI" />
 
         <CityFilter @places-updated="updatePlaces" class="pb-5" />
 
@@ -88,10 +87,6 @@ export default {
         const goToTripPlanner = () => {
             router.push('/Tripplanner');
         }
-
-        const goToGenerativeAI = () => {
-            router.push('/generativeAI')
-        }
         const checkIfAdmin = async () => {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/adminfire/dashboard`, {
@@ -157,7 +152,6 @@ export default {
             updatePlaces,
             // currentImage,
             goToTripPlanner,
-            goToGenerativeAI,
         };
     },
 };
