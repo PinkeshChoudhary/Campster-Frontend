@@ -141,7 +141,7 @@ const toggleTerms = () => {
   };
   
   const whatsappLink = computed(() => {
-    const message = `Hello, I am interested to join with you`;
+    const message = `Hi! I found your "${event?.value?.name}" event on Campster. I’m interested and would like some more details, please.`;
     return `https://wa.me/${event.value?.organizerPhone}?text=${encodeURIComponent(message)}`;
   });
   
