@@ -1,8 +1,8 @@
 <template>
   <div class="p-6 mt-16 mb-12 max-w-4xl mx-auto bg-black text-white">
     <!-- Heading -->
-    <h4 class="text-2xl font-bold text-yellow-500 text-center  tracking-wide">
-      <i class="fas fa-calendar-alt"></i> Discover  Events & Activities
+    <h4 class="text-2xl font-bold text-yellow-500 text-center tracking-wide">
+      <i class="fas fa-calendar-alt"></i> Discover Events & Activities
     </h4>
 
     <!-- Filter Dropdown -->
@@ -47,8 +47,17 @@
         v-for="event in filteredEvents" 
         :key="event._id" 
         @click="viewDetails(event._id)"
-        class="flex items-start bg-black hover:bg-[#262626] cursor-pointer rounded-lg shadow-md hover:shadow-yellow-500/40 transition duration-200"
+        class="relative flex items-start bg-black hover:bg-[#262626] cursor-pointer rounded-lg shadow-md hover:shadow-yellow-500/40 transition duration-200"
       >
+        <!-- Share Button (Top Right Corner) -->
+        <button 
+          @click.stop="shareEvent(event)" 
+          class="absolute top-2 right-2 text-yellow-800  z-10"
+          title="Share this event"
+        >
+          <i class="fas fa-share-alt"></i>
+        </button>
+
         <!-- Square Thumbnail -->
         <div class="w-24 h-24 bg-[#111] flex-shrink-0 overflow-hidden rounded-l-lg">
           <img 
@@ -70,7 +79,7 @@
             {{ event.location }}
           </p>
           <p class="text-xs text-gray-300 mt-1">
-             <span class="text-white font-semibold">
+            <span class="text-white font-semibold">
               {{ event.ticketType && event.price ? `₹${event.price}` : "" }}
             </span>
           </p>
@@ -79,6 +88,7 @@
     </div>
   </div>
 </template>
+
 
 
 <script setup>
@@ -123,6 +133,22 @@ const fetchCategories = async () => {
     categories.value = response.data;
   } catch (error) {
     console.error("Error fetching categories", error);
+  }
+};
+
+const shareEvent = (event) => {
+  const shareData = {
+    title: event.name,
+    text: `Check out this event: ${event.name} at ${event.location}`,
+    url: `${window.location.origin}/events/${event._id}`
+  };
+
+  if (navigator.share) {
+    navigator.share(shareData)
+      .then(() => console.log('Event shared successfully'))
+      .catch((error) => console.error('Error sharing:', error));
+  } else {
+    alert('Sharing not supported in this browser.');
   }
 };
 
