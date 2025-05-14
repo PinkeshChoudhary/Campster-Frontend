@@ -10,7 +10,7 @@
         <SlideShow class="mt-10" />
         <HomeScrollCards />
 
-        <CityFilter @places-updated="updatePlaces" class="pb-5" />
+        <CityFilter @places-updated="updatePlaces" class="" />
 
         <!-- <h4 class="text-lg md:text-xl text-yellow-500 pt-5 mb-5 text-center opacity-0 animate-fadeInUp">
             Your Next Adventure Awaits – Explore Local Wonders
