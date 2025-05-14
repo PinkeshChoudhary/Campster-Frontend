@@ -35,7 +35,7 @@
             </transition>
         </div>
 
-        <div class="mt-20 px-4">
+        <!-- <div class="mt-20 px-4">
             <div class="max-w-5xl mx-auto relative rounded-3xl bg-gradient-to-br from-yellow-100 via-white to-yellow-50 shadow-2xl border border-yellow-400 p-4 sm:p-6 md:max-w-3xl">
                 <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-yellow-500 text-white px-4 py-1 rounded-full shadow-md text-sm font-bold animate-bounce z-10">
                     🚀 Start Planning
@@ -47,7 +47,7 @@
                     Tap the map anytime to explore your perfect journey!
                 </p>
             </div>
-        </div>
+        </div> -->
 
     </div>
 </div>
