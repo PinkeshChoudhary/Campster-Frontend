@@ -30,6 +30,14 @@
                 <textarea v-model="place.description" placeholder="Description" class="input-field" required></textarea>
             </div>
 
+              <div class="mb-4">
+          <label for="placeType" class="block text-gray-500">Place Type</label>
+          <select v-model="place.typeOfPlace" id="placeType" class="input-field">
+            <option value="popular">Popular Picks</option>
+            <option value="hidden">Hidden Gem</option>
+          </select>
+        </div>
+
             <!-- Upload Images -->
             <div class="mb-4">
                 <input type="file" @change="handleImageUpload" multiple accept="image/*" class="input-field" />
@@ -47,7 +55,7 @@
             <!-- Cover Charges Checkbox -->
 <div class="mb-4 flex items-center gap-2">
     <input v-model="place.paid" type="checkbox" id="coverCharges" class="w-5 h-5 text-green-600">
-    <label for="coverCharges" class="checkbox-field">This place has cover charges</label>
+    <label for="coverCharges" class="checkbox-field">sponsored</label>
 </div>
 
             <!-- Submit Button (Disabled until form is filled or submitting) -->
@@ -86,6 +94,7 @@ export default {
             location: "",
             locationCoordinates: "",
             images: [],
+            typeOfPlace: "",
             paid: false, // Default to false
         });
 
