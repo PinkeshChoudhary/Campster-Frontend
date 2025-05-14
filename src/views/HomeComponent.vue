@@ -17,10 +17,10 @@
         </h4> -->
         <!-- Tabs -->
         <div class="flex justify-center my-6">
-            <button class="px-4 py-2 rounded-l-full border font-semibold" :class="tab === 'popular' ? 'bg-yellow-500 text-white' : 'bg-white text-gray-800'" @click="tab = 'popular'">
+            <button class="px-4 py-2 rounded-l-full border font-semibold" :class="tab === 'popular' ? 'bg-yellow-500 text-white' : 'bg-gray-100 text-gray-800'" @click="tab = 'popular'">
                 Popular Picks
             </button>
-            <button class="px-4 py-2 rounded-r-full border font-semibold" :class="tab === 'hidden' ? 'bg-yellow-500 text-white' : 'bg-white text-gray-800'" @click="tab = 'hidden'">
+            <button class="px-4 py-2 rounded-r-full border font-semibold" :class="tab === 'hidden' ? 'bg-yellow-500 text-white' : 'bg-gray-100 text-gray-800'" @click="tab = 'hidden'">
                 Hidden Gems
             </button>
         </div>

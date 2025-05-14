@@ -1,78 +1,41 @@
 <template>
-  <div class=" flex justify-end" ref="dropdownRef">
-    <div class="relative">
-      <!-- Icon Button Toggle -->
+  <div class="w-full bg-black border-t border-b border-gray-500 pb-0">
+    <div class="flex space-x-3 px-3 py-3 whitespace-nowrap overflow-x-auto no-scrollbar items-center">
       <div 
-        @click="toggleDropdown" 
-        class="w-11 h-11 bg-[#1E1E1E] border border-yellow-500 rounded-full flex items-center justify-center cursor-pointer shadow-md transition hover:border-yellow-400"
+        v-for="city in cities" 
+        :key="city.name"
+        @click="selectCity(city.name)"
+        class="px-4 py-2 text-sm rounded-full cursor-pointer transition duration-150 flex-shrink-0"
+        :class="selectedCity === city.name 
+          ? 'bg-yellow-300 text-black font-semibold' 
+          : 'bg-gray-100 text-black hover:bg-gray-200'"
       >
-        <svg 
-          class="w-5 h-5 text-yellow-500 transition-transform duration-300"
-          :class="{ 'rotate-180': isDropdownOpen }" 
-          fill="none" 
-          stroke="currentColor" 
-          viewBox="0 0 24 24" 
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-        </svg>
-      </div>
-
-      <!-- Dropdown List -->
-      <div 
-        v-if="isDropdownOpen" 
-        class="absolute right-0 z-50 mt-2 bg-[#1E1E1E] border text-white border-yellow-500 rounded-lg w-52 max-h-60 overflow-y-auto shadow-lg custom-scrollbar"
-      >
-        <div 
-          v-for="city in cities" 
-          :key="city.name"
-          @click="selectCity(city.name)"
-          class="px-4 py-2 text-sm cursor-pointer hover:bg-yellow-500 hover:text-black transition duration-150"
-          :class="{ 'bg-yellow-500 text-black font-semibold': selectedCity === city.name }"
-        >
-          {{ city.name }}
-        </div>
+        {{ city.name }}
       </div>
     </div>
   </div>
 </template>
 
+
+
 <script setup>
-import { ref, onMounted, onBeforeUnmount, defineEmits } from "vue";
+import { ref, defineEmits } from "vue";
 
 const selectedCity = ref("");
-const isDropdownOpen = ref(false);
 const emit = defineEmits(["places-updated"]);
-const dropdownRef = ref(null);
 
 const cities = ref([
   { name: "Udaipur" },
   { name: "Mount Abu" },
   { name: "Jaipur" },
   { name: "Jaisalmer" },
+  { name: "Pushkar" },
+  { name: "Ajmer" },
+  { name: "Kumbhalgarh" },
 ]);
-
-const toggleDropdown = () => {
-  isDropdownOpen.value = !isDropdownOpen.value;
-};
-
-const closeDropdown = (e) => {
-  if (dropdownRef.value && !dropdownRef.value.contains(e.target)) {
-    isDropdownOpen.value = false;
-  }
-};
-
-onMounted(() => {
-  document.addEventListener("click", closeDropdown);
-});
-
-onBeforeUnmount(() => {
-  document.removeEventListener("click", closeDropdown);
-});
 
 const selectCity = async (city) => {
   selectedCity.value = city;
-  isDropdownOpen.value = false;
 
   try {
     const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/places/location?city=${city}`);
@@ -85,14 +48,11 @@ const selectCity = async (city) => {
 </script>
 
 <style scoped>
-.custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
+.no-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
 }
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #facc15; /* Tailwind yellow-500 */
-  border-radius: 10px;
-}
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
 }
 </style>
