@@ -15,25 +15,39 @@
         <!-- <h4 class="text-lg md:text-xl text-yellow-500 pt-5 mb-5 text-center opacity-0 animate-fadeInUp">
             Your Next Adventure Awaits – Explore Local Wonders
         </h4> -->
+        <!-- Tabs -->
+        <div class="flex justify-center my-6">
+            <button class="px-4 py-2 rounded-l-full border font-semibold" :class="tab === 'popular' ? 'bg-yellow-500 text-white' : 'bg-white text-gray-800'" @click="tab = 'popular'">
+                Popular Picks
+            </button>
+            <button class="px-4 py-2 rounded-r-full border font-semibold" :class="tab === 'hidden' ? 'bg-yellow-500 text-white' : 'bg-white text-gray-800'" @click="tab = 'hidden'">
+                Hidden Gems
+            </button>
+        </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <PlaceCard v-for="place in approvedPlaces" :key="place._id" :place="place" />
+        <!-- Swipeable content -->
+        <!-- Swipeable content -->
+        <div @touchstart="handleTouchStart" @touchend="handleTouchEnd" class="relative overflow-hidden h-auto">
+            <transition :name="swipeDirection">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" :key="tab">
+                    <PlaceCard v-for="place in (tab === 'popular' ? popularPlaces : hiddenPlaces)" :key="place._id" :place="place" />
+                </div>
+            </transition>
         </div>
 
         <div class="mt-20 px-4">
-    <div class="max-w-5xl mx-auto relative rounded-3xl bg-gradient-to-br from-yellow-100 via-white to-yellow-50 shadow-2xl border border-yellow-400 p-4 sm:p-6 md:max-w-3xl">
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-yellow-500 text-white px-4 py-1 rounded-full shadow-md text-sm font-bold animate-bounce z-10">
-            🚀 Start Planning
+            <div class="max-w-5xl mx-auto relative rounded-3xl bg-gradient-to-br from-yellow-100 via-white to-yellow-50 shadow-2xl border border-yellow-400 p-4 sm:p-6 md:max-w-3xl">
+                <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-yellow-500 text-white px-4 py-1 rounded-full shadow-md text-sm font-bold animate-bounce z-10">
+                    🚀 Start Planning
+                </div>
+                <div class="flex justify-center">
+                    <img src="/mapimage.png" alt="Map Your Destinations" @click="goToTripPlanner" class="w-full md:w-[80vw] max-w-3xl md:max-w-2xl h-[40vh] md:h-[30vh] object-cover rounded-2xl border-4 border-yellow-500 shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer animate-pulse" />
+                </div>
+                <p class="mt-4 text-center text-yellow-700 font-medium text-base sm:text-lg">
+                    Tap the map anytime to explore your perfect journey!
+                </p>
+            </div>
         </div>
-        <div class="flex justify-center">
-            <img src="/mapimage.png" alt="Map Your Destinations" @click="goToTripPlanner" class="w-full md:w-[80vw] max-w-3xl md:max-w-2xl h-[40vh] md:h-[30vh] object-cover rounded-2xl border-4 border-yellow-500 shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer animate-pulse" />
-        </div>
-        <p class="mt-4 text-center text-yellow-700 font-medium text-base sm:text-lg">
-            Tap the map anytime to explore your perfect journey!
-        </p>
-    </div>
-</div>
-
 
     </div>
 </div>
@@ -115,6 +129,44 @@ export default {
             store.setApprovedPlaces(newPlaces);
         };
 
+        const tab = ref('popular');
+
+        const popularPlaces = computed(() =>
+            approvedPlaces.value.filter(place => place.typeOfPlace === 'popular')
+        );
+
+        const hiddenPlaces = computed(() =>
+            approvedPlaces.value.filter(place => place.typeOfPlace === 'hidden')
+        );
+
+        const swipeDirection = ref('slide-left');
+
+        // swipe logic
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        const handleTouchStart = (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        };
+
+        const handleTouchEnd = (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        };
+
+        const handleSwipe = () => {
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) < 50) return;
+
+            if (diff > 0 && tab.value === 'popular') {
+                swipeDirection.value = 'slide-left';
+                tab.value = 'hidden';
+            } else if (diff < 0 && tab.value === 'hidden') {
+                swipeDirection.value = 'slide-right';
+                tab.value = 'popular';
+            }
+        };
+
         // Fetch places on component mount
         onMounted(() => {
             // const dashboardAPICalled = localStorage.getItem("dashboardAPICalled");
@@ -152,6 +204,11 @@ export default {
             updatePlaces,
             // currentImage,
             goToTripPlanner,
+            tab,
+            popularPlaces,
+            hiddenPlaces,
+            handleTouchStart,
+            handleTouchEnd,
         };
     },
 };
@@ -172,6 +229,33 @@ export default {
 
 .bg-gray-800 {
     background-color: rgba(0, 0, 0, 0.5);
+}
+
+.slide-left-enter-active,
+.slide-right-enter-active {
+    transition: all 0.3s ease;
+    position: absolute;
+    width: 100%;
+}
+
+.slide-left-enter-from {
+    transform: translateX(100%);
+    opacity: 0;
+}
+
+.slide-left-enter-to {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.slide-right-enter-from {
+    transform: translateX(-100%);
+    opacity: 0;
+}
+
+.slide-right-enter-to {
+    transform: translateX(0);
+    opacity: 1;
 }
 
 .card {
