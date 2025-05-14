@@ -16,7 +16,7 @@
             Your Next Adventure Awaits – Explore Local Wonders
         </h4> -->
         <!-- Tabs -->
-        <div class="flex justify-center my-6">
+        <div class="sticky top-0 z-50 bg-black flex justify-center py-4 shadow-md">
             <button class="px-4 py-2 rounded-l-full border font-semibold" :class="tab === 'popular' ? 'bg-yellow-500 text-white' : 'bg-white text-gray-800'" @click="tab = 'popular'">
                 Popular Picks
             </button>
