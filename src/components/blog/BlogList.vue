@@ -1,5 +1,5 @@
 <template>
-  <div class="blog-list bg-black pt-24 px-4 max-w-6xl mx-auto">
+  <div class="blog-list bg-black pt-5 px-4 max-w-6xl mx-auto">
     <h2 class="text-3xl font-bold mb-6 text-white text-center">Explore Our Blogs</h2>
 
     <div v-if="loading" class="text-center text-white text-lg animate-pulse">Loading...</div>

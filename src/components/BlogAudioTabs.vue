@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-5xl mx-auto px-4 py-8 pt-24">
     <!-- Tab Headers -->
-    <div class="flex justify-center mb-8">
+    <div class="flex justify-center ">
       <div class="inline-flex bg-gray-100 p-1 rounded-full shadow">
         <button
           :class="tab === 'blogs' ? activeTabClass : tabClass"
