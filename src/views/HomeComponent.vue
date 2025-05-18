@@ -11,8 +11,6 @@
         <HomeScrollCards />
         <!-- 🔥 Insert the promo banner here -->
 <hiddenGemPromo class="my-6" />
-<AudioList class="my-6" />
-
 
         <CityFilter @places-updated="updatePlaces" class="" />
 
@@ -70,7 +68,6 @@ import axios from 'axios';
 import PlaceCard from '../components/PlaceCard.vue';
 import AdminDashboard from '../components/AdminDashboard.vue';
 import SlideShow from '../components/Images/SlideShow.vue';
-import AudioList from '../components/audioStories/AudioList.vue';
 import {
     getAuth
 } from "firebase/auth";
@@ -98,7 +95,6 @@ export default {
         BlogList,
         ButtonAI,
         hiddenGemPromo,
-        AudioList,
 
     },
     setup() {
