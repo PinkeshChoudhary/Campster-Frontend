@@ -10,7 +10,7 @@
         <SlideShow class="mt-10" />
         <HomeScrollCards />
         <!-- 🔥 Insert the promo banner here -->
-<HiddenGemPromo class="my-6" />
+<hiddenGemPromo class="my-6" />
 
         <CityFilter @places-updated="updatePlaces" class="" />
 
@@ -81,7 +81,7 @@ import router from '../RouteFolder/router';
 import BlockBlogEditor from '../components/blog/BlockBlogEditor.vue';
 import BlogList from '../components/blog/BlogList.vue';
 import ButtonAI from '../components/generativeAI/ButtonAI.vue';
-import HiddenGemPromo from '../components/HiddenGemPromo.vue';
+import hiddenGemPromo from '../components/hiddenGemPromo.vue';
 
 
 export default {
@@ -94,7 +94,7 @@ export default {
         BlockBlogEditor,
         BlogList,
         ButtonAI,
-        HiddenGemPromo,
+        hiddenGemPromo,
     },
     setup() {
         const store = useStore();
