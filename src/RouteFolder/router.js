@@ -21,7 +21,7 @@ import BingoDashBoard from '../components/bingo/BingoDashBoard.vue';
 import BingoLobby from '../components/bingo/BingoLobby.vue';
 import TripPlanner from '../components/tripPlanner/TripPlanner.vue';
 import BlogDetails from '../components/blog/BlogDetails.vue';
-import BlogList from '../components/blog/BlogList.vue';
+import BlogAudioTabs from '../components/BlogAudioTabs.vue';
 import ButtonAI from '../components/generativeAI/ButtonAI.vue';
 import NewRentTent from '../renTent/newRentTent.vue';
 
@@ -130,8 +130,8 @@ const routes = [
   },
   {
     path: "/blog",
-    name: "BlogList",
-    component: BlogList,
+    name: "BlogAudioTabs",
+    component: BlogAudioTabs,
   },
   {
     path: "/blog/:id",

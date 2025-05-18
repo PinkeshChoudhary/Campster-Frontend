@@ -64,6 +64,7 @@
     <AdminContactMessage />
     <EventVerified />
     <AddGlamping />
+    <AudioStories class="my-6" />
 </template>
 
 <script>
@@ -74,12 +75,14 @@ import { io } from "socket.io-client";
 import AddGlamping from "./AddGlamping.vue";
 import EventVerified from "./EventVerified.vue";
 import AdminContactMessage from "./AdminContactMessage.vue";
+import AudioStories from './audioStories/AudioStories.vue';
 
 export default {
     components: {
         AddGlamping,
         EventVerified,
         AdminContactMessage,
+        AudioStories,
     },
     setup() {
         const store = useStore();
