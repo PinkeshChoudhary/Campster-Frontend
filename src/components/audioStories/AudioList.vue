@@ -1,7 +1,7 @@
 <template>
   <div class="p-4 sm:p-6 max-w-5xl mx-auto text-white pb-20">
     <h1 class="text-2xl sm:text-3xl font-bold mb-6 text-center sm:text-left">
-      🎧 Listen to Audio Stories
+      🎧 Listen to Audio Blogs
     </h1>
 
     <!-- Loading Spinner -->

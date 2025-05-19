@@ -13,7 +13,7 @@
           :class="tab === 'audio' ? activeTabClass : tabClass"
           @click="tab = 'audio'"
         >
-          🎧 Audio Stories
+          🎧 Audio Blogs
         </button>
       </div>
     </div>
