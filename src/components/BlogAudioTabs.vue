@@ -54,30 +54,29 @@ import AudioList from './audioStories/AudioList.vue'
 const tab = ref('blogs')
 
 let touchStartX = 0
-let touchCurrentX = 0
+let touchEndX = 0
 
 const handleTouchStart = (e) => {
   touchStartX = e.changedTouches[0].screenX
 }
 
 const handleTouchEnd = (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        };
- const handleSwipe = () => {
-            const diff = touchStartX - touchEndX;
-            if (Math.abs(diff) < 50) return;
+  touchEndX = e.changedTouches[0].screenX
+  handleSwipe()
+}
 
-            if (diff > 0 && tab.value === 'blogs') {
-                swipeDirection.value = 'slide-left';
-                tab.value = 'audio';
-            } else if (diff < 0 && tab.value === 'audio') {
-                swipeDirection.value = 'slide-right';
-                tab.value = 'blogs';
-            }
-        };
+const handleSwipe = () => {
+  const diff = touchStartX - touchEndX
+  if (Math.abs(diff) < 50) return // Ignore small swipes
 
+  if (diff > 0 && tab.value === 'blogs') {
+    tab.value = 'audio'
+  } else if (diff < 0 && tab.value === 'audio') {
+    tab.value = 'blogs'
+  }
+}
 </script>
+
 
 <style scoped>
 .fade-enter-active,
