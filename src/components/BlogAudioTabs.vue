@@ -36,8 +36,8 @@
   <div
     :key="tab"
     class="mt-10 max-w-4xl mx-auto"
-    @touchstart="handleTouchStart"
-    @touchend="handleTouchEnd"
+     @touchstart="handleTouchStart"
+        @touchend="handleTouchEnd"
   >
     <BlogList v-if="tab === 'blogs'" />
     <AudioList v-else />
@@ -60,20 +60,22 @@ const handleTouchStart = (e) => {
   touchStartX = e.changedTouches[0].screenX
 }
 
-const handleTouchMove = (e) => {
-  touchCurrentX = e.changedTouches[0].screenX
-}
+const handleTouchEnd = (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        };
+ const handleSwipe = () => {
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) < 50) return;
 
-const handleTouchEnd = () => {
-  const swipeDistance = touchCurrentX - touchStartX
-  if (Math.abs(swipeDistance) > 30) {
-    if (swipeDistance < 0 && tab.value === 'blogs') {
-      tab.value = 'audio'
-    } else if (swipeDistance > 0 && tab.value === 'audio') {
-      tab.value = 'blogs'
-    }
-  }
-}
+            if (diff > 0 && tab.value === 'blogs') {
+                swipeDirection.value = 'slide-left';
+                tab.value = 'audio';
+            } else if (diff < 0 && tab.value === 'audio') {
+                swipeDirection.value = 'slide-right';
+                tab.value = 'blogs';
+            }
+        };
 
 </script>
 
