@@ -1,59 +1,78 @@
 <template>
-<div class="p-4 pb-20">
+  <div class="p-4 pb-20">
     <!-- Admin view: Display pending places -->
     <div v-if="isAdmin">
-        <AdminDashboard />
-        <BlockBlogEditor />
+      <AdminDashboard />
+      <BlockBlogEditor />
     </div>
     <div v-else>
-        <!-- Slideshow remains visible -->
-        <SlideShow class="mt-10" />
-        <HomeScrollCards />
-        <!-- 🔥 Insert the promo banner here -->
-<hiddenGemPromo class="my-6" />
+      <!-- Slideshow remains visible -->
+      <SlideShow class="mt-10" />
+      <HomeScrollCards />
+      
+      <!-- 🔥 Insert the promo banner here -->
+      <hiddenGemPromo class="my-10" />
 
-        <CityFilter @places-updated="updatePlaces" class="" />
+      <CityFilter @places-updated="updatePlaces" />
 
-        <!-- <h4 class="text-lg md:text-xl text-yellow-500 pt-5 mb-5 text-center opacity-0 animate-fadeInUp">
+        <h4 class="text-lg md:text-xl text-gray-500 pt-5 mb-5 text-center opacity-0 animate-fadeInUp">
             Your Next Adventure Awaits – Explore Local Wonders
-        </h4> -->
-        <!-- Tabs -->
-        <div class="flex justify-center my-6">
-            <button class="px-4 py-2 rounded-l-full border font-semibold" :class="tab === 'popular' ? 'bg-yellow-500 text-white' : 'bg-gray-100 text-gray-800'" @click="tab = 'popular'">
-                Popular Picks
-            </button>
-            <button class="px-4 py-2 rounded-r-full border font-semibold" :class="tab === 'hidden' ? 'bg-yellow-500 text-white' : 'bg-gray-100 text-gray-800'" @click="tab = 'hidden'">
-                Hidden Gems
-            </button>
+        </h4>
+
+      <!-- Tabs -->
+      <div class="flex justify-center my-6">
+        <div class="flex w-full max-w-2xl justify-between border-b border-gray-300">
+          <!-- Popular Picks Tab -->
+          <button
+            class="w-1/2 text-center py-3 relative transition duration-200"
+            :class="tab === 'popular' ? 'text-white font-semibold' : 'text-gray-500 hover:text-white'"
+            @click="tab = 'popular'"
+          >
+            Popular Picks
+            <span
+              class="absolute left-0 bottom-0 h-0.5  bg-white transition-all duration-300"
+              :class="tab === 'popular' ? 'w-full' : 'w-0'"
+            ></span>
+          </button>
+
+          <!-- Hidden Gems Tab -->
+          <button
+            class="w-1/2 text-center py-3 relative transition duration-200"
+            :class="tab === 'hidden' ? 'text-white font-semibold' : 'text-gray-500 hover:text-white'"
+            @click="tab = 'hidden'"
+          >
+            Hidden Gems
+            <span
+              class="absolute left-0 bottom-0 h-0.5 bg-white transition-all duration-300"
+              :class="tab === 'hidden' ? 'w-full' : 'w-0'"
+            ></span>
+          </button>
         </div>
+      </div>
 
-        <!-- Swipeable content -->
-        <!-- Swipeable content -->
-        <div @touchstart="handleTouchStart" @touchend="handleTouchEnd" class="relative overflow-hidden h-auto">
-            <transition :name="swipeDirection">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" :key="tab">
-                    <PlaceCard v-for="place in (tab === 'popular' ? popularPlaces : hiddenPlaces)" :key="place._id" :place="place" />
-                </div>
-            </transition>
-        </div>
-
-        <!-- <div class="mt-20 px-4">
-            <div class="max-w-5xl mx-auto relative rounded-3xl bg-gradient-to-br from-yellow-100 via-white to-yellow-50 shadow-2xl border border-yellow-400 p-4 sm:p-6 md:max-w-3xl">
-                <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-yellow-500 text-white px-4 py-1 rounded-full shadow-md text-sm font-bold animate-bounce z-10">
-                    🚀 Start Planning
-                </div>
-                <div class="flex justify-center">
-                    <img src="/mapimage.png" alt="Map Your Destinations" @click="goToTripPlanner" class="w-full md:w-[80vw] max-w-3xl md:max-w-2xl h-[40vh] md:h-[30vh] object-cover rounded-2xl border-4 border-yellow-500 shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer animate-pulse" />
-                </div>
-                <p class="mt-4 text-center text-yellow-700 font-medium text-base sm:text-lg">
-                    Tap the map anytime to explore your perfect journey!
-                </p>
-            </div>
-        </div> -->
-
+      <!-- Swipeable content -->
+      <div
+        @touchstart="handleTouchStart"
+        @touchend="handleTouchEnd"
+        class="relative overflow-hidden h-auto"
+      >
+        <transition :name="swipeDirection" mode="out-in">
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            :key="tab"
+          >
+            <PlaceCard
+              v-for="place in (tab === 'popular' ? popularPlaces : hiddenPlaces)"
+              :key="place._id"
+              :place="place"
+            />
+          </div>
+        </transition>
+      </div>
     </div>
-</div>
+  </div>
 </template>
+
 
 <script>
 import {
@@ -285,3 +304,17 @@ export default {
     animation: fadeInUp 0.8s ease-out forwards;
 }
 </style>
+
+        <!-- <div class="mt-20 px-4">
+            <div class="max-w-5xl mx-auto relative rounded-3xl bg-gradient-to-br from-yellow-100 via-white to-yellow-50 shadow-2xl border border-yellow-400 p-4 sm:p-6 md:max-w-3xl">
+                <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-yellow-500 text-white px-4 py-1 rounded-full shadow-md text-sm font-bold animate-bounce z-10">
+                    🚀 Start Planning
+                </div>
+                <div class="flex justify-center">
+                    <img src="/mapimage.png" alt="Map Your Destinations" @click="goToTripPlanner" class="w-full md:w-[80vw] max-w-3xl md:max-w-2xl h-[40vh] md:h-[30vh] object-cover rounded-2xl border-4 border-yellow-500 shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer animate-pulse" />
+                </div>
+                <p class="mt-4 text-center text-yellow-700 font-medium text-base sm:text-lg">
+                    Tap the map anytime to explore your perfect journey!
+                </p>
+            </div>
+        </div> -->

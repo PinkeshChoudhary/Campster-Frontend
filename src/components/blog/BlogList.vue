@@ -1,8 +1,10 @@
 <template>
   <div class="blog-list bg-black pt-5 px-4 max-w-6xl mx-auto">
-    <h2 class="text-3xl font-bold mb-6 text-white text-center">Explore Our Blogs</h2>
+    <!-- <h2 class="text-3xl font-bold mb-6 text-white text-center">Explore Our Blogs</h2> -->
 
-    <div v-if="loading" class="text-center text-white text-lg animate-pulse">Loading...</div>
+   <div v-if="loading" class="flex justify-center items-center h-40">
+      <div class="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-white"></div>
+    </div>
 
     <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <div

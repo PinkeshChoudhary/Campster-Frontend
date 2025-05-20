@@ -1,33 +1,51 @@
 <template>
-  <div class="max-w-5xl mx-auto px-4 py-8 pt-24">
-    <!-- Tab Headers -->
-    <div class="flex justify-center ">
-      <div class="inline-flex bg-gray-100 p-1 rounded-full shadow">
+  <div class="w-full bg-black text-white min-h-screen pt-24 px-4">
+    <div class="flex justify-center">
+      <div class="flex w-full max-w-2xl justify-between border-b border-gray-700">
+        <!-- Blogs Tab -->
         <button
-          :class="tab === 'blogs' ? activeTabClass : tabClass"
+          class="w-1/2 text-center py-3 relative transition duration-200"
+          :class="tab === 'blogs' ? 'text-white font-semibold' : 'text-gray-400 hover:text-white'"
           @click="tab = 'blogs'"
         >
-          📖 Blogs
+          Blogs
+          <span
+            class="absolute left-0 bottom-0 h-0.5 bg-white transition-all duration-300"
+            :class="tab === 'blogs' ? 'w-full' : 'w-0'"
+          ></span>
         </button>
+
+        <!-- Audio Tab -->
         <button
-          :class="tab === 'audio' ? activeTabClass : tabClass"
+          class="w-1/2 text-center py-3 relative transition duration-200"
+          :class="tab === 'audio' ? 'text-white font-semibold' : 'text-gray-400 hover:text-white'"
           @click="tab = 'audio'"
         >
-          🎧 Audio Blogs
+          Audio Blogs
+          <span
+            class="absolute left-0 bottom-0 h-0.5 bg-white transition-all duration-300"
+            :class="tab === 'audio' ? 'w-full' : 'w-0'"
+          ></span>
         </button>
       </div>
     </div>
 
     <!-- Tab Content -->
-    <transition name="fade" mode="out-in">
-      <div :key="tab">
-        <BlogList v-if="tab === 'blogs'" />
-        <AudioList v-else />
-      </div>
-    </transition>
+    <!-- Tab Content with Swipe Handling -->
+<transition name="fade" mode="out-in">
+  <div
+    :key="tab"
+    class="mt-10 max-w-4xl mx-auto"
+    @touchstart="handleTouchStart"
+    @touchend="handleTouchEnd"
+  >
+    <BlogList v-if="tab === 'blogs'" />
+    <AudioList v-else />
+  </div>
+</transition>
+
   </div>
 </template>
-
 <script setup>
 import { ref } from 'vue'
 import BlogList from './blog/BlogList.vue'
@@ -35,10 +53,29 @@ import AudioList from './audioStories/AudioList.vue'
 
 const tab = ref('blogs')
 
-const tabClass =
-  'px-5 py-2 text-gray-600 rounded-full transition duration-200 hover:bg-white hover:text-black'
-const activeTabClass =
-  'px-5 py-2 bg-white text-blue-600 font-semibold rounded-full shadow'
+let touchStartX = 0
+let touchEndX = 0
+
+const handleTouchStart = (e) => {
+  touchStartX = e.changedTouches[0].screenX
+}
+
+const handleTouchEnd = (e) => {
+  touchEndX = e.changedTouches[0].screenX
+  handleSwipeGesture()
+}
+
+const handleSwipeGesture = () => {
+  const swipeDistance = touchEndX - touchStartX
+
+  if (Math.abs(swipeDistance) > 50) {
+    if (swipeDistance < 0 && tab.value === 'blogs') {
+      tab.value = 'audio'
+    } else if (swipeDistance > 0 && tab.value === 'audio') {
+      tab.value = 'blogs'
+    }
+  }
+}
 </script>
 
 <style scoped>
