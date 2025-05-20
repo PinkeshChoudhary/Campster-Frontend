@@ -54,21 +54,19 @@ import AudioList from './audioStories/AudioList.vue'
 const tab = ref('blogs')
 
 let touchStartX = 0
-let touchEndX = 0
+let touchCurrentX = 0
 
 const handleTouchStart = (e) => {
   touchStartX = e.changedTouches[0].screenX
 }
 
-const handleTouchEnd = (e) => {
-  touchEndX = e.changedTouches[0].screenX
-  handleSwipeGesture()
+const handleTouchMove = (e) => {
+  touchCurrentX = e.changedTouches[0].screenX
 }
 
-const handleSwipeGesture = () => {
-  const swipeDistance = touchEndX - touchStartX
-
-  if (Math.abs(swipeDistance) > 50) {
+const handleTouchEnd = () => {
+  const swipeDistance = touchCurrentX - touchStartX
+  if (Math.abs(swipeDistance) > 30) {
     if (swipeDistance < 0 && tab.value === 'blogs') {
       tab.value = 'audio'
     } else if (swipeDistance > 0 && tab.value === 'audio') {
@@ -76,6 +74,7 @@ const handleSwipeGesture = () => {
     }
   }
 }
+
 </script>
 
 <style scoped>
