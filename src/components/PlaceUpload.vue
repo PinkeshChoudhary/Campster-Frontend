@@ -1,11 +1,11 @@
 <template>
 <!-- Back Button -->
-<button @click="goBack" class="text-yellow-900 hover:text-yellow-700 transition duration-200 pt-10 p-5">
+<button @click="goBack" class="text-yellow-900 hover:text-yellow-700 transition duration-200 pt-16 p-5">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-8 h-8">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
     </svg>
 </button>
-<div class="flex justify-center items-center p-4 mb-20 pt-20">
+<div class="flex justify-center items-center p-4 mb-20">
     <div class="w-full max-w-lg p-6 bg-black/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-600">
         <h3 class="text-3xl font-bold text-yellow-900 mb-6 text-center">
             Share Hidden Gem
@@ -29,6 +29,13 @@
             <div class="mb-4">
                 <textarea v-model="place.description" placeholder="Description" class="input-field" required></textarea>
             </div>
+
+              <div class="mb-4">
+                <input v-model="place.instagramProfile" type="url"
+                  placeholder="Instagram Profile Link (https://instagram.com/yourprofile)"
+                  class="input-field"
+                />
+              </div>
 
               <div class="mb-4">
           <label for="placeType" class="block text-gray-500">Place Type</label>
@@ -96,6 +103,7 @@ export default {
             images: [],
             typeOfPlace: "",
             paid: false, // Default to false
+            instagramProfile: "",
         });
 
         const imagePreviews = ref([]);
@@ -151,6 +159,7 @@ export default {
                     description: "",
                     locationCoordinates: "",
                     location: "",
+                    instagramProfile: "",
                     images: []
                 };
                 imagePreviews.value = [];

@@ -1,87 +1,127 @@
 <template>
-    <div class="p-4 pb-20 max-w-5xl mx-auto mb-20 pt-20" v-if="place">
-      <!-- Back Button -->
-      <button @click="goBack" class="text-yellow-900 hover:text-yellow-700 transition duration-200 flex items-center mb-6">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-8 h-8">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-        </svg>
-        <span class="ml-2">Back</span>
-      </button>
-  
-      <!-- Destination Title -->
-      <h2 class="text-4xl font-bold text-yellow-900 mb-6 text-center">{{ place.destination }}</h2>
-  
-      <!-- Images Stack -->
-      <div v-if="place.images && place.images.length" class="image-stack">
-        <img
-          v-for="(image, index) in place.images"
+  <div class="p-4 pb-20 max-w-5xl mx-auto mb-20 pt-20 text-white bg-black" v-if="place">
+    <!-- Back Button -->
+    <button @click="goBack" class="text-yellow-400 hover:text-yellow-200 transition duration-200 flex items-center mb-6">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-8 h-8">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      <span class="ml-2">Back</span>
+    </button>
+
+    <!-- Destination Title -->
+    <h2 class="text-4xl font-bold text-yellow-400 mb-6 text-center">{{ place.destination }}</h2>
+
+    <!-- Images Grid -->
+    <div v-if="place.images && place.images.length" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-10">
+      <img
+        v-for="(image, index) in place.images"
+        :key="index"
+        :src="image"
+        alt="Place Image"
+        class="rounded-lg shadow-md cursor-pointer"
+        @click="openFullScreen(image)"
+      />
+    </div>
+
+    <!-- Fullscreen Overlay -->
+    <div v-if="fullScreenImage" class="fixed inset-0 bg-black bg-opacity-90 z-50 flex justify-center items-center" @click="closeFullScreen">
+      <img :src="fullScreenImage" class="max-w-full max-h-full rounded-lg" />
+    </div>
+
+    <!-- Like Counter -->
+    <h2 class="text-lg text-yellow-400 font-semibold transition-all duration-300 mt-6 text-center">
+      ❤️ Like {{ likes }}
+    </h2>
+
+    <!-- Details Section -->
+    <div class="mt-10 pt-10 border-t border-gray-700">
+      <h3 class="text-2xl font-bold text-yellow-400 mb-4">Details</h3>
+      <p class="text-lg mb-2"><strong>Description:</strong> {{ place.description }}</p>
+      <p class="text-lg mb-4"><strong>Location:</strong> {{ place.location }}</p>
+
+        <div class="my-12 border-t-2 border-gray-700"></div>
+
+      <!-- Instagram Icon -->
+     <!-- Instagram Icon -->
+<div v-if="place.influncerInstaGramProfile" class="flex items-center gap-2 mt-4">
+  <a
+    :href="place.influncerInstaGramProfile"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="flex items-center gap-2 text-pink-500 hover:text-pink-400 text-lg font-semibold relative group"
+  >
+    <i class="fab fa-instagram text-2xl"></i>
+    <span>Instagram</span>
+    
+    <!-- Small badge/hint -->
+    <span
+      class="ml-2 bg-pink-600 text-white text-xs font-semibold rounded-full px-2 py-0.5 "
+    >
+      Influencer's Profile
+    </span>
+  </a>
+</div>
+
+
+
+      <!-- Google Maps Button -->
+      <div v-if="place.locationCoordinates" class="mt-4">
+        <button
+          @click="openGoogleMaps"
+          class="flex items-center gap-2 px-4 py-2 bg-yellow-600 hover:bg-yellow-500 text-black rounded-lg transition duration-200"
+        >
+          <i class="fas fa-map-marker-alt"></i> View on Google Maps
+        </button>
+      </div>
+    </div>
+
+    <!-- Section Divider -->
+    <div class="my-12 border-t-2 border-gray-700"></div>
+
+    <!-- Comments Section -->
+    <div class="pt-10">
+      <h3 class="text-2xl font-bold text-yellow-400 mb-4">Comments</h3>
+
+      <!-- Display Comments -->
+      <div v-if="comments.length">
+        <div
+          v-for="(comment, index) in comments"
           :key="index"
-          :src="image"
-          alt="Place Image"
-          class="stacked-image"
-          @click="openFullScreen(image)"
-        />
-      </div>
-  
-      <!-- Fullscreen Image Overlay -->
-      <div v-if="fullScreenImage" class="fullscreen-overlay" @click="closeFullScreen">
-        <img :src="fullScreenImage" class="fullscreen-image" />
-      </div>
-  
-      <!-- Like Counter -->
-      <h2 class="text-lg text-yellow-900 font-semibold transition-all duration-300 mt-6 text-center">
-        Like {{ likes }}
-      </h2>
-  
-      <!-- Details Section -->
-      <div class="mt-6 bg-black text-white p-6 rounded-lg shadow-lg">
-        <h3 class="text-2xl font-bold mb-4 text-yellow-900">Details</h3>
-        <p class="text-lg text-yellow-900"><strong>Description:</strong> {{ place.description }}</p>
-        <p class="text-lg text-yellow-900"><strong>Location:</strong> {{ place.location }}</p>
-  
-        <!-- Google Maps Button -->
-        <p v-if="place.locationCoordinates" class="text-sm mt-2 text-yellow-900">
-          <button @click="openGoogleMaps" class="text-blue-500 underline hover:text-blue-700">
-            View on Google Maps
-          </button>
-        </p>
-      </div>
-  
-      <!-- Comments Section -->
-      <div class="mt-8 p-6 bg-gray-100 rounded-lg bg-gray-800 shadow-lg">
-        <h3 class="text-2xl font-bold text-yellow-900 mb-4">Comments</h3>
-  
-        <!-- Display Existing Comments -->
-        <div v-if="comments.length">
-          <div v-for="(comment, index) in comments" :key="index" class="mb-4 p-3 bg-gray-500 shadow-md rounded-lg flex items-start">
-            <div class="mr-3">
-              <i class="fas fa-user-circle text-2xl text-gray-800"></i>
-            </div>
-            <div class="flex-1">
-              <div class="flex items-center justify-between">
-                <p class="text-base text-gray-900">{{ comment.user }}</p>
-                <p class="text-xs text-gray-800"><i class="far fa-clock"></i> {{ new Date(comment.createdAt).toLocaleDateString('en-GB') }}</p>
-              </div>
-              <p class="text-lg mt-1">{{ comment.text }}</p>
-            </div>
+          class="mb-4 p-4 bg-gray-800 rounded-lg shadow-sm"
+        >
+          <div class="flex justify-between text-sm text-gray-300 mb-1">
+            <span><i class="fas fa-user-circle mr-1"></i>{{ comment.user }}</span>
+            <span><i class="far fa-clock mr-1"></i>{{ new Date(comment.createdAt).toLocaleDateString('en-GB') }}</span>
           </div>
-        </div>
-        <p v-else class="text-gray-600">No comments yet. Be the first to comment!</p>
-  
-        <!-- Add New Comment -->
-        <div class="mt-6">
-          <textarea v-model="newComment" class="w-full p-3 border bg-gray-500 rounded-lg" rows="3" placeholder="Write a comment..."></textarea>
-          <button @click="addComment" class="mt-2 bg-yellow-900 text-white px-6 py-2 rounded-lg hover:bg-yellow-700 transition duration-200">
-            Post Comment
-          </button>
+          <p class="text-base">{{ comment.text }}</p>
         </div>
       </div>
+      <p v-else class="text-gray-500">No comments yet. Be the first to comment!</p>
+
+      <!-- Add Comment -->
+      <div class="mt-6">
+        <textarea
+          v-model="newComment"
+          class="w-full p-3 bg-gray-700 text-white rounded-lg"
+          rows="3"
+          placeholder="Write a comment..."
+        ></textarea>
+        <button
+          @click="addComment"
+          class="mt-2 bg-yellow-500 text-black px-6 py-2 rounded-lg hover:bg-yellow-400 transition duration-200"
+        >
+          Post Comment
+        </button>
+      </div>
     </div>
-  
-    <div v-else class="text-center text-yellow-900 pt-40">
-      <p><i class="fas fa-spinner fa-spin"></i> Loading details...</p>
-    </div>
-  </template>
+  </div>
+
+  <!-- Loading State -->
+  <div v-else class="text-center text-yellow-400 pt-40 bg-black h-screen">
+    <p><i class="fas fa-spinner fa-spin"></i> Loading details...</p>
+  </div>
+</template>
+
   
   <script>
   import { ref, onMounted } from 'vue';
@@ -193,59 +233,3 @@
     },
   };
   </script>
-  
-  <style scoped>
-  /* Image Stack Styling */
-  .image-stack {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  .stacked-image {
-    width: 100%;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    object-fit: cover;
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .stacked-image:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
-  }
-  
-  /* Fullscreen Image Overlay */
-  .fullscreen-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.8);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-  }
-  
-  .fullscreen-image {
-    max-width: 90%;
-    max-height: 90%;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  }
-  
-  /* Responsive Adjustments */
-  @media (max-width: 768px) {
-    .stacked-image {
-      border-radius: 8px;
-    }
-    .fullscreen-image {
-      width: 100%;
-      height: auto;
-    }
-  }
-  </style>
-  

@@ -1,6 +1,7 @@
 <template>
-<div class="overflow-x-auto py-6 px-4 bg-black  scrollbar-none" style="-ms-overflow-style: none; scrollbar-width: none;">
-    <div class="flex space-x-3 min-w-max">
+<div class="overflow-x-auto py-6 px-4 bg-black scrollbar-none" style="-ms-overflow-style: none; scrollbar-width: none;">
+    <div class="flex justify-around min-w-full gap-4"> <!-- space around -->
+
 
         <!-- Rent a Tent -->
         <router-link to="/tent" class="min-w-[180px] max-w-[200px] transition-transform hover:scale-105">
