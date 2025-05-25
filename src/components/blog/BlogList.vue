@@ -1,43 +1,56 @@
 <template>
-  <div class="blog-list bg-black pt-5 px-4 max-w-6xl mx-auto">
-    <!-- <h2 class="text-3xl font-bold mb-6 text-white text-center">Explore Our Blogs</h2> -->
+  <div class="p-6 mt-10 mb-12 max-w-6xl mx-auto bg-black text-white overflow-hidden">
+    <!-- Heading -->
+    <h4 class="text-2xl font-bold text-yellow-500 text-center tracking-wide mb-6">
+      <i class="fas fa-pen-nib"></i> Discover Latest Blogs
+    </h4>
 
-   <div v-if="loading" class="flex justify-center items-center h-40">
-      <div class="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-white"></div>
+    <!-- Loading Spinner -->
+    <div v-if="loading" class="flex justify-center items-center h-40">
+      <div class="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-yellow-500"></div>
     </div>
 
-    <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Blog List -->
+    <div v-else class="space-y-6">
       <div
         v-for="blog in blogs"
         :key="blog._id"
-        class="bg-gray-900 border border-gray-700 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition duration-300"
+        class="relative flex items-start bg-black hover:bg-[#1a1a1a] cursor-pointer rounded-lg shadow-md hover:shadow-yellow-500/30 transition duration-200 overflow-hidden"
       >
-        <div class="relative">
+        <!-- Share Button -->
+        <button
+          @click.stop="shareBlog(blog)"
+          class="absolute top-0 right-0 text-yellow-800 z-10 p-2"
+          title="Share this blog"
+        >
+          <i class="fas fa-share-alt"></i>
+        </button>
+
+        <!-- Thumbnail -->
+        <div class="w-28 h-28 bg-[#111] flex-shrink-0 overflow-hidden rounded-l-lg">
           <img
             v-if="getFirstImage(blog)"
             :src="getFirstImage(blog)"
-            alt="Blog cover"
-            class="h-48 w-full object-cover"
+            class="w-full h-full object-cover block"
+            alt="Blog thumbnail"
           />
-          
-          <!-- Share Icon -->
-  <button
-  @click="shareBlog(blog)"
-  class="absolute top-2 right-2 bg-transparent text-black p-2 rounded-full shadow-lg hover:bg-gray-200 transition"
->
-  <i class="fas fa-share-alt text-black"></i>
-</button>
-
-
+          <div v-else class="w-full h-full flex items-center justify-center text-gray-600 text-sm">
+            No Image
+          </div>
         </div>
 
-        <div class="p-5">
-          <h3 class="text-xl font-semibold text-white mb-2">{{ blog.title }}</h3>
-          <p class="text-sm text-gray-400 mb-4">Published on {{ formatDate(blog.createdAt) }}</p>
-
+        <!-- Blog Info -->
+        <div class="flex-1 px-4 py-3 min-w-0">
+          <p class="text-xs text-yellow-400 font-semibold mb-1">
+            {{ formatDate(blog.createdAt) }}
+          </p>
+          <!-- Truncate title with line clamp (requires plugin) -->
+          <h3 class="text-sm font-bold text-white leading-tight truncate overflow-hidden whitespace-nowrap w-full">
+            {{ blog.title }}
+          </h3>
           <router-link
             :to="`/blog/${blog._id}`"
-            class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition"
+            class="inline-block mt-2 text-sm bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded-md transition"
           >
             Read More
           </router-link>
@@ -46,6 +59,8 @@
     </div>
   </div>
 </template>
+
+
 
 <script setup>
 import { ref, onMounted } from 'vue'

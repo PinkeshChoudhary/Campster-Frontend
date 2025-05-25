@@ -5,12 +5,12 @@
         <!-- Blogs Tab -->
         <button
           class="w-1/2 text-center py-3 relative transition duration-200"
-          :class="tab === 'blogs' ? 'text-white font-semibold' : 'text-gray-400 hover:text-white'"
+          :class="tab === 'blogs' ? 'text-yellow-600 font-semibold' : 'text-gray-400 hover:text-white'"
           @click="tab = 'blogs'"
         >
           Blogs
           <span
-            class="absolute left-0 bottom-0 h-0.5 bg-white transition-all duration-300"
+            class="absolute left-0 bottom-0 h-0.5 bg-yellow-600 transition-all duration-300"
             :class="tab === 'blogs' ? 'w-full' : 'w-0'"
           ></span>
         </button>
@@ -18,12 +18,12 @@
         <!-- Audio Tab -->
         <button
           class="w-1/2 text-center py-3 relative transition duration-200"
-          :class="tab === 'audio' ? 'text-white font-semibold' : 'text-gray-400 hover:text-white'"
+          :class="tab === 'audio' ? 'text-yellow-600 font-semibold' : 'text-gray-400 hover:text-white'"
           @click="tab = 'audio'"
         >
           Audio Blogs
           <span
-            class="absolute left-0 bottom-0 h-0.5 bg-white transition-all duration-300"
+            class="absolute left-0 bottom-0 h-0.5 bg-yellow-600 transition-all duration-300"
             :class="tab === 'audio' ? 'w-full' : 'w-0'"
           ></span>
         </button>

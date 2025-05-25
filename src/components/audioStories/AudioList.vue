@@ -1,61 +1,75 @@
 <template>
-  <div class="p-4 sm:p-6 max-w-5xl mx-auto text-white pb-20">
+  <div class="p-6 mt-10 mb-12 max-w-6xl mx-auto bg-black text-white overflow-hidden">
+    <!-- Heading -->
+    <h4 class="text-2xl font-bold text-yellow-500 text-center tracking-wide mb-6">
+      <i class="fas fa-music"></i> Listen to Stories
+    </h4>
+
     <!-- Loading Spinner -->
     <div v-if="loading" class="flex justify-center items-center h-40">
-      <div class="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-white"></div>
+      <div class="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-yellow-500"></div>
     </div>
 
-    <!-- No Stories -->
-    <div v-else-if="stories.length === 0" class="text-gray-400 text-center text-lg">
-      No stories uploaded yet.
-    </div>
-
-    <!-- Audio Cards -->
-    <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Stories List -->
+    <div v-else class="space-y-6">
       <div
         v-for="story in stories"
         :key="story._id"
-        class="bg-gray-900 border border-gray-700 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition duration-300 relative"
+        class="relative flex items-stretch bg-black hover:bg-[#1a1a1a] cursor-pointer rounded-lg shadow-md hover:shadow-yellow-500/30 transition duration-200 overflow-hidden"
       >
-        <!-- Cover Image container relative -->
-        <div class="relative">
+        <!-- Share Button -->
+        <button
+          @click.stop="shareStory(story)"
+          class="absolute top-0 right-0 text-yellow-800 z-10 p-2"
+          title="Share this story"
+        >
+          <i class="fas fa-share-alt"></i>
+        </button>
+
+        <!-- Cover Image: full height -->
+        <div class="w-28 bg-[#111] flex-shrink-0 overflow-hidden rounded-l-lg">
           <img
+            v-if="story.coverImageUrl"
             :src="story.coverImageUrl"
-            :alt="`${story.title} cover image`"
-            class="h-48 w-full object-cover"
+            alt="Story cover image"
+            class="w-full h-full object-fit block"
+            style="height: 100%;"
           />
-          <!-- Share button on top-right corner -->
-          <button
-            @click="shareStory(story)"
-            class="absolute top-2 right-2 bg-transparent text-black p-2 rounded-full shadow-lg hover:bg-gray-200 transition"
+          <div
+            v-else
+            class="w-full h-full flex items-center justify-center text-gray-600 text-sm"
+            style="height: 100%;"
           >
-             <i class="fas fa-share-alt text-black"></i>
-          </button>
-           <button
-  @click="shareStory(story)"
-  class="absolute top-2 right-2 bg-transparent text-black p-2 rounded-full shadow-lg hover:bg-gray-200 transition"
->
-  <i class="fas fa-share-alt text-black"></i>
-</button>
+            No Image
+          </div>
         </div>
 
-        <!-- Story Info + Custom Audio Player -->
-        <div class="flex flex-col justify-between flex-grow p-4 space-y-3">
-          <!-- Story Title -->
-          <h2 class="text-xl font-semibold text-white mb-2">{{ story.title }}</h2>
+        <!-- Story Info -->
+        <div class="flex-1 px-4 py-3 min-w-0 flex flex-col justify-between">
+          <!-- Place Name -->
+          <p class="text-xs text-yellow-400 font-semibold mb-1 truncate">
+            {{ story.place || 'Unknown Place' }}
+          </p>
 
-          <!-- Custom Audio Player -->
+          <!-- Story Title -->
+          <h3 class="text-sm font-bold text-white leading-tight break-words w-full">
+            {{ story.title }}
+          </h3>
+
+          <!-- Audio Player -->
           <CustomAudioPlayer
             :src="story.audioUrl"
             :id="story._id"
             :onPlay="handlePlay"
             :playingAudioId="playingAudioId"
+            class="mt-3"
           />
         </div>
       </div>
     </div>
   </div>
 </template>
+
 
 <script setup>
 import { ref, onMounted } from 'vue'
