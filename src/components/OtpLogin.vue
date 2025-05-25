@@ -1,17 +1,16 @@
 <template>
-  <div class="flex items-center justify-center min-h-screen bg-black bg-cover bg-center px-4 sm:px-0"
-       style="background-image: url('/lbg.webp');">
+  <div class="flex items-center justify-center min-h-screen bg-black bg-cover bg-center px-4 sm:px-0">
     
     <!-- Glassmorphism Login Box -->
     <div class="relative w-full max-w-xs sm:max-w-sm md:max-w-md p-6 sm:p-8 rounded-2xl border border-gray-600 shadow-xl"
          style="backdrop-filter: blur(15px); background: rgba(255, 255, 255, 0.08);">
       
-      <h2 class="text-2xl sm:text-3xl font-bold text-center text-white">Login with OTP</h2>
-      <p class="text-gray-300 text-center mt-1 text-sm sm:text-base">Enter your phone number to receive an OTP</p>
+      <h2 class="text-2xl sm:text-3xl font-bold text-center text-white">Continue with phone</h2>
+      <!-- <p class="text-gray-300 text-center mt-1 text-sm sm:text-base">Enter your phone number to receive an OTP</p> -->
 
       <!-- Phone Number Input -->
       <div class="mt-6">
-        <label class="block text-gray-300 font-medium text-sm">Phone Number</label>
+        <!-- <label class="block text-gray-300 font-medium text-sm">Phone Number</label> -->
         <div class="flex items-center bg-transparent border border-gray-500 rounded-lg overflow-hidden mt-1">
           <span class="px-3 text-gray-400 text-lg">+91</span>
           <input v-model="phoneNumber" type="tel" maxlength="10" placeholder="Enter phone number"

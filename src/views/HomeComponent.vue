@@ -13,7 +13,7 @@
       <!-- 🔥 Insert the promo banner here -->
       <hiddenGemPromo class="my-10" />
 
-      <CityFilter @places-updated="updatePlaces" />
+      <!-- <CityFilter @places-updated="updatePlaces" /> -->
 
         <h4 class="text-lg md:text-xl text-gray-500 pt-5 mb-5 text-center opacity-0 animate-fadeInUp">
             Your Next Adventure Awaits – Explore Local Wonders
