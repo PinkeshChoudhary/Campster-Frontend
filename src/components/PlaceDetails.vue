@@ -242,7 +242,7 @@ export default {
   return [
     { label: "Best Day Time", prompt: `What is the best Day Time to visit ${destination}, ${city}?` },
     { label: "Best Season", prompt: `What is the best season to visit ${destination}, ${city}?` },
-    { label: "Safety", prompt: `Is ${destination} safe for tourists?` },
+    { label: "Safety", prompt: `Is ${destination}, ${city} safe for tourists?` },
     { label: "Things to Do", prompt: `What are the top things to do in ${destination}, ${city}?` },
     { label: "Backpack Tips", prompt: `backpack tips  when traveling to ${destination}, ${city}?` }
   ];
