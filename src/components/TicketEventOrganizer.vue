@@ -1,13 +1,13 @@
 <template>
 <!-- Back Button -->
-<button @click="goBack" class="text-yellow-500 hover:text-yellow-400 transition duration-200 pt-10 p-5">
+<button @click="goBack" class="text-yellow-500 hover:text-yellow-400 transition duration-200 pt-20 p-5">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-8 h-8">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
     </svg>
 </button>
 
 <!-- Form Container -->
-<div class="flex justify-center items-center p-4 mb-20 pt-20">
+<div class="flex justify-center items-center p-4 mb-20">
     <div class="w-full max-w-lg p-8 bg-black/60 backdrop-blur-lg rounded-2xl shadow-2xl border border-gray-700">
 
         <h3 class="text-3xl font-semibold text-yellow-400 mb-6 text-center">

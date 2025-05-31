@@ -22,13 +22,13 @@
     </div>
 
     <!-- Glamping Sites -->
-    <router-link to="/ChatGround" :class="activeClass('/ChatGround')" class="nav-item">
-      <i class="fas fa-users icon"></i>
+    <router-link to="/glamping" :class="activeClass('/glamping')" class="nav-item">
+     <i class="fas fa-umbrella-beach icon"></i>
     </router-link>
 
     <!-- Profile -->
-    <router-link to="/blog" :class="activeClass('/blog')" class="nav-item">
-      <i class="fas fa-newspaper icon"></i>
+    <router-link to="/profile" :class="activeClass('/profile')" class="nav-item">
+      <i class="fas fa-user icon"></i>
     </router-link>
   </div>
 </template>

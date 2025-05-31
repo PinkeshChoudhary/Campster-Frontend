@@ -86,7 +86,49 @@
         </div>
       </div>
     </div>
+     </div>
+    <!-- Organizer Hero Section -->
+<section class="relative bg-gradient-to-br from-black via-gray-900 to-black text-white py-20 px-6 pb-24">
+  <div class="max-w-4xl mx-auto text-center">
+    <h1 class="text-4xl font-extrabold mb-4">
+      Are You an <span class="text-yellow-400">Organizer</span>?
+    </h1>
+    <p class="text-lg text-gray-300 mb-6">
+      Host events, list travel experiences, and reach thousands in minutes.
+    </p>
+    <button
+      @click="goToListEvent"
+      class="bg-yellow-400 text-black px-6 py-3 rounded-full font-semibold hover:bg-yellow-300 transition"
+    >
+      List Your Event
+    </button>
   </div>
+  <div class=" pt-20 max-w-5xl mx-auto text-center">
+    <h2 class="text-sm uppercase tracking-widest text-yellow-400 mb-2">How It Works</h2>
+    <h3 class="text-3xl font-bold mb-12">
+      We Make <span class="text-yellow-400">Event Hosting</span> Effortless
+    </h3>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div class="flex flex-col items-center">
+        <div class="w-14 h-14 rounded-full bg-yellow-500 text-black flex items-center justify-center font-bold text-xl mb-3">1</div>
+        <p class="text-sm">Create Profile With Whatsapp n0.</p>
+      </div>
+      <div class="flex flex-col items-center">
+        <div class="w-14 h-14 rounded-full bg-yellow-500 text-black flex items-center justify-center font-bold text-xl mb-3">2</div>
+        <p class="text-sm">List Events or Activities</p>
+      </div>
+      <div class="flex flex-col items-center">
+        <div class="w-14 h-14 rounded-full bg-yellow-500 text-black flex items-center justify-center font-bold text-xl mb-3">3</div>
+        <p class="text-sm">We Help Promote It</p>
+      </div>
+      <div class="flex flex-col items-center">
+        <div class="w-14 h-14 rounded-full bg-yellow-500 text-black flex items-center justify-center font-bold text-xl mb-3">4</div>
+        <p class="text-sm">Start Getting Bookings</p>
+      </div>
+    </div>
+  </div>
+</section>
 </template>
 
 
@@ -167,6 +209,11 @@ const formatDate = (dateString) => {
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   return new Date(dateString).toLocaleDateString(undefined, options);
 };
+
+  const goToListEvent = () => {
+    router.push('/organizer');
+  }
+
 
 onMounted(() => {
   fetchEvents();

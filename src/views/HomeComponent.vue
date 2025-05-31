@@ -8,10 +8,10 @@
     <div v-else>
       <!-- Slideshow remains visible -->
       <SlideShow class="mt-10" />
-      <HomeScrollCards />
+      <!-- <HomeScrollCards /> -->
       
       <!-- 🔥 Insert the promo banner here -->
-      <hiddenGemPromo class="my-10" />
+      <!-- <hiddenGemPromo class="my-10" /> -->
 
       <!-- <CityFilter @places-updated="updatePlaces" /> -->
 
