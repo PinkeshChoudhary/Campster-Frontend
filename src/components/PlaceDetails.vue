@@ -55,7 +55,7 @@
     </div>
 
     <!-- Today's Vibe -->
-    <div v-if="place.typeOfPlace === 'hidden'" class="mt-4 p-4 bg-black rounded-xl shadow-lg">
+    <div  class="mt-4 p-4 bg-black rounded-xl shadow-lg">
       <div v-if="place.todaysVibe" class="mt-6 bg-gray-50 p-4 rounded-xl shadow-sm">
         <p class="text-sm text-gray-500 mb-2 flex items-center gap-1">
           <span class="font-semibold text-gray-700">Today's View</span> •
