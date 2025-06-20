@@ -150,16 +150,32 @@
               class="hidden"
             />
 
-            <label
-              for="vibeUpload"
-              class="w-16 h-16 bg-yellow-400 hover:bg-yellow-300 text-black flex items-center justify-center rounded-full cursor-pointer transition-all duration-300 hover:scale-105"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-              </svg>
-            </label>
+            <div class="flex gap-4">
+              <!-- Camera Button -->
+              <button
+                @click="openCamera"
+                class="w-16 h-16 bg-blue-500 hover:bg-blue-400 text-white flex items-center justify-center rounded-full cursor-pointer transition-all duration-300 hover:scale-105"
+                title="Take Photo"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </button>
 
-            <p class="text-white/60 text-sm">Share today's vibe</p>
+              <!-- Upload Button -->
+              <label
+                for="vibeUpload"
+                class="w-16 h-16 bg-yellow-400 hover:bg-yellow-300 text-black flex items-center justify-center rounded-full cursor-pointer transition-all duration-300 hover:scale-105"
+                title="Upload File"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+              </label>
+            </div>
+
+            <p class="text-white/60 text-sm">Take a photo or upload a file</p>
           </div>
         </div>
       </section>
@@ -379,6 +395,82 @@
         Use arrow keys or click thumbnails to navigate • Click outside to close
       </div>
     </div>
+
+    <!-- Camera Modal -->
+    <div
+      v-if="cameraModalOpen"
+      class="fixed inset-0 bg-black/95 z-50 flex flex-col"
+      @click="closeCameraModal"
+    >
+      <!-- Header -->
+      <div class="flex items-center justify-between p-6 text-white">
+        <div class="flex items-center gap-4">
+          <h3 class="text-xl font-semibold">Take Photo</h3>
+        </div>
+        <button
+          @click="closeCameraModal"
+          class="w-12 h-12 bg-white/10 backdrop-blur-md text-white rounded-full hover:bg-white/20 transition-all duration-300 flex items-center justify-center"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Camera View -->
+      <div class="flex-1 flex items-center justify-center p-6" @click.stop>
+        <div class="relative max-w-2xl w-full">
+          <!-- Video Stream -->
+          <video
+            ref="videoElement"
+            v-show="!capturedImage"
+            autoplay
+            playsinline
+            class="w-full h-auto rounded-xl bg-black"
+          ></video>
+
+          <!-- Captured Image Preview -->
+          <img
+            v-if="capturedImage"
+            :src="capturedImage"
+            alt="Captured photo"
+            class="w-full h-auto rounded-xl"
+          />
+
+          <!-- Camera Controls -->
+          <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex gap-4">
+            <button
+              v-if="!capturedImage"
+              @click="capturePhoto"
+              class="w-16 h-16 bg-white rounded-full hover:bg-gray-200 transition-all duration-300 flex items-center justify-center shadow-lg"
+            >
+              <div class="w-12 h-12 bg-red-500 rounded-full"></div>
+            </button>
+
+            <template v-else>
+              <button
+                @click="retakePhoto"
+                class="px-6 py-3 bg-gray-600 hover:bg-gray-500 text-white rounded-xl transition-colors"
+              >
+                Retake
+              </button>
+              <button
+                @click="uploadCapturedPhoto"
+                class="px-6 py-3 bg-green-600 hover:bg-green-500 text-white rounded-xl transition-colors"
+              >
+                Upload
+              </button>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <!-- Instructions -->
+      <div class="text-center text-white/60 text-sm pb-6">
+        <p v-if="!capturedImage">Click the red button to take a photo</p>
+        <p v-else>Review your photo and choose to retake or upload</p>
+      </div>
+    </div>
   </div>
 
   <div v-else class="bg-black min-h-screen flex items-center justify-center">
@@ -409,6 +501,10 @@ export default {
     const currentImageIndex = ref(0);
     const travelPrompt = ref("");
     const sakhiResponse = ref("");
+    const cameraModalOpen = ref(false);
+    const videoElement = ref(null);
+    const capturedImage = ref(null);
+    const cameraStream = ref(null);
 
     // Fetch Place Details
     const fetchPlaceDetails = async () => {
@@ -555,6 +651,73 @@ export default {
       }
     };
 
+    // Camera functionality
+    const openCamera = async () => {
+      try {
+        cameraStream.value = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: 'environment' }, // Use back camera if available
+          audio: false
+        });
+        cameraModalOpen.value = true;
+        
+        // Wait for modal to render, then set video stream
+        setTimeout(() => {
+          if (videoElement.value) {
+            videoElement.value.srcObject = cameraStream.value;
+          }
+        }, 100);
+      } catch (error) {
+        console.error('Error accessing camera:', error);
+        alert('Unable to access camera. Please check permissions and try again.');
+      }
+    };
+
+    const closeCameraModal = () => {
+      if (cameraStream.value) {
+        cameraStream.value.getTracks().forEach(track => track.stop());
+        cameraStream.value = null;
+      }
+      cameraModalOpen.value = false;
+      capturedImage.value = null;
+    };
+
+    const capturePhoto = () => {
+      if (!videoElement.value) return;
+
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+      
+      canvas.width = videoElement.value.videoWidth;
+      canvas.height = videoElement.value.videoHeight;
+      
+      context.drawImage(videoElement.value, 0, 0);
+      capturedImage.value = canvas.toDataURL('image/jpeg', 0.8);
+    };
+
+    const retakePhoto = () => {
+      capturedImage.value = null;
+    };
+
+    const uploadCapturedPhoto = async () => {
+      if (!capturedImage.value) return;
+
+      try {
+        // Convert base64 to blob
+        const response = await fetch(capturedImage.value);
+        const blob = await response.blob();
+        
+        // Create file from blob
+        const file = new File([blob], `camera-photo-${Date.now()}.jpg`, { type: 'image/jpeg' });
+        
+        await uploadTodaysVibe(file);
+        await fetchPlaceDetails(); // Refresh place to show updated vibe
+        closeCameraModal();
+      } catch (error) {
+        console.error('Error uploading captured photo:', error);
+        alert('Failed to upload photo. Please try again.');
+      }
+    };
+
     // Keyboard navigation for gallery
     const handleKeydown = (event) => {
       if (!galleryModalOpen.value) return;
@@ -577,6 +740,10 @@ export default {
 
     onBeforeUnmount(() => {
       document.removeEventListener('keydown', handleKeydown);
+      // Clean up camera stream if still active
+      if (cameraStream.value) {
+        cameraStream.value.getTracks().forEach(track => track.stop());
+      }
     });
 
     return {
@@ -598,7 +765,16 @@ export default {
       askSakhiAI,
       askQuickPrompt,
       quickPrompts,
-      handleVibeUpload
+      handleVibeUpload,
+      // Camera functionality
+      cameraModalOpen,
+      videoElement,
+      capturedImage,
+      openCamera,
+      closeCameraModal,
+      capturePhoto,
+      retakePhoto,
+      uploadCapturedPhoto
     };
   },
 };
