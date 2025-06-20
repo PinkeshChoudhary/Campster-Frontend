@@ -1,445 +1,727 @@
 <template>
-  <div
-    class="p-4 pb-20 max-w-5xl mx-auto mb-20 pt-20 text-white bg-black"
-    v-if="place"
-  >
-    <!-- Back Button -->
-    <button
-      @click="goBack"
-      class="text-yellow-400 hover:text-yellow-200 transition duration-200 flex items-center mb-6"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        class="w-8 h-8"
+  <div class="place-details-wrapper bg-black text-white min-h-screen pb-10" v-if="place">
+    <!-- Hero Section -->
+    <div class="relative overflow-hidden">
+      <!-- Back Button -->
+      <button
+        @click="goBack"
+        class="fixed top-16 left-2 z-50 w-12 h-12 bg-white/10 backdrop-blur-md text-white rounded-full hover:bg-white/20 transition-all duration-300 flex items-center justify-center"
       >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M15 19l-7-7 7-7"
-        />
-      </svg>
-      <span class="ml-2">Back</span>
-    </button>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
 
-    <!-- Destination Title -->
-    <h2 class="text-4xl font-bold text-yellow-400 mb-6 text-center">
-      {{ place.destination }}
-    </h2>
-
-    <!-- Images Grid -->
-    <div
-      v-if="place.images && place.images.length"
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-10"
-    >
-      <img
-        v-for="(image, index) in place.images"
-        :key="index"
-        :src="image"
-        alt="Place Image"
-        class="rounded-lg shadow-md cursor-pointer"
-        @click="openFullScreen(image)"
-      />
-    </div>
-
-    <!-- Fullscreen Overlay -->
-    <div
-      v-if="fullScreenImage"
-      class="fixed inset-0 bg-black bg-opacity-90 z-50 flex justify-center items-center"
-      @click="closeFullScreen"
-    >
-      <img :src="fullScreenImage" class="max-w-full max-h-full rounded-lg" />
-    </div>
-
-    <!-- Today's Vibe -->
-    <div  class="mt-4 p-4 bg-black rounded-xl shadow-lg">
-      <div v-if="place.todaysVibe" class="mt-6 bg-gray-50 p-4 rounded-xl shadow-sm">
-        <p class="text-sm text-gray-500 mb-2 flex items-center gap-1">
-          <span class="font-semibold text-gray-700">Today's View</span> •
-          {{ new Date(place.todaysVibe.uploadedAt).toLocaleString() }}
-        </p>
-
-        <!-- Image Vibe -->
+      <!-- Hero Image -->
+      <div class="relative h-96 overflow-hidden">
         <img
-          v-if="place.todaysVibe.mediaType === 'image'"
-          :src="place.todaysVibe.mediaUrl"
-          alt="Today's vibe"
-          class="rounded-xl w-full object-cover max-h-96 shadow-md transition hover:scale-[1.02]"
+          v-if="place.images && place.images.length"
+          :src="place.images[0]"
+          alt="Place Hero"
+          class="w-full h-full object-cover"
         />
+        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+        
+        <!-- Title Overlay -->
+        <div class="absolute bottom-8 left-8 right-8">
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-2">
+            {{ place.destination }}
+          </h1>
+          <div class="flex items-center gap-2 text-white/80">
+            <div class="w-1 h-1 bg-yellow-400 rounded-full"></div>
+            <p class="text-lg">{{ place.location }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        <!-- Video Vibe -->
-        <video
-          v-else
-          controls
-          class="rounded-xl w-full shadow-md max-h-96 mt-2"
+    <!-- Main Content -->
+    <div class="max-w-4xl mx-auto px-6 py-12 space-y-12">
+      
+      <!-- Image Gallery -->
+      <section v-if="place.images && place.images.length > 1" class="space-y-6">
+        <h2 class="text-2xl font-semibold text-white flex items-center gap-3">
+          <div class="w-1 h-6 bg-yellow-400 rounded-full"></div>
+          Gallery
+          <span class="text-sm text-white/60 ml-2">{{ place.images.length - 1 }} photos</span>
+        </h2>
+        
+        <!-- Gallery Grid -->
+        <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+            <div
+              v-for="(image, index) in place.images.slice(1)"
+              :key="index"
+              class="group relative aspect-square overflow-hidden rounded-lg cursor-pointer bg-white/5 hover:scale-105 transition-all duration-300"
+              @click="openGalleryModal(index)"
+            >
+              <img
+                :src="image"
+                alt="Gallery Image"
+                class="w-full h-full object-cover"
+              />
+              
+              <!-- Simple hover overlay -->
+              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+              
+              <!-- Large, easy-to-see zoom icon -->
+              <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div class="w-16 h-16 bg-black/60 backdrop-blur-sm rounded-full flex items-center justify-center">
+                  <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                </div>
+              </div>
+              
+              <!-- Image number - always visible for easy reference -->
+              <div class="absolute bottom-2 right-2 bg-yellow-400 text-black text-sm font-bold px-2 py-1 rounded-full">
+                {{ index + 1 }}
+              </div>
+            </div>
+          </div>
+          
+          <!-- Quick tip for users -->
+          <div class="mt-4 text-center text-white/60 text-sm">
+            Click any image to browse all photos
+          </div>
+        </div>
+      </section>
+
+      <!-- Description -->
+      <section class="space-y-6">
+        <h2 class="text-2xl font-semibold text-white flex items-center gap-3">
+          <div class="w-1 h-6 bg-yellow-400 rounded-full"></div>
+          About
+        </h2>
+        <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+          <p class="text-white/80 leading-relaxed text-lg">{{ place.description }}</p>
+          
+          <!-- Like Counter -->
+          <div class="flex items-center gap-2 mt-6 pt-6 border-t border-white/10">
+            <div class="flex items-center gap-2 text-red-400">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+              </svg>
+              <span class="font-medium">{{ likes }} likes</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Today's Vibe -->
+      <section class="space-y-6">
+        <h2 class="text-2xl font-semibold text-white flex items-center gap-3">
+          <div class="w-1 h-6 bg-yellow-400 rounded-full"></div>
+          Today's Vibe
+        </h2>
+        
+        <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+          <div v-if="place.todaysVibe" class="space-y-4">
+            <div class="flex items-center justify-between text-sm text-white/60">
+              <span>{{ new Date(place.todaysVibe.uploadedAt).toLocaleDateString() }}</span>
+              <span v-if="place.todaysVibe.uploader">by {{ place.todaysVibe.uploader }}</span>
+            </div>
+
+            <!-- Image Vibe -->
+            <img
+              v-if="place.todaysVibe.mediaType === 'image'"
+              :src="place.todaysVibe.mediaUrl"
+              alt="Today's vibe"
+              class="w-full object-cover max-h-96 rounded-xl"
+            />
+
+            <!-- Video Vibe -->
+            <video
+              v-else
+              controls
+              class="w-full shadow-md max-h-96 rounded-xl"
+            >
+              <source :src="place.todaysVibe.mediaUrl" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+
+          <div v-else class="flex flex-col items-center justify-center py-12 space-y-4">
+            <input
+              id="vibeUpload"
+              type="file"
+              accept="image/*,video/*"
+              @change="handleVibeUpload"
+              class="hidden"
+            />
+
+            <label
+              for="vibeUpload"
+              class="w-16 h-16 bg-yellow-400 hover:bg-yellow-300 text-black flex items-center justify-center rounded-full cursor-pointer transition-all duration-300 hover:scale-105"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
+            </label>
+
+            <p class="text-white/60 text-sm">Share today's vibe</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Instagram Profile -->
+      <section v-if="place.influncerInstaGramProfile" class="space-y-6">
+        <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+          <a
+            :href="place.influncerInstaGramProfile"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center gap-4 text-pink-400 hover:text-pink-300 transition-colors group"
+          >
+            <div class="w-12 h-12 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center">
+              <i class="fab fa-instagram text-white text-xl"></i>
+            </div>
+            <div>
+              <p class="font-semibold">Follow on Instagram</p>
+              <p class="text-sm text-white/60">Influencer Profile</p>
+            </div>
+            <svg class="w-5 h-5 ml-auto group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+        </div>
+      </section>
+
+      <!-- Map Section -->
+      <section v-if="place.locationCoordinates" class="space-y-6">
+        <h2 class="text-2xl font-semibold text-white flex items-center gap-3">
+          <div class="w-1 h-6 bg-yellow-400 rounded-full"></div>
+          Location
+        </h2>
+        
+        <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 space-y-4">
+          <button
+            @click="openGoogleMaps"
+            class="w-full flex items-center justify-center gap-3 px-6 py-4 bg-blue-600 hover:bg-blue-500 text-white font-medium rounded-xl transition-colors"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            Navigate with Google Maps
+          </button>
+
+          <div class="h-64 w-full rounded-xl overflow-hidden">
+            <iframe
+              class="w-full h-full"
+              :src="`https://www.google.com/maps?q=${place.locationCoordinates.lat},${place.locationCoordinates.lng}&z=15&output=embed`"
+              allowfullscreen
+              loading="lazy"
+            ></iframe>
+          </div>
+        </div>
+      </section>
+
+      <!-- Comments Section -->
+      <section class="space-y-6">
+        <h2 class="text-2xl font-semibold text-white flex items-center gap-3">
+          <div class="w-1 h-6 bg-yellow-400 rounded-full"></div>
+          Comments
+        </h2>
+        
+        <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 space-y-6">
+          <div v-if="comments.length" class="space-y-4">
+            <div
+              v-for="(comment, index) in comments"
+              :key="index"
+              class="bg-white/5 rounded-xl p-4 border border-white/10"
+            >
+              <div class="flex justify-between items-center mb-2">
+                <span class="font-medium text-white">{{ comment.user }}</span>
+                <span class="text-xs text-white/60">{{ new Date(comment.createdAt).toLocaleDateString('en-GB') }}</span>
+              </div>
+              <p class="text-white/80">{{ comment.text }}</p>
+            </div>
+          </div>
+          <p v-else class="text-white/60 text-center py-8">No comments yet. Be the first to comment!</p>
+
+          <div class="space-y-4">
+            <textarea
+              v-model="newComment"
+              class="w-full p-4 bg-white/5 text-white rounded-xl border border-white/10 focus:outline-none focus:border-yellow-400 transition-colors resize-none"
+              rows="3"
+              placeholder="Write a comment..."
+            ></textarea>
+            <button
+              @click="addComment"
+              class="w-full bg-yellow-400 text-black px-6 py-3 rounded-xl hover:bg-yellow-300 transition-colors font-semibold"
+            >
+              Post Comment
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- CampsterAI Assistant -->
+      <section class="space-y-6">
+        <h2 class="text-2xl font-semibold text-white flex items-center gap-3">
+          <div class="w-1 h-6 bg-yellow-400 rounded-full"></div>
+          Ask CampsterAI
+        </h2>
+        
+        <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 space-y-6">
+          <div class="flex flex-wrap gap-3">
+            <button
+              v-for="option in quickPrompts"
+              :key="option.label"
+              @click="askQuickPrompt(option.prompt)"
+              class="px-4 py-2 bg-white/10 hover:bg-yellow-400 hover:text-black text-white rounded-full text-sm transition-all duration-300 border border-white/20 hover:border-yellow-400"
+            >
+              {{ option.label }}
+            </button>
+          </div>
+
+          <div class="flex gap-4">
+            <input
+              v-model="travelPrompt"
+              type="text"
+              placeholder="Ask about travel, blogs, tips..."
+              class="flex-1 p-4 bg-white/5 text-white rounded-xl border border-white/10 focus:outline-none focus:border-yellow-400 transition-colors"
+            />
+            <button
+              @click="askSakhiAI"
+              class="px-6 py-4 bg-yellow-400 text-black rounded-xl hover:bg-yellow-300 transition-colors font-semibold"
+            >
+              Ask
+            </button>
+          </div>
+
+          <div
+            v-if="sakhiResponse"
+            class="bg-white/5 p-6 rounded-xl border border-white/10 text-white/90 whitespace-pre-wrap"
+          >
+            {{ sakhiResponse }}
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Gallery Modal -->
+    <div
+      v-if="galleryModalOpen"
+      class="fixed inset-0 bg-black/95 z-50 flex flex-col"
+      @click="closeGalleryModal"
+    >
+      <!-- Header -->
+      <div class="flex items-center justify-between p-6 text-white">
+        <div class="flex items-center gap-4">
+          <h3 class="text-xl font-semibold">Gallery</h3>
+          <span class="text-white/60">{{ currentImageIndex + 1 }} of {{ place.images.length - 1 }}</span>
+        </div>
+        <button
+          @click="closeGalleryModal"
+          class="w-12 h-12 bg-white/10 backdrop-blur-md text-white rounded-full hover:bg-white/20 transition-all duration-300 flex items-center justify-center"
         >
-          <source :src="place.todaysVibe.mediaUrl" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
 
-        <div v-if="place.todaysVibe.uploader" class="text-xs text-gray-400 mt-2">
-          Uploaded by {{ place.todaysVibe.uploader }}
+      <!-- Main Image Display -->
+      <div class="flex-1 flex items-center justify-center p-6" @click.stop>
+        <div class="relative max-w-4xl max-h-full">
+          <img
+            :src="place.images[currentImageIndex + 1]"
+            :alt="`Gallery image ${currentImageIndex + 1}`"
+            class="max-w-full max-h-full object-contain rounded-xl"
+          />
+          
+          <!-- Navigation Arrows -->
+          <button
+            v-if="currentImageIndex > 0"
+            @click="previousImage"
+            class="absolute left-4 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-black/50 backdrop-blur-md text-white rounded-full hover:bg-black/70 transition-all duration-300 flex items-center justify-center"
+          >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          
+          <button
+            v-if="currentImageIndex < place.images.length - 2"
+            @click="nextImage"
+            class="absolute right-4 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-black/50 backdrop-blur-md text-white rounded-full hover:bg-black/70 transition-all duration-300 flex items-center justify-center"
+          >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
         </div>
       </div>
 
-      <div v-else class="flex flex-col items-center justify-center space-y-4">
-        <input
-          id="vibeUpload"
-          type="file"
-          accept="image/*,video/*"
-          @change="handleVibeUpload"
-          class="hidden"
-        />
-
-        <label
-          for="vibeUpload"
-          class="w-20 h-20 bg-yellow-500 hover:bg-yellow-400 hover:shadow-xl transition-all duration-300 text-black flex items-center justify-center rounded-full cursor-pointer relative"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-8 w-8"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
+      <!-- Thumbnail Strip -->
+      <div class="p-6 pt-0" @click.stop>
+        <div class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide justify-center">
+          <div
+            v-for="(image, index) in place.images.slice(1)"
+            :key="index"
+            class="flex-shrink-0 w-20 h-20 overflow-hidden rounded-lg cursor-pointer bg-white/5 border-2 transition-all duration-300"
+            :class="currentImageIndex === index ? 'border-yellow-400' : 'border-transparent hover:border-white/40'"
+            @click="currentImageIndex = index"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M3 7h4l1-2h8l1 2h4v12H3V7zm9 3a4 4 0 110 8 4 4 0 010-8z"
+            <img
+              :src="image"
+              alt="Thumbnail"
+              class="w-full h-full object-cover"
             />
-          </svg>
-          <span class="absolute top-0 left-0 w-full h-full rounded-full animate-ping bg-yellow-400 opacity-30"></span>
-        </label>
+          </div>
+        </div>
+      </div>
 
-        <p class="text-gray-400 text-sm">Capture or upload your vibe</p>
+      <!-- Instructions -->
+      <div class="text-center text-white/60 text-sm pb-6">
+        Use arrow keys or click thumbnails to navigate • Click outside to close
       </div>
     </div>
+  </div>
 
-    <!-- Like Counter -->
-    <h2 class="text-lg text-yellow-400 font-semibold transition-all duration-300 mt-2 text-center">
-      ❤️ Like {{ likes }}
-    </h2>
-
-    <!-- Details Section -->
-    <div class="mt-6 pt-2 border-t border-gray-700">
-      <p class="text-lg mb-2">{{ place.description }}</p>
-      <p class="text-lg mb-4">
-        <strong>Location:</strong> {{ place.location }}
-      </p>
-
-      <div class="my-2 border-t-2 border-gray-700"></div>
-
-      <div
-        v-if="place.influncerInstaGramProfile"
-        class="flex items-center gap-2 mt-4"
-      >
-        <a
-          :href="place.influncerInstaGramProfile"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="flex items-center gap-2 text-pink-500 hover:text-pink-400 text-lg font-semibold relative group"
-        >
-          <i class="fab fa-instagram text-2xl"></i>
-          <span>Instagram</span>
-          <span class="ml-2 bg-pink-600 text-white text-xs font-semibold rounded-full px-2 py-0.5">
-            Influencer Profile
-          </span>
-        </a>
-      </div>
+  <div v-else class="bg-black min-h-screen flex items-center justify-center">
+    <div class="text-center text-white">
+      <div class="w-12 h-12 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+      <p class="text-lg">Loading details...</p>
     </div>
-
-    <div class="my-4 border-t-2 border-gray-700"></div>
-<!-- Comments Section -->
-<div class="pt-6 bg-black p-4 rounded-xl shadow-lg max-w-3xl mx-auto border border-gray-800">
-  <h3 class="text-3xl font-extrabold text-yellow-400 mb-6 text-center">Comments</h3>
-
-  <div v-if="comments.length">
-    <div
-      v-for="(comment, index) in comments"
-      :key="index"
-      class="mb-4 p-4 bg-gray-800 rounded-lg shadow-sm"
-    >
-      <div class="flex justify-between text-sm text-gray-300 mb-2">
-        <span><i class="fas fa-user-circle mr-1"></i>{{ comment.user }}</span>
-        <span><i class="far fa-clock mr-1"></i>{{ new Date(comment.createdAt).toLocaleDateString('en-GB') }}</span>
-      </div>
-      <p class="text-base text-white">{{ comment.text }}</p>
-    </div>
-  </div>
-  <p v-else class="text-gray-500 text-center">No comments yet. Be the first to comment!</p>
-
-  <div class="mt-6">
-    <textarea
-      v-model="newComment"
-      class="w-full p-3 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
-      rows="3"
-      placeholder="Write a comment..."
-    ></textarea>
-    <button
-      @click="addComment"
-      class="mt-3 bg-yellow-500 text-black px-6 py-2 rounded-lg hover:bg-yellow-400 transition duration-200 font-semibold shadow w-full"
-    >
-      Post Comment
-    </button>
-  </div>
-</div>
-
-<!-- Map Section -->
-<div v-if="place.locationCoordinates" class="mt-6 bg-black p-4 rounded-xl shadow-lg max-w-3xl mx-auto border border-gray-800">
-  <button
-    @click="openGoogleMaps"
-    class="flex items-center gap-2 px-5 py-3 bg-blue-600 hover:bg-blue-500 text-white font-medium rounded-xl shadow-md transition duration-200 w-full justify-center"
-  >
-    <i class="fas fa-map-marked-alt text-lg"></i>
-    <span>Navigate with Google Maps</span>
-  </button>
-
-  <div class="mt-4 h-48 w-full rounded-xl overflow-hidden shadow-inner border border-gray-700">
-    <iframe
-      class="w-full h-full"
-      :src="`https://www.google.com/maps?q=${place.locationCoordinates.lat},${place.locationCoordinates.lng}&z=15&output=embed`"
-      allowfullscreen
-      loading="lazy"
-    ></iframe>
-  </div>
-</div>
-
-<!-- Divider -->
-<div class="my-6 border-t-2 border-gray-700 max-w-3xl mx-auto"></div>
-
-<!-- CampsterAI Assistant Section -->
-<div class="bg-black p-4 rounded-xl shadow-lg max-w-3xl mx-auto border border-gray-800">
-  <h3 class="text-3xl font-extrabold text-yellow-400 mb-6 text-center">
-    Ask CampsterAI
-  </h3>
-
-  <div class="flex flex-wrap justify-center gap-3 mb-6">
-    <button
-      v-for="option in quickPrompts"
-      :key="option.label"
-      @click="askQuickPrompt(option.prompt)"
-      class="bg-gray-800 hover:bg-yellow-500 hover:text-black text-white px-5 py-2 rounded-full text-sm transition duration-200 shadow-sm"
-    >
-      {{ option.label }}
-    </button>
-  </div>
-
-  <div class="flex flex-col sm:flex-row gap-4 items-center mb-6">
-    <input
-      v-model="travelPrompt"
-      type="text"
-      placeholder="Ask about travel, blogs, tips..."
-      class="flex-1 w-full p-3 rounded-lg bg-gray-900 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 placeholder-gray-500"
-    />
-    <button
-      @click="askSakhiAI"
-      class="bg-yellow-500 text-black px-6 py-3 rounded-lg hover:bg-yellow-400 transition duration-200 font-semibold shadow"
-    >
-      Ask
-    </button>
-  </div>
-
-  <div
-    v-if="sakhiResponse"
-    class="bg-gray-900 p-5 rounded-lg shadow-inner text-white whitespace-pre-wrap border border-gray-700"
-  >
-    {{ sakhiResponse }}
-  </div>
-</div>
-
-  </div>
-
-  <div v-else class="text-center text-yellow-400 pt-40 bg-black h-screen">
-    <p><i class="fas fa-spinner fa-spin"></i> Loading details...</p>
   </div>
 </template>
+
 <script>
-import {
-    ref,
-    onMounted,
-    computed
-} from 'vue';
-import {
-    useRoute,
-    useRouter
-} from 'vue-router';
+import { ref, onMounted, onBeforeUnmount, computed } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
-import {
-    useUserStore
-} from '../store/user';
+import { useUserStore } from '../store/user';
 
 export default {
-    setup() {
-        const route = useRoute();
-        const router = useRouter();
-        const place = ref(null);
-        const comments = ref([]);
-        const newComment = ref("");
-        const userStore = useUserStore();
-        const userName = ref(userStore.name || "Guest");
-        const likes = ref(0);
-        const fullScreenImage = ref(null);
-        const travelPrompt = ref("");
-        const sakhiResponse = ref("");
+  setup() {
+    const route = useRoute();
+    const router = useRouter();
+    const place = ref(null);
+    const comments = ref([]);
+    const newComment = ref("");
+    const userStore = useUserStore();
+    const userName = ref(userStore.name || "Guest");
+    const likes = ref(0);
+    const galleryModalOpen = ref(false);
+    const currentImageIndex = ref(0);
+    const travelPrompt = ref("");
+    const sakhiResponse = ref("");
 
-        // Fetch Place Details
-        const fetchPlaceDetails = async () => {
-            const placeId = route.params.id;
-            try {
-                const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/places/${placeId}`);
-                place.value = response.data;
-            } catch (error) {
-                console.error('Error fetching place details:', error);
-            }
-        };
+    // Fetch Place Details
+    const fetchPlaceDetails = async () => {
+      const placeId = route.params.id;
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/places/${placeId}`);
+        place.value = response.data;
+      } catch (error) {
+        console.error('Error fetching place details:', error);
+      }
+    };
 
-        // Fetch Comments
-        const fetchComments = async () => {
-            const placeId = route.params.id;
-            try {
-                const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/places/${placeId}/comments`);
-                comments.value = response.data;
-            } catch (error) {
-                console.error('Error fetching comments:', error);
-            }
-        };
+    // Fetch Comments
+    const fetchComments = async () => {
+      const placeId = route.params.id;
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/places/${placeId}/comments`);
+        comments.value = response.data;
+      } catch (error) {
+        console.error('Error fetching comments:', error);
+      }
+    };
 
-        // Add Comment
-        const addComment = async () => {
-            if (!newComment.value.trim()) return;
-            const placeId = route.params.id;
-            try {
-                const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/places/${placeId}/comments`, {
-                    text: newComment.value.trim(),
-                    user: userName.value,
-                });
-                comments.value = response.data;
-                newComment.value = "";
-            } catch (error) {
-                console.error('Error adding comment:', error);
-            }
-        };
+    // Add Comment
+    const addComment = async () => {
+      if (!newComment.value.trim()) return;
+      const placeId = route.params.id;
+      try {
+        const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/places/${placeId}/comments`, {
+          text: newComment.value.trim(),
+          user: userName.value,
+        });
+        comments.value = response.data;
+        newComment.value = "";
+      } catch (error) {
+        console.error('Error adding comment:', error);
+      }
+    };
 
-        // Fetch Likes
-        const likeCount = async () => {
-            const placeId = route.params.id;
-            try {
-                const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/places/${placeId}/likes`);
-                likes.value = response.data;
-            } catch (error) {
-                console.error('Error loading likes:', error);
-            }
-        };
+    // Fetch Likes
+    const likeCount = async () => {
+      const placeId = route.params.id;
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/places/${placeId}/likes`);
+        likes.value = response.data;
+      } catch (error) {
+        console.error('Error loading likes:', error);
+      }
+    };
 
-        const goBack = () => {
-            if (window.history.length > 1) {
-                router.back();
-            } else {
-                router.push('/');
-            }
-        };
+    const goBack = () => {
+      if (window.history.length > 1) {
+        router.back();
+      } else {
+        router.push('/');
+      }
+    };
 
-        const openGoogleMaps = () => {
-            if (place.value && place.value.locationCoordinates) {
-                window.open(`https://www.google.com/maps?q=${place.value.locationCoordinates}`, '_blank');
-            }
-        };
+    const openGoogleMaps = () => {
+      if (place.value && place.value.locationCoordinates) {
+        window.open(`https://www.google.com/maps?q=${place.value.locationCoordinates}`, '_blank');
+      }
+    };
 
-        const openFullScreen = (image) => {
-            fullScreenImage.value = image;
-        };
+    const openGalleryModal = (index) => {
+      currentImageIndex.value = index;
+      galleryModalOpen.value = true;
+    };
 
-        const closeFullScreen = () => {
-            fullScreenImage.value = null;
-        };
-  const quickPrompts = computed(() => {
-  const destination = place.value?.destination || 'this place';
-  const city = place.value?.location || '';
+    const closeGalleryModal = () => {
+      galleryModalOpen.value = false;
+    };
 
-  return [
-    { label: "Best Day Time", prompt: `What is the best Day Time to visit ${destination}, ${city}?` },
-    { label: "Best Season", prompt: `What is the best season to visit ${destination}, ${city}?` },
-    { label: "Safety", prompt: `Is ${destination}, ${city} safe for tourists?` },
-    { label: "Things to Do", prompt: `What are the top things to do in ${destination}, ${city}?` },
-    { label: "Backpack Tips", prompt: `backpack tips  when traveling to ${destination}, ${city}?` }
-  ];
-});
+    const nextImage = () => {
+      if (currentImageIndex.value < place.value.images.length - 2) {
+        currentImageIndex.value++;
+      }
+    };
 
-        const askQuickPrompt = async (prompt) => {
-            travelPrompt.value = prompt;
-            await askSakhiAI();
-        };
+    const previousImage = () => {
+      if (currentImageIndex.value > 0) {
+        currentImageIndex.value--;
+      }
+    };
 
-        // Ask SakhiAI
-        const askSakhiAI = async () => {
-            if (!travelPrompt.value.trim()) return;
-            try {
-                const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/travel-plan`, {
-                    prompt: travelPrompt.value.trim()
-                });
-                sakhiResponse.value = response.data.result || "No response received.";
-            } catch (error) {
-                console.error("SakhiAI error:", error);
-                sakhiResponse.value = "Error fetching response.";
-            }
-        };
-const handleVibeUpload = async (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
+    const quickPrompts = computed(() => {
+      const destination = place.value?.destination || 'this place';
+      const city = place.value?.location || '';
 
-    try {
+      return [
+        { label: "Best Day Time", prompt: `What is the best Day Time to visit ${destination}, ${city}?` },
+        { label: "Best Season", prompt: `What is the best season to visit ${destination}, ${city}?` },
+        { label: "Safety", prompt: `Is ${destination}, ${city} safe for tourists?` },
+        { label: "Things to Do", prompt: `What are the top things to do in ${destination}, ${city}?` },
+        { label: "Backpack Tips", prompt: `backpack tips when traveling to ${destination}, ${city}?` }
+      ];
+    });
+
+    const askQuickPrompt = async (prompt) => {
+      travelPrompt.value = prompt;
+      await askSakhiAI();
+    };
+
+    // Ask SakhiAI
+    const askSakhiAI = async () => {
+      if (!travelPrompt.value.trim()) return;
+      try {
+        const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/travel-plan`, {
+          prompt: travelPrompt.value.trim()
+        });
+        sakhiResponse.value = response.data.result || "No response received.";
+      } catch (error) {
+        console.error("SakhiAI error:", error);
+        sakhiResponse.value = "Error fetching response.";
+      }
+    };
+
+    const handleVibeUpload = async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      try {
         await uploadTodaysVibe(file);
         await fetchPlaceDetails(); // Refresh place to show updated vibe
-    } catch (err) {
+      } catch (err) {
         console.error("Error uploading vibe:", err);
         alert("Failed to upload vibe. Please try again.");
-    }
-};
+      }
+    };
 
-const uploadTodaysVibe = async (file) => {
+    const uploadTodaysVibe = async (file) => {
+      const formData = new FormData();
+      formData.append("media", file);
+      formData.append("uploadedBy", userName.value); // optional, based on your backend
 
-    const formData = new FormData();
-    formData.append("media", file);
-    formData.append("uploadedBy", userName.value); // optional, based on your backend
-
-    try {
+      try {
         await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/places/${place.value._id}/todays-vibe`, formData, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         });
-    } catch (error) {
+      } catch (error) {
         throw new Error(error.response?.data?.message || "Upload failed");
-    }
-};
-        onMounted(() => {
-            fetchPlaceDetails();
-            fetchComments();
-            likeCount();
-        });
+      }
+    };
 
-        return {
-            place,
-            comments,
-            newComment,
-            addComment,
-            goBack,
-            likes,
-            openGoogleMaps,
-            fullScreenImage,
-            openFullScreen,
-            closeFullScreen,
-            travelPrompt,
-            sakhiResponse,
-            askSakhiAI,
-            askQuickPrompt,
-            quickPrompts,
-            handleVibeUpload
-        };
-    },
+    // Keyboard navigation for gallery
+    const handleKeydown = (event) => {
+      if (!galleryModalOpen.value) return;
+      
+      if (event.key === 'ArrowLeft') {
+        previousImage();
+      } else if (event.key === 'ArrowRight') {
+        nextImage();
+      } else if (event.key === 'Escape') {
+        closeGalleryModal();
+      }
+    };
+
+    onMounted(() => {
+      fetchPlaceDetails();
+      fetchComments();
+      likeCount();
+      document.addEventListener('keydown', handleKeydown);
+    });
+
+    onBeforeUnmount(() => {
+      document.removeEventListener('keydown', handleKeydown);
+    });
+
+    return {
+      place,
+      comments,
+      newComment,
+      addComment,
+      goBack,
+      likes,
+      openGoogleMaps,
+      galleryModalOpen,
+      currentImageIndex,
+      openGalleryModal,
+      closeGalleryModal,
+      nextImage,
+      previousImage,
+      travelPrompt,
+      sakhiResponse,
+      askSakhiAI,
+      askQuickPrompt,
+      quickPrompts,
+      handleVibeUpload
+    };
+  },
 };
 </script>
+
+<style scoped>
+.place-details-wrapper {
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbar for thumbnail strip */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Custom scrollbar for main content */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Gallery enhancements */
+.grid {
+  transition: all 0.3s ease;
+}
+
+/* Smooth image loading */
+img {
+  transition: opacity 0.3s ease;
+}
+
+img:not([src]) {
+  opacity: 0;
+}
+
+/* Enhanced hover effects for gallery */
+.group:hover {
+  transform: translateY(-2px);
+}
+
+/* Responsive gallery adjustments */
+@media (max-width: 768px) {
+  .grid.grid-cols-12 {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  
+  .col-span-8,
+  .col-span-4 {
+    grid-column: span 12;
+  }
+  
+  .aspect-square {
+    aspect-ratio: 16/9;
+  }
+}
+
+/* Animation for gallery items */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.group {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.group:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.group:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.group:nth-child(4) {
+  animation-delay: 0.3s;
+}
+</style>
+
+<style scoped>
+.place-details-wrapper {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+</style>

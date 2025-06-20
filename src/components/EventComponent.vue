@@ -45,47 +45,67 @@
 
       <!-- Event List -->
       <div class="space-y-3 sm:space-y-6">
-        <div 
-          v-for="event in filteredEvents" 
-          :key="event._id" 
+        <div
+          v-for="event in filteredEvents"
+          :key="event._id"
           @click="viewDetails(event._id)"
-          class="event-card relative flex items-start bg-black hover:bg-[#262626] cursor-pointer rounded-lg shadow-md hover:shadow-yellow-500/40 transition duration-200"
+          class="event-card group relative flex items-center bg-white/5 backdrop-blur-sm hover:bg-white/10 cursor-pointer rounded-2xl border border-white/10 hover:border-white/20 transition-all duration-500 overflow-hidden"
         >
-          <!-- Share Button (Top Right Corner) -->
-          <button 
-            @click.stop="shareEvent(event)" 
-            class="absolute top-1 right-1 sm:top-2 sm:right-2 text-yellow-800 z-10 p-1 sm:p-2"
+          <!-- Share Button -->
+          <button
+            @click.stop="shareEvent(event)"
+            class="absolute top-3 right-3 w-8 h-8 bg-white/10 backdrop-blur-md text-white/70 z-10 rounded-full hover:bg-white/20 hover:text-white transition-all duration-300 flex items-center justify-center"
             title="Share this event"
           >
-            <i class="fas fa-share-alt text-xs sm:text-sm"></i>
+            <i class="fas fa-share-alt text-xs"></i>
           </button>
 
-          <!-- Square Thumbnail -->
-          <div class="event-thumbnail w-16 h-16 sm:w-24 sm:h-24 bg-[#111] flex-shrink-0 overflow-hidden rounded-l-lg">
-            <img 
-              :src="event.images[0]" 
-              class="w-full h-full object-cover" 
+          <!-- Thumbnail -->
+          <div class="event-thumbnail w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 flex-shrink-0 overflow-hidden m-4 bg-white/5">
+            <img
+              :src="event.images[0]"
+              class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
               alt="event thumbnail"
             />
           </div>
 
           <!-- Event Info -->
-          <div class="flex-1 px-2 sm:px-4 py-2 sm:py-3">
-            <p class="text-xs text-yellow-400 font-semibold mb-1">
-              {{ formatDate(event.date) }}
-            </p>
-            <h3 class="text-xs sm:text-sm font-bold text-white leading-tight truncate">
+          <div class="flex-1 pr-12 py-4">
+            <!-- Date -->
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-1 h-1 bg-yellow-400 rounded-full"></div>
+              <p class="text-xs text-yellow-400 font-medium uppercase tracking-wide">
+                {{ formatDate(event.date) }}
+              </p>
+            </div>
+            
+            <!-- Event Title -->
+            <h3 class="text-sm sm:text-base lg:text-lg font-semibold text-white leading-tight mb-2 group-hover:text-yellow-400 transition-colors duration-300">
               {{ event.name }}
             </h3>
-            <p class="text-xs text-gray-400 mt-1 truncate">
-              {{ event.location }}
-            </p>
-            <p class="text-xs text-gray-300 mt-1">
-              <span class="text-white font-semibold">
-                {{ event.ticketType && event.price ? `₹${event.price}` : "" }}
-              </span>
-            </p>
+            
+            <!-- Location & Price -->
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-1">
+                <div class="w-1 h-1 bg-white/40 rounded-full"></div>
+                <p class="text-xs text-white/60 truncate">
+                  {{ event.location }}
+                </p>
+              </div>
+              
+              <div v-if="event.ticketType && event.price" class="text-right">
+                <span class="text-sm font-bold text-white">
+                  ₹{{ event.price }}
+                </span>
+              </div>
+            </div>
           </div>
+
+          <!-- Subtle Glow Effect -->
+          <div class="absolute inset-0 bg-gradient-to-r from-yellow-400/0 via-yellow-400/5 to-yellow-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+          
+          <!-- Bottom Border Accent -->
+          <div class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-yellow-400 to-yellow-500 group-hover:w-full transition-all duration-500"></div>
         </div>
       </div>
     </div>
@@ -252,9 +272,34 @@ onBeforeUnmount(() => {
     border-radius: 8px;
   }
   
+  .event-card {
+    margin-bottom: 12px;
+    padding: 0;
+  }
+  
   .event-thumbnail {
-    min-width: 64px;
-    min-height: 64px;
+    width: 64px;
+    height: 64px;
+    margin: 12px;
+  }
+  
+  .event-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  
+  .event-card h3 {
+    font-size: 14px;
+  }
+  
+  .event-card .text-xs {
+    font-size: 11px;
+  }
+  
+  .event-card .pr-12 {
+    padding-right: 40px;
   }
   
   /* Better touch targets */
@@ -272,12 +317,33 @@ onBeforeUnmount(() => {
   }
   
   .event-card {
-    padding: 12px;
+    margin-bottom: 16px;
+    padding: 0;
   }
   
   .event-thumbnail {
     width: 80px;
     height: 80px;
+    margin: 16px;
+  }
+  
+  .event-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  
+  .event-card h3 {
+    font-size: 16px;
+  }
+  
+  .event-card .text-xs {
+    font-size: 12px;
+  }
+  
+  .event-card .pr-12 {
+    padding-right: 48px;
   }
 }
 
@@ -290,27 +356,38 @@ onBeforeUnmount(() => {
   }
   
   .event-card {
-    padding: 14px;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
+    padding: 0;
   }
   
   .event-thumbnail {
-    width: 88px;
-    height: 88px;
+    width: 96px;
+    height: 96px;
+    margin: 20px;
+  }
+  
+  .event-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
   }
   
   .event-card:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(255, 223, 0, 0.15);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(255, 255, 255, 0.1);
   }
   
-  /* Adjust text sizes for laptop */
   .event-card h3 {
-    font-size: 14px;
+    font-size: 18px;
   }
   
-  .event-card p {
-    font-size: 12px;
+  .event-card .text-xs {
+    font-size: 13px;
+  }
+  
+  .event-card .pr-12 {
+    padding-right: 56px;
   }
 }
 
@@ -327,8 +404,16 @@ onBeforeUnmount(() => {
   }
   
   .event-thumbnail {
-    width: 96px;
-    height: 96px;
+    width: 112px;
+    height: 112px;
+    margin: 24px;
+  }
+  
+  .event-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
   }
   
   .event-card:hover {
@@ -350,8 +435,16 @@ onBeforeUnmount(() => {
   }
   
   .event-thumbnail {
-    width: 112px;
-    height: 112px;
+    width: 128px;
+    height: 128px;
+    margin: 28px;
+  }
+  
+  .event-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
   }
 }
 
