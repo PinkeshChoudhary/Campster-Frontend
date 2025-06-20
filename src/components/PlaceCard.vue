@@ -1,7 +1,7 @@
 <template>
-  <div @click="viewDetails" class="relative cursor-pointer overflow-hidden rounded-2xl shadow-xl bg-white hover:shadow-2xl transition-all duration-300">
+  <div @click="viewDetails" class="relative cursor-pointer overflow-hidden  shadow-xl bg-white hover:shadow-2xl transition-all duration-300">
     <div class="relative">
-      <img :src="place.images[0]" alt="Place image" class="w-full h-60 object-cover rounded-2xl">
+      <img :src="place.images[0]" alt="Place image" class="w-full h-40 object-cover">
       <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
       <div v-if="distance" class="absolute bottom-3 right-3 px-2.5 py-0.5 rounded-full bg-white/80 text-gray-700 text-[11px] font-medium shadow backdrop-blur-sm flex items-center gap-1">
         <i class="fas fa-location-arrow text-[10px] text-orange-500"></i>

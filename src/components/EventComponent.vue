@@ -1,137 +1,139 @@
 <template>
-  <div class="p-6 mt-16 mb-12 max-w-4xl mx-auto bg-black text-white">
-    <!-- Heading -->
-    <h4 class="text-2xl font-bold text-yellow-500 text-center tracking-wide">
-      <i class="fas fa-calendar-alt"></i> Discover Events & Activities
-    </h4>
+  <div class="event-wrapper bg-black text-white min-h-screen pt-10 pb-6">
+    <!-- Events Section -->
+    <div class="event-container p-4 sm:p-6 pt-12 sm:pt-16 pb-8 sm:pb-12 max-w-4xl mx-auto">
+      <!-- Heading -->
+      <h4 class="text-xl sm:text-2xl font-bold text-yellow-500 text-center tracking-wide mb-4 sm:mb-6">
+        <i class="fas fa-calendar-alt"></i> Discover Events & Activities
+      </h4>
 
-    <!-- Filter Dropdown -->
-    <div class="mb-6 flex justify-end pr-4" ref="dropdownRef">
-      <div class="relative">
-        <div 
-          @click="toggleDropdown" 
-          class="w-10 h-10 bg-black border border-yellow-500 rounded-full flex items-center justify-center cursor-pointer shadow-md transition hover:border-yellow-400"
-        >
-          <svg 
-            class="w-5 h-5 text-yellow-500 transition-transform duration-300"
-            :class="{ 'rotate-180': isDropdownOpen }"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-          </svg>
-        </div>
-
-        <!-- Dropdown Menu -->
-        <div 
-          v-if="isDropdownOpen" 
-          class="absolute right-0 z-50 mt-2 bg-[#1E1E1E] border border-yellow-500 rounded-lg w-48 max-h-60 overflow-y-auto shadow-lg custom-scrollbar text-sm"
-        >
+      <!-- Filter Dropdown -->
+      <div class="mb-4 sm:mb-6 flex justify-end pr-2 sm:pr-4" ref="dropdownRef">
+        <div class="relative">
           <div 
-            v-for="cat in categories"
-            :key="cat"
-            @click="toggleCategory(cat)"
-            class="px-4 py-2 cursor-pointer hover:bg-yellow-500 hover:text-black transition duration-150"
-            :class="{ 'bg-yellow-500 text-black font-semibold': selectedCategories.includes(cat) }"
+            @click="toggleDropdown" 
+            class="w-8 h-8 sm:w-10 sm:h-10 bg-black border border-yellow-500 rounded-full flex items-center justify-center cursor-pointer shadow-md transition hover:border-yellow-400"
           >
-            {{ cat }}
+            <svg 
+              class="w-4 h-4 sm:w-5 sm:h-5 text-yellow-500 transition-transform duration-300"
+              :class="{ 'rotate-180': isDropdownOpen }"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+
+          <!-- Dropdown Menu -->
+          <div 
+            v-if="isDropdownOpen" 
+            class="absolute right-0 z-50 mt-2 bg-[#1E1E1E] border border-yellow-500 rounded-lg w-40 sm:w-48 max-h-60 overflow-y-auto shadow-lg custom-scrollbar text-xs sm:text-sm"
+          >
+            <div 
+              v-for="cat in categories"
+              :key="cat"
+              @click="toggleCategory(cat)"
+              class="px-3 sm:px-4 py-2 cursor-pointer hover:bg-yellow-500 hover:text-black transition duration-150"
+              :class="{ 'bg-yellow-500 text-black font-semibold': selectedCategories.includes(cat) }"
+            >
+              {{ cat }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Event List -->
+      <div class="space-y-3 sm:space-y-6">
+        <div 
+          v-for="event in filteredEvents" 
+          :key="event._id" 
+          @click="viewDetails(event._id)"
+          class="event-card relative flex items-start bg-black hover:bg-[#262626] cursor-pointer rounded-lg shadow-md hover:shadow-yellow-500/40 transition duration-200"
+        >
+          <!-- Share Button (Top Right Corner) -->
+          <button 
+            @click.stop="shareEvent(event)" 
+            class="absolute top-1 right-1 sm:top-2 sm:right-2 text-yellow-800 z-10 p-1 sm:p-2"
+            title="Share this event"
+          >
+            <i class="fas fa-share-alt text-xs sm:text-sm"></i>
+          </button>
+
+          <!-- Square Thumbnail -->
+          <div class="event-thumbnail w-16 h-16 sm:w-24 sm:h-24 bg-[#111] flex-shrink-0 overflow-hidden rounded-l-lg">
+            <img 
+              :src="event.images[0]" 
+              class="w-full h-full object-cover" 
+              alt="event thumbnail"
+            />
+          </div>
+
+          <!-- Event Info -->
+          <div class="flex-1 px-2 sm:px-4 py-2 sm:py-3">
+            <p class="text-xs text-yellow-400 font-semibold mb-1">
+              {{ formatDate(event.date) }}
+            </p>
+            <h3 class="text-xs sm:text-sm font-bold text-white leading-tight truncate">
+              {{ event.name }}
+            </h3>
+            <p class="text-xs text-gray-400 mt-1 truncate">
+              {{ event.location }}
+            </p>
+            <p class="text-xs text-gray-300 mt-1">
+              <span class="text-white font-semibold">
+                {{ event.ticketType && event.price ? `₹${event.price}` : "" }}
+              </span>
+            </p>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Event List -->
-    <div class="space-y-6">
-      <div 
-        v-for="event in filteredEvents" 
-        :key="event._id" 
-        @click="viewDetails(event._id)"
-        class="relative flex items-start bg-black hover:bg-[#262626] cursor-pointer rounded-lg shadow-md hover:shadow-yellow-500/40 transition duration-200"
-      >
-        <!-- Share Button (Top Right Corner) -->
-        <button 
-          @click.stop="shareEvent(event)" 
-          class="absolute top-2 right-2 text-yellow-800  z-10"
-          title="Share this event"
-        >
-          <i class="fas fa-share-alt"></i>
-        </button>
-
-        <!-- Square Thumbnail -->
-        <div class="w-24 h-24 bg-[#111] flex-shrink-0 overflow-hidden rounded-l-lg">
-          <img 
-            :src="event.images[0]" 
-            class="w-full h-full object-cover" 
-            alt="event thumbnail"
-          />
-        </div>
-
-        <!-- Event Info -->
-        <div class="flex-1 px-4 py-3">
-          <p class="text-xs text-yellow-400 font-semibold mb-1">
-            {{ formatDate(event.date) }}
-          </p>
-          <h3 class="text-sm font-bold text-white leading-tight truncate">
-            {{ event.name }}
-          </h3>
-          <p class="text-xs text-gray-400 mt-1 truncate">
-            {{ event.location }}
-          </p>
-          <p class="text-xs text-gray-300 mt-1">
-            <span class="text-white font-semibold">
-              {{ event.ticketType && event.price ? `₹${event.price}` : "" }}
-            </span>
-          </p>
-        </div>
-      </div>
-    </div>
-     </div>
     <!-- Organizer Hero Section -->
-<section class="relative bg-gradient-to-br from-black via-gray-900 to-black text-white py-20 px-6 pb-24">
-  <div class="max-w-4xl mx-auto text-center">
-    <h1 class="text-4xl font-extrabold mb-4">
-      Are You an <span class="text-yellow-400">Organizer</span>?
-    </h1>
-    <p class="text-lg text-gray-300 mb-6">
-      Host events, list travel experiences, and reach thousands in minutes.
-    </p>
-    <button
-      @click="goToListEvent"
-      class="bg-yellow-400 text-black px-6 py-3 rounded-full font-semibold hover:bg-yellow-300 transition"
-    >
-      List Your Event
-    </button>
-  </div>
-  <div class=" pt-20 max-w-5xl mx-auto text-center">
-    <h2 class="text-sm uppercase tracking-widest text-yellow-400 mb-2">How It Works</h2>
-    <h3 class="text-3xl font-bold mb-12">
-      We Make <span class="text-yellow-400">Event Hosting</span> Effortless
-    </h3>
+    <section class="relative bg-black text-white py-12 sm:py-20 px-4 sm:px-6 pb-16 sm:pb-24">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold mb-3 sm:mb-4">
+          Are You an <span class="text-yellow-400">Organizer</span>?
+        </h1>
+        <p class="text-sm sm:text-base lg:text-lg text-gray-300 mb-4 sm:mb-6 px-2">
+          Host events, list travel experiences, and reach thousands in minutes.
+        </p>
+        <button
+          @click="goToListEvent"
+          class="bg-yellow-400 text-black px-4 sm:px-6 py-2 sm:py-3 rounded-full font-semibold hover:bg-yellow-300 transition text-sm sm:text-base"
+        >
+          List Your Event
+        </button>
+      </div>
+      <div class="pt-12 sm:pt-20 max-w-5xl mx-auto text-center">
+        <h2 class="text-xs sm:text-sm uppercase tracking-widest text-yellow-400 mb-2">How It Works</h2>
+        <h3 class="text-xl sm:text-2xl lg:text-3xl font-bold mb-8 sm:mb-12 px-2">
+          We Make <span class="text-yellow-400">Event Hosting</span> Effortless
+        </h3>
 
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-      <div class="flex flex-col items-center">
-        <div class="w-14 h-14 rounded-full bg-yellow-500 text-black flex items-center justify-center font-bold text-xl mb-3">1</div>
-        <p class="text-sm">Create Profile With Whatsapp n0.</p>
+        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+          <div class="flex flex-col items-center">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-full bg-yellow-500 text-black flex items-center justify-center font-bold text-lg sm:text-xl mb-2 sm:mb-3">1</div>
+            <p class="text-xs sm:text-sm px-2">Create Profile With Whatsapp no.</p>
+          </div>
+          <div class="flex flex-col items-center">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-full bg-yellow-500 text-black flex items-center justify-center font-bold text-lg sm:text-xl mb-2 sm:mb-3">2</div>
+            <p class="text-xs sm:text-sm px-2">List Events or Activities</p>
+          </div>
+          <div class="flex flex-col items-center">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-full bg-yellow-500 text-black flex items-center justify-center font-bold text-lg sm:text-xl mb-2 sm:mb-3">3</div>
+            <p class="text-xs sm:text-sm px-2">We Help Promote It</p>
+          </div>
+          <div class="flex flex-col items-center">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-full bg-yellow-500 text-black flex items-center justify-center font-bold text-lg sm:text-xl mb-2 sm:mb-3">4</div>
+            <p class="text-xs sm:text-sm px-2">Start Getting Bookings</p>
+          </div>
+        </div>
       </div>
-      <div class="flex flex-col items-center">
-        <div class="w-14 h-14 rounded-full bg-yellow-500 text-black flex items-center justify-center font-bold text-xl mb-3">2</div>
-        <p class="text-sm">List Events or Activities</p>
-      </div>
-      <div class="flex flex-col items-center">
-        <div class="w-14 h-14 rounded-full bg-yellow-500 text-black flex items-center justify-center font-bold text-xl mb-3">3</div>
-        <p class="text-sm">We Help Promote It</p>
-      </div>
-      <div class="flex flex-col items-center">
-        <div class="w-14 h-14 rounded-full bg-yellow-500 text-black flex items-center justify-center font-bold text-xl mb-3">4</div>
-        <p class="text-sm">Start Getting Bookings</p>
-      </div>
-    </div>
+    </section>
   </div>
-</section>
 </template>
-
-
 
 <script setup>
 import { ref, onMounted, computed, onBeforeUnmount } from "vue";
@@ -210,10 +212,9 @@ const formatDate = (dateString) => {
   return new Date(dateString).toLocaleDateString(undefined, options);
 };
 
-  const goToListEvent = () => {
-    router.push('/organizer');
-  }
-
+const goToListEvent = () => {
+  router.push('/organizer');
+}
 
 onMounted(() => {
   fetchEvents();
@@ -226,6 +227,153 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
+/* Consistent black background wrapper */
+.event-wrapper {
+  background-color: #000000;
+  width: 100%;
+}
+
+/* Base responsive styles */
+.event-container {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .event-container {
+    padding: 12px;
+    padding-top: 48px;
+    margin-bottom: 16px;
+  }
+  
+  .event-card {
+    padding: 8px;
+    border-radius: 8px;
+  }
+  
+  .event-thumbnail {
+    min-width: 64px;
+    min-height: 64px;
+  }
+  
+  /* Better touch targets */
+  button {
+    min-height: 32px;
+    min-width: 32px;
+  }
+}
+
+/* Tablet optimizations */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .event-container {
+    padding: 16px 20px;
+    padding-top: 64px;
+  }
+  
+  .event-card {
+    padding: 12px;
+  }
+  
+  .event-thumbnail {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+/* Laptop optimizations - specific for laptop screens */
+@media (min-width: 1025px) and (max-width: 1366px) {
+  .event-container {
+    padding: 20px 24px;
+    padding-top: 64px;
+    max-width: 900px;
+  }
+  
+  .event-card {
+    padding: 14px;
+    margin-bottom: 16px;
+  }
+  
+  .event-thumbnail {
+    width: 88px;
+    height: 88px;
+  }
+  
+  .event-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(255, 223, 0, 0.15);
+  }
+  
+  /* Adjust text sizes for laptop */
+  .event-card h3 {
+    font-size: 14px;
+  }
+  
+  .event-card p {
+    font-size: 12px;
+  }
+}
+
+/* Large laptop/desktop optimizations */
+@media (min-width: 1367px) and (max-width: 1920px) {
+  .event-container {
+    padding: 24px;
+    padding-top: 80px;
+    max-width: 1000px;
+  }
+  
+  .event-card {
+    padding: 16px;
+  }
+  
+  .event-thumbnail {
+    width: 96px;
+    height: 96px;
+  }
+  
+  .event-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 223, 0, 0.2);
+  }
+}
+
+/* Ultra-wide screens */
+@media (min-width: 1921px) {
+  .event-container {
+    padding: 32px;
+    padding-top: 96px;
+    max-width: 1200px;
+  }
+  
+  .event-card {
+    padding: 20px;
+  }
+  
+  .event-thumbnail {
+    width: 112px;
+    height: 112px;
+  }
+}
+
+/* Custom scrollbar for dropdown */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #1E1E1E;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #fbbf24;
+  border-radius: 2px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #f59e0b;
+}
+
+/* Animations */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -249,5 +397,48 @@ onBeforeUnmount(() => {
 
 .premium-shine {
   animation: shine 2s infinite alternate ease-in-out;
+}
+
+/* Responsive text truncation */
+@media (max-width: 640px) {
+  .truncate {
+    max-width: 150px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .truncate {
+    max-width: 200px;
+  }
+}
+
+@media (min-width: 1025px) {
+  .truncate {
+    max-width: 300px;
+  }
+}
+
+/* Ensure proper spacing on very small screens */
+@media (max-width: 375px) {
+  .event-container {
+    padding: 8px;
+    padding-top: 40px;
+  }
+  
+  .event-card {
+    padding: 6px;
+  }
+  
+  .event-thumbnail {
+    width: 56px;
+    height: 56px;
+  }
+}
+
+/* Large screen optimizations */
+@media (min-width: 1440px) {
+  .event-container {
+    max-width: 1200px;
+  }
 }
 </style>
