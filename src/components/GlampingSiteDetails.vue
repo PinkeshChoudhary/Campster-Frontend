@@ -1,11 +1,11 @@
 <template>
-  <div class="glamping-details-wrapper bg-black text-white min-h-screen" v-if="site">
+  <div class="glamping-details-wrapper bg-black text-white min-h-screen pb-12-" v-if="site">
     <!-- Hero Section -->
     <div class="relative overflow-hidden">
       <!-- Back Button -->
       <button
         @click="goBack"
-        class="fixed top-6 left-6 z-50 w-12 h-12 bg-white/10 backdrop-blur-md text-white rounded-full hover:bg-white/20 transition-all duration-300 flex items-center justify-center"
+        class="fixed top-16 left-2 z-50 w-12 h-12 bg-white/10 backdrop-blur-md text-white rounded-full hover:bg-white/20 transition-all duration-300 flex items-center justify-center"
       >
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
