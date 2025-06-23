@@ -19,7 +19,6 @@ import CommunityChat from '../components/CommunityChat.vue';
 import BingoBoard from '../components/bingo/BingoBoard.vue';
 import BingoDashBoard from '../components/bingo/BingoDashBoard.vue';
 import BingoLobby from '../components/bingo/BingoLobby.vue';
-import TripPlanner from '../components/tripPlanner/TripPlanner.vue';
 import BlogDetails from '../components/blog/BlogDetails.vue';
 import BlogAudioTabs from '../components/BlogAudioTabs.vue';
 import ButtonAI from '../components/generativeAI/ButtonAI.vue';
@@ -37,7 +36,7 @@ const routes = [
     path: '/profile',
     name: 'Profile',
     component: UserProfile,
-    meta: { requiresAuth: true }
+    // meta: { requiresAuth: true }
   },
   {
     path: '/glamping',
@@ -114,13 +113,13 @@ const routes = [
     path: '/glamping/:id',
     name: 'glamping',
     component: GlampingSiteDetails,
-    meta: { requiresAuth: true }
+    // meta: { requiresAuth: true }
   },
   {
     path: '/submit-place',
     name: 'PlaceUpload', // New route for uploading a place
     component: PlaceUpload,
-    meta: { requiresAuth: true }
+    // meta: { requiresAuth: true }
   },
   {
     path: '/myPost',
@@ -137,12 +136,6 @@ const routes = [
     path: "/blog/:id",
     name: "BlogDetail",
     component: BlogDetails
-  },
-  {
-    path: '/Tripplanner',
-    name: 'TripPlanner', // New route for uploading a place
-    component: TripPlanner,
-    // meta: { requiresAuth: true }
   },
   {
     path: '/generativeAI',

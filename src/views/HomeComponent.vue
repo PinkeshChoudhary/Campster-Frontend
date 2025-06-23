@@ -11,9 +11,15 @@
       <section class="relative overflow-hidden">
         <SlideShow class="h-screen" />
         
-        <!-- City Filter - Top Left Position -->
-        <div class="absolute top-20 left-6 z-20">
-          <CityFilter @places-updated="updatePlaces" />
+        <!-- Filters - Top Position -->
+        <div class="absolute top-20 left-6 right-6 z-20">
+          <div class="flex flex-col sm:flex-row gap-4 justify-between">
+            <!-- City Filter - Left -->
+            <CityFilter @places-updated="updatePlaces" />
+            
+            <!-- Sort Filter - Right -->
+            <PlaceSortFilter @sort-changed="handleSortChange" />
+          </div>
         </div>
         
         <!-- Hero Overlay Content -->
@@ -196,10 +202,12 @@ import SlideShow from '../components/Images/SlideShow.vue';
 import { getAuth } from "firebase/auth";
 import { useUserStore } from "../store/user";
 import CityFilter from '../components/CityFilter.vue';
+import PlaceSortFilter from '../components/PlaceSortFilter.vue';
 import HomeScrollCards from '../components/HomeScrollCards.vue';
 import router from '../RouteFolder/router';
 import BlockBlogEditor from '../components/blog/BlockBlogEditor.vue';
 import hiddenGemPromo from '../components/hiddenGemPromo.vue';
+import { usePlaceSort } from '../composables/usePlaceSort.js';
 
 export default {
   components: {
@@ -207,6 +215,7 @@ export default {
     AdminDashboard,
     SlideShow,
     CityFilter,
+    PlaceSortFilter,
     HomeScrollCards,
     BlockBlogEditor,
     hiddenGemPromo,
@@ -217,6 +226,10 @@ export default {
     const approvedPlaces = computed(() => store.approvedPlaces);
     const auth = getAuth();
     const userStore = useUserStore();
+    
+    // Initialize sorting functionality
+    const { sortPlacesWithDistance, initializeLocation, setSortType } = usePlaceSort();
+    const currentSortType = ref('default');
 
     const goToTripPlanner = () => {
       router.push('/Tripplanner');
@@ -251,13 +264,15 @@ export default {
 
     const tab = ref('popular');
 
-    const popularPlaces = computed(() =>
-      approvedPlaces.value.filter(place => place.typeOfPlace === 'popular')
-    );
+    const popularPlaces = computed(() => {
+      const filtered = approvedPlaces.value.filter(place => place.typeOfPlace === 'popular');
+      return sortPlacesWithDistance(filtered, currentSortType.value);
+    });
 
-    const hiddenPlaces = computed(() =>
-      approvedPlaces.value.filter(place => place.typeOfPlace === 'hidden')
-    );
+    const hiddenPlaces = computed(() => {
+      const filtered = approvedPlaces.value.filter(place => place.typeOfPlace === 'hidden');
+      return sortPlacesWithDistance(filtered, currentSortType.value);
+    });
 
     const swipeDirection = ref('slide-left');
 
@@ -292,10 +307,20 @@ export default {
       }
     };
 
+    // Handle sort change
+    const handleSortChange = (sortType) => {
+      currentSortType.value = sortType;
+      setSortType(sortType);
+    };
+
     // Fetch places on component mount
-    onMounted(() => {
+    onMounted(async () => {
       checkIfAdmin();
       fetchPlaces();
+      
+      // Initialize user location for distance sorting
+      await initializeLocation();
+      
       auth.onAuthStateChanged(async (user) => {
         if (user) {
           userStore.phone = user.phoneNumber;
@@ -325,6 +350,8 @@ export default {
       handleTouchEnd,
       switchTab,
       swipeDirection,
+      handleSortChange,
+      currentSortType,
     };
   },
 };

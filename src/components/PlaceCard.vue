@@ -3,9 +3,9 @@
     <div class="relative">
       <img :src="place.images[0]" alt="Place image" class="w-full h-40 object-cover">
       <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
-      <div v-if="distance" class="absolute bottom-3 right-3 px-2.5 py-0.5 rounded-full bg-white/80 text-gray-700 text-[11px] font-medium shadow backdrop-blur-sm flex items-center gap-1">
+      <div v-if="displayDistance" class="absolute bottom-3 right-3 px-2.5 py-0.5 rounded-full bg-white/80 text-gray-700 text-[11px] font-medium shadow backdrop-blur-sm flex items-center gap-1">
         <i class="fas fa-location-arrow text-[10px] text-orange-500"></i>
-        {{ distance }} km
+        {{ displayDistance }} km
       </div>
 
       <!-- <div v-if="place.paid" class="absolute top-3 left-3 bg-yellow-100/80 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1">
@@ -41,7 +41,7 @@
 
 <script>
 import { useRouter } from 'vue-router';
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { getAuth } from "firebase/auth";
 import axios from "axios";
 
@@ -53,6 +53,14 @@ export default {
     const distance = ref(null);
 
     const auth = getAuth();
+
+    // Use calculated distance from props if available, otherwise calculate it
+    const displayDistance = computed(() => {
+      if (props.place.calculatedDistance !== undefined && props.place.calculatedDistance !== null) {
+        return props.place.calculatedDistance.toFixed(1);
+      }
+      return distance.value;
+    });
 
     const calculateDistance = (lat1, lon1, lat2, lon2) => {
       const toRad = angle => (angle * Math.PI) / 180;
@@ -152,6 +160,7 @@ export default {
       likedByUser,
       likePlace,
       distance,
+      displayDistance,
       sharePlace,
     };
   },
