@@ -22,8 +22,8 @@
     </div>
 
     <!-- Glamping Sites -->
-    <router-link to="/glamping" :class="activeClass('/glamping')" class="nav-item">
-     <i class="fas fa-umbrella-beach icon"></i>
+    <router-link to="/ChatGround" :class="activeClass('/ChatGround')" class="nav-item">
+     <i class="fas fa-users icon"></i>
     </router-link>
 
     <!-- Profile -->

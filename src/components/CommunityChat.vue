@@ -1,101 +1,126 @@
 <template>
-    <div class="min-h-screen bg-black text-white px-4 mb-5 sm:px-6 py-6 space-y-6 pt-20">
-  
-      <!-- City Selection as Buttons -->
-      <div>
-        <h1 class="text-3xl sm:text-4xl font-extrabold mb-6 tracking-wide text-white flex items-center gap-3">
-   <span class="bg-gradient-to-r from-blue-400 to-yellow-500 bg-clip-text text-transparent">Select Community Chat Ground</span>
-</h1>
+  <div class="min-h-screen bg-black text-white pb-10 pt-20">
+    <!-- Header -->
+    <div class="sticky top-0 z-10 bg-black border-b border-yellow-500">
+      <div class="max-w-4xl mx-auto px-4 py-6">
+        <h1 class="text-2xl font-bold text-center text-yellow-400">Community Chat</h1>
+      </div>
+    </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+    <div class="max-w-4xl mx-auto px-4 py-6 space-y-6">
+      <!-- City Selection -->
+      <div class="space-y-4">
+        <h2 class="text-lg font-semibold text-white">Choose Your City</h2>
+        
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <button
             v-for="city in cities"
             :key="city"
             @click="selectCity(city)"
             :class="[
-              'px-4 py-3 rounded-xl font-semibold transition-all text-white shadow-md',
-              selectedCity === city ? 'bg-yellow-500 ring-2 ring-blue-300 scale-105' : 'bg-zinc-800 hover:bg-zinc-700'
+              'px-4 py-3 rounded-lg font-medium transition-all',
+              selectedCity === city
+                ? 'bg-yellow-400 text-black shadow-lg shadow-yellow-400/20'
+                : 'bg-zinc-900 text-white hover:bg-zinc-800 border border-zinc-700 hover:border-yellow-500'
             ]"
           >
             {{ city }}
           </button>
         </div>
       </div>
-  
-      <!-- New Message -->
-      <div v-if="selectedCity" class="bg-black rounded-xl p-4 shadow-lg">
-        <textarea
-          v-model="newMessage"
-          rows="2"
-          placeholder="Ask Your Query"
-          class="w-full bg-zinc-900 text-white px-4 py-2 rounded-lg border border-zinc-700 resize-none focus:ring-2 focus:ring-blue-500" />
-        <div class="text-right mt-3">
-          <button
-            @click="sendMessage"
-            class="bg-blue-600 hover:bg-blue-700 px-5 py-2 rounded-lg font-semibold transition shadow-sm">
-            Send
-          </button>
+
+      <!-- Message Input -->
+      <div v-if="selectedCity" class="bg-zinc-900 rounded-lg p-4 border border-zinc-800">
+        <div class="space-y-3">
+          <div class="text-sm text-zinc-400">Chatting in {{ selectedCity }}</div>
+          
+          <textarea
+            v-model="newMessage"
+            rows="3"
+            placeholder="Type your message..."
+            class="w-full bg-black text-white px-3 py-2 rounded border border-zinc-700 resize-none focus:border-white focus:outline-none"
+          />
+          
+          <div class="flex justify-end">
+            <button
+              @click="sendMessage"
+              :disabled="!newMessage.trim()"
+              class="bg-yellow-400 text-black px-4 py-2 rounded font-medium hover:bg-yellow-300 disabled:bg-zinc-700 disabled:text-zinc-500 disabled:cursor-not-allowed transition-all shadow-lg shadow-yellow-400/20"
+            >
+              Send
+            </button>
+          </div>
         </div>
       </div>
-  
+
       <!-- Messages List -->
-      <div v-if="messages.length" class="space-y-5">
+      <div v-if="messages.length" class="space-y-4">
         <div
           v-for="msg in messages"
           :key="msg._id"
-          class="bg-black p-4 rounded-xl shadow-md">
+          class="bg-zinc-900 rounded-lg p-4 border border-zinc-800"
+        >
           <div class="flex gap-3 items-start">
-            <!-- Profile Circle -->
-            <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow">
+            <!-- Profile Avatar -->
+            <div class="w-10 h-10 bg-yellow-400 text-black rounded-full flex items-center justify-center font-bold text-sm shadow-lg shadow-yellow-400/20">
               {{ getInitials(msg.username) }}
             </div>
-  
+
             <div class="flex-1">
-              <div class="flex justify-between items-center">
-                <span class="font-semibold text-sm">{{ msg.username }}</span>
-                <span class="text-xs text-zinc-400">{{ formatDate(msg.createdAt) }}</span>
+              <div class="flex justify-between items-center mb-1">
+                <span class="font-semibold text-white">{{ msg.username }}</span>
+                <span class="text-xs text-zinc-500">{{ formatDate(msg.createdAt) }}</span>
               </div>
-              <p class="text-sm mt-1 text-zinc-200">{{ msg.message }}</p>
+              <p class="text-zinc-200">{{ msg.message }}</p>
             </div>
           </div>
-  
+
           <!-- Replies -->
           <div v-if="msg.replies.length" class="mt-4 pl-6 space-y-3">
-            <div
-              v-for="(reply, idx) in msg.replies"
-              :key="idx"
-              class="bg-black p-3 rounded-lg flex gap-3 items-start">
-              <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-xs">
-                {{ getInitials(reply.username) }}
-              </div>
-              <div class="flex-1">
-                <div class="flex justify-between items-center">
-                  <span class="font-semibold text-sm">{{ reply.username }}</span>
-                  <span class="text-xs text-zinc-400">{{ formatDate(reply.createdAt) }}</span>
+            <div class="border-l-2 border-yellow-500 pl-4 space-y-3">
+              <div
+                v-for="(reply, idx) in msg.replies"
+                :key="idx"
+                class="bg-black rounded p-3 border border-zinc-800"
+              >
+                <div class="flex gap-3 items-start">
+                  <div class="w-8 h-8 bg-yellow-500 text-black rounded-full flex items-center justify-center font-bold text-xs">
+                    {{ getInitials(reply.username) }}
+                  </div>
+                  <div class="flex-1">
+                    <div class="flex justify-between items-center mb-1">
+                      <span class="font-medium text-sm text-white">{{ reply.username }}</span>
+                      <span class="text-xs text-zinc-500">{{ formatDate(reply.createdAt) }}</span>
+                    </div>
+                    <p class="text-sm text-zinc-300">{{ reply.message }}</p>
+                  </div>
                 </div>
-                <p class="text-sm mt-1 text-zinc-100">{{ reply.message }}</p>
               </div>
             </div>
           </div>
-  
-          <!-- Toggle Reply Box -->
+
+          <!-- Reply Button -->
           <div class="mt-3 pl-6">
             <button
               @click="toggleReplyBox(msg._id)"
-              class="text-sm text-green-400 hover:underline">
+              class="text-sm text-zinc-400 hover:text-yellow-400 transition-colors"
+            >
               {{ activeReplyBox === msg._id ? 'Cancel' : 'Reply' }}
             </button>
-  
-            <!-- Reply Box -->
-            <div v-if="activeReplyBox === msg._id" class="mt-2">
+
+            <!-- Reply Input -->
+            <div v-if="activeReplyBox === msg._id" class="mt-3 space-y-2">
               <input
                 v-model="replyText[msg._id]"
                 placeholder="Write a reply..."
-                class="w-full bg-zinc-900 text-white px-3 py-2 rounded-lg border border-zinc-700 focus:ring-2 focus:ring-green-500 text-sm" />
-              <div class="text-right mt-2">
+                class="w-full bg-black text-white px-3 py-2 rounded border border-zinc-700 focus:border-white focus:outline-none"
+              />
+              <div class="flex justify-end">
                 <button
                   @click="sendReply(msg._id)"
-                  class="bg-green-600 hover:bg-green-700 text-sm px-4 py-1.5 rounded-lg font-medium transition">
+                  :disabled="!replyText[msg._id]?.trim()"
+                  class="bg-yellow-500 text-black px-3 py-1 rounded text-sm hover:bg-yellow-400 disabled:bg-zinc-800 disabled:cursor-not-allowed transition-all"
+                >
                   Reply
                 </button>
               </div>
@@ -103,97 +128,117 @@
           </div>
         </div>
       </div>
-  
-      <!-- No Messages -->
-      <div v-if="selectedCity && messages.length === 0" class="text-center text-zinc-500 pt-10 text-sm">
-        No chats in <strong>{{ selectedCity }}</strong> yet. Start the conversation!
+
+      <!-- Empty State -->
+      <div v-if="selectedCity && messages.length === 0" class="text-center py-12">
+        <div class="text-zinc-500">
+          <p>No messages in <span class="text-yellow-400 font-semibold">{{ selectedCity }}</span> yet.</p>
+          <p class="text-sm mt-1">Be the first to start a conversation!</p>
+        </div>
+      </div>
+
+      <!-- Welcome Message -->
+      <div v-if="!selectedCity" class="text-center py-12">
+        <div class="text-zinc-400">
+          <h2 class="text-xl font-semibold text-yellow-400 mb-2">Welcome to Community Chat</h2>
+          <p>Select a city above to start chatting with fellow campers.</p>
+        </div>
       </div>
     </div>
-  </template>
+  </div>
+</template>
   
-  <script setup>
-  import { ref, reactive } from 'vue'
-  import axios from 'axios'
-  import { io } from 'socket.io-client'
+<script setup>
+import { ref, reactive } from 'vue'
+import axios from 'axios'
+import { io } from 'socket.io-client'
 import { useUserStore } from "../store/user";
 import { getAuth } from "firebase/auth";
 
-  const auth = getAuth();
-  const userAuth = auth.currentUser;
-  const userStore = useUserStore();
-  const cities = ['Udaipur', 'Jaisalmer', 'Jaipur' , 'Mount Abu']
-  const selectedCity = ref('')
-  const newMessage = ref('')
-  const messages = ref([])
-  const replyText = reactive({})
-  const activeReplyBox = ref(null)
-  
-  const user = {
-    userId: userAuth?.uid || 'Guest',
-    username: userStore.name || 'Guest'
-  }
-  
-  // Socket.io for real-time messages
-  const socket = io(`${import.meta.env.VITE_API_BASE_URL}`)
-  socket.on('receive-message', (data) => {
-    if (data.city === selectedCity.value) fetchMessages()
+const auth = getAuth();
+const userAuth = auth.currentUser;
+const userStore = useUserStore();
+const cities = ['Udaipur', 'Jaisalmer', 'Jaipur' , 'Mount Abu']
+const selectedCity = ref('')
+const newMessage = ref('')
+const messages = ref([])
+const replyText = reactive({})
+const activeReplyBox = ref(null)
+
+const user = {
+  userId: userAuth?.uid || 'Guest',
+  username: userStore.name || 'Guest'
+}
+
+// Socket.io for real-time messages
+const socket = io(`${import.meta.env.VITE_API_BASE_URL}`)
+socket.on('receive-message', (data) => {
+  if (data.city === selectedCity.value) fetchMessages()
+})
+
+// Select city via buttons
+const selectCity = (city) => {
+  selectedCity.value = city
+  fetchMessages()
+}
+
+const fetchMessages = async () => {
+  if (!selectedCity.value) return
+  const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/citychat/${selectedCity.value}`)
+  messages.value = res.data
+}
+
+const sendMessage = async () => {
+  if (!newMessage.value.trim()) return
+  await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/citychat`, {
+    city: selectedCity.value,
+    message: newMessage.value,
+    ...user
   })
-  
-  // Select city via buttons
-  const selectCity = (city) => {
-    selectedCity.value = city
-    fetchMessages()
-  }
-  
-  const fetchMessages = async () => {
-    if (!selectedCity.value) return
-    const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/citychat/${selectedCity.value}`)
-    messages.value = res.data
-  }
-  
-  const sendMessage = async () => {
-    if (!newMessage.value.trim()) return
-    await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/citychat`, {
-      city: selectedCity.value,
-      message: newMessage.value,
-      ...user
-    })
-    newMessage.value = ''
-    fetchMessages()
-    socket.emit('send-message', { city: selectedCity.value })
-  }
-  
-  const sendReply = async (messageId) => {
-    const text = replyText[messageId]
-    if (!text?.trim()) return
-    await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/citychat/reply/${messageId}`, {
-      message: text,
-      ...user
-    })
-    replyText[messageId] = ''
-    activeReplyBox.value = null
-    fetchMessages()
-    socket.emit('send-message', { city: selectedCity.value })
-  }
-  
-  const toggleReplyBox = (id) => {
-    activeReplyBox.value = activeReplyBox.value === id ? null : id
-  }
-  
-  const formatDate = (iso) => new Date(iso).toLocaleString()
-  
-  const getInitials = (name) => {
-    return name.split(' ').map(n => n[0]).join('').toUpperCase()
-  }
-  </script>
-  
-  <style scoped>
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-  ::-webkit-scrollbar-thumb {
-    background-color: #555;
-    border-radius: 6px;
-  }
-  </style>
-  
+  newMessage.value = ''
+  fetchMessages()
+  socket.emit('send-message', { city: selectedCity.value })
+}
+
+const sendReply = async (messageId) => {
+  const text = replyText[messageId]
+  if (!text?.trim()) return
+  await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/citychat/reply/${messageId}`, {
+    message: text,
+    ...user
+  })
+  replyText[messageId] = ''
+  activeReplyBox.value = null
+  fetchMessages()
+  socket.emit('send-message', { city: selectedCity.value })
+}
+
+const toggleReplyBox = (id) => {
+  activeReplyBox.value = activeReplyBox.value === id ? null : id
+}
+
+const formatDate = (iso) => new Date(iso).toLocaleString()
+
+const getInitials = (name) => {
+  return name.split(' ').map(n => n[0]).join('').toUpperCase()
+}
+</script>
+
+<style scoped>
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+</style>
