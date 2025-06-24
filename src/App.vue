@@ -7,7 +7,6 @@
     </div>
   </div>
   <div v-else>
-    <PopUP />
     <Navbar />
     <div class="container mx-auto">
       <RouterView />
@@ -23,7 +22,6 @@ import Navbar from "./components/Navbar.vue";
 import OtpLogin from "./components/OtpLogin.vue";
 import BottomNavigation from "./components/BottomNavigation.vue";
 import ProgramList from "./components/menus/programList.vue";
-import PopUP from "./components/popup/PopUP.vue";
 
 export default {
   components: {
@@ -31,7 +29,6 @@ export default {
     OtpLogin,
     BottomNavigation,
     ProgramList,
-    PopUP,
   },
   setup() {
     const isAuthenticated = ref(false);

@@ -77,6 +77,9 @@
           <li @click="navigate('organizer')" class="text-yellow-500 menu-item flex items-center space-x-3 py-3 border-b border-gray-400 hover:bg-gray-200 rounded-lg transition">
             <span>Organize event & activity</span>
           </li>
+          <li v-if="isAdmin" @click="navigate('admin-dashboard')" class="text-yellow-500 menu-item flex items-center space-x-3 py-3 border-b border-gray-400 hover:bg-gray-200 rounded-lg transition">
+            <span>Admin</span>
+          </li>
         </ul>
 
         <!-- Login Button -->
@@ -99,11 +102,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, computed } from "vue";
 import { useRouter } from "vue-router";
+import { useStore } from '../../store/store';
 import { useUserStore } from "../../store/user"; // Import the user store
 
-
+const store = useStore();
+const isAdmin = computed(() => store.isAdmin);
 const menuOpen = ref(false);
 const profileExpanded = ref(false);
 const menu = ref(null);

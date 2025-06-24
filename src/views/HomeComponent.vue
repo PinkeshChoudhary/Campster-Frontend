@@ -1,12 +1,7 @@
 <template>
-  <div class="home-wrapper bg-black text-white min-h-screen">
+  <div class="home-wrapper bg-black text-white min-h-screen pb-10">
     <!-- Admin view: Display pending places -->
-    <div v-if="isAdmin" class="p-6">
-      <AdminDashboard />
-      <BlockBlogEditor />
-    </div>
-    
-    <div v-else>
+    <div>
       <!-- Hero Section with Slideshow -->
       <section class="relative overflow-hidden">
         <SlideShow class="h-screen" />

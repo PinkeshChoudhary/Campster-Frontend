@@ -23,6 +23,7 @@ import BlogDetails from '../components/blog/BlogDetails.vue';
 import BlogAudioTabs from '../components/BlogAudioTabs.vue';
 import ButtonAI from '../components/generativeAI/ButtonAI.vue';
 import NewRentTent from '../renTent/newRentTent.vue';
+import AdminDashboard from '../components/AdminDashboard.vue';
 
 
 
@@ -36,7 +37,7 @@ const routes = [
     path: '/profile',
     name: 'Profile',
     component: UserProfile,
-    // meta: { requiresAuth: true }
+    meta: { requiresAuth: true }
   },
   {
     path: '/glamping',
@@ -52,7 +53,7 @@ const routes = [
     path: '/events/:id',
     name: 'eventdetails',
     component: EventDetails,
-    // meta: { requiresAuth: true }
+    meta: { requiresAuth: true }
   },
   {
     path: '/organizer',
@@ -119,7 +120,7 @@ const routes = [
     path: '/submit-place',
     name: 'PlaceUpload', // New route for uploading a place
     component: PlaceUpload,
-    // meta: { requiresAuth: true }
+    meta: { requiresAuth: true }
   },
   {
     path: '/myPost',
@@ -131,6 +132,11 @@ const routes = [
     path: "/blog",
     name: "BlogAudioTabs",
     component: BlogAudioTabs,
+  },
+  {
+    path: "/admin-dashboard",
+    name: "admindashboard",
+    component: AdminDashboard,
   },
   {
     path: "/blog/:id",
