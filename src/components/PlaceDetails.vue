@@ -40,49 +40,80 @@
       
       <!-- Image Gallery -->
       <section v-if="place.images && place.images.length > 1" class="space-y-6">
-        <h2 class="text-2xl font-semibold text-white flex items-center gap-3">
-          <div class="w-1 h-6 bg-yellow-400 rounded-full"></div>
-          Gallery
-          <span class="text-sm text-white/60 ml-2">{{ place.images.length - 1 }} photos</span>
-        </h2>
+        <div class="flex items-center justify-between">
+          <h2 class="text-2xl font-semibold text-white flex items-center gap-3">
+            <div class="w-1 h-6 bg-yellow-400 rounded-full"></div>
+            Photos
+            <span class="text-sm text-white/60 ml-2">{{ place.images.length - 1 }}</span>
+          </h2>
+          <button
+            @click="openGalleryModal(0)"
+            class="text-yellow-400 hover:text-yellow-300 text-sm font-medium transition-colors"
+          >
+            See all photos
+          </button>
+        </div>
         
-        <!-- Gallery Grid -->
+        <!-- Horizontal Scrolling Gallery -->
         <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+          <!-- Main featured image -->
+          <div class="mb-4">
             <div
-              v-for="(image, index) in place.images.slice(1)"
-              :key="index"
-              class="group relative aspect-square overflow-hidden rounded-lg cursor-pointer bg-white/5 hover:scale-105 transition-all duration-300"
-              @click="openGalleryModal(index)"
+              class="group relative h-80 overflow-hidden rounded-xl cursor-pointer bg-white/5"
+              @click="openGalleryModal(0)"
             >
               <img
-                :src="image"
-                alt="Gallery Image"
-                class="w-full h-full object-cover"
+                :src="place.images[1]"
+                alt="Featured Gallery Image"
+                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                loading="lazy"
               />
-              
-              <!-- Simple hover overlay -->
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
-              
-              <!-- Large, easy-to-see zoom icon -->
-              <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div class="w-16 h-16 bg-black/60 backdrop-blur-sm rounded-full flex items-center justify-center">
-                  <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                  </svg>
-                </div>
+              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
+              <div class="absolute top-4 left-4 bg-yellow-400 text-black text-xs font-bold px-3 py-1 rounded-full">
+                Featured Photo
               </div>
-              
-              <!-- Image number - always visible for easy reference -->
-              <div class="absolute bottom-2 right-2 bg-yellow-400 text-black text-sm font-bold px-2 py-1 rounded-full">
-                {{ index + 1 }}
+              <div class="absolute bottom-4 right-4 bg-black/70 text-white text-sm px-3 py-1 rounded-full">
+                1 / {{ place.images.length - 1 }}
               </div>
             </div>
           </div>
           
-          <!-- Quick tip for users -->
-          <div class="mt-4 text-center text-white/60 text-sm">
-            Click any image to browse all photos
+          <!-- Horizontal scrolling thumbnails -->
+          <div class="relative">
+            <div class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+              <div
+                v-for="(image, index) in place.images.slice(1)"
+                :key="index"
+                class="group relative flex-shrink-0 w-32 h-24 overflow-hidden rounded-lg cursor-pointer bg-white/5 transition-all duration-300 hover:scale-105"
+                @click="openGalleryModal(index)"
+              >
+                <img
+                  :src="image"
+                  alt="Gallery Thumbnail"
+                  class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                  loading="lazy"
+                />
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300"></div>
+                
+                <!-- Image number -->
+                <div class="absolute bottom-1 right-1 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                  {{ index + 1 }}
+                </div>
+                
+                <!-- Hover zoom icon -->
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
+                  <div class="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center">
+                    <svg class="w-4 h-4 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Scroll indicators -->
+            <div class="absolute top-1/2 -translate-y-1/2 left-0 w-8 h-full bg-gradient-to-r from-black/20 to-transparent pointer-events-none rounded-l-lg"></div>
+            <div class="absolute top-1/2 -translate-y-1/2 right-0 w-8 h-full bg-gradient-to-l from-black/20 to-transparent pointer-events-none rounded-r-lg"></div>
           </div>
         </div>
       </section>
@@ -813,8 +844,8 @@ export default {
   background: rgba(255, 255, 255, 0.5);
 }
 
-/* Gallery enhancements */
-.grid {
+/* Horizontal Gallery Styles */
+.flex {
   transition: all 0.3s ease;
 }
 
@@ -827,33 +858,58 @@ img:not([src]) {
   opacity: 0;
 }
 
-/* Enhanced hover effects for gallery */
+/* Hover effects for horizontal gallery */
 .group:hover {
-  transform: translateY(-2px);
+  transform: scale(1.05);
 }
 
-/* Responsive gallery adjustments */
-@media (max-width: 768px) {
-  .grid.grid-cols-12 {
-    grid-template-columns: 1fr;
-    height: auto;
-  }
-  
-  .col-span-8,
-  .col-span-4 {
-    grid-column: span 12;
-  }
-  
-  .aspect-square {
-    aspect-ratio: 16/9;
-  }
+.group img {
+  transition: transform 0.3s ease;
 }
 
-/* Animation for gallery items */
-@keyframes fadeInUp {
+.group:hover img {
+  transform: scale(1.1);
+}
+
+/* Hide scrollbar but keep functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Smooth scrolling */
+.overflow-x-auto {
+  scroll-behavior: smooth;
+}
+
+/* Flex shrink for horizontal items */
+.flex-shrink-0 {
+  flex-shrink: 0;
+}
+
+/* Featured image styling */
+.h-80 {
+  height: 20rem;
+}
+
+/* Thumbnail sizing */
+.w-32 {
+  width: 8rem;
+}
+
+.h-24 {
+  height: 6rem;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(15px);
   }
   to {
     opacity: 1;
@@ -862,19 +918,87 @@ img:not([src]) {
 }
 
 .group {
-  animation: fadeInUp 0.6s ease-out;
+  animation: fadeIn 0.4s ease-out;
 }
 
 .group:nth-child(2) {
-  animation-delay: 0.1s;
+  animation-delay: 0.05s;
 }
 
 .group:nth-child(3) {
-  animation-delay: 0.2s;
+  animation-delay: 0.1s;
 }
 
 .group:nth-child(4) {
+  animation-delay: 0.15s;
+}
+
+.group:nth-child(5) {
+  animation-delay: 0.2s;
+}
+
+.group:nth-child(6) {
+  animation-delay: 0.25s;
+}
+
+.group:nth-child(7) {
   animation-delay: 0.3s;
+}
+
+.group:nth-child(8) {
+  animation-delay: 0.35s;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 768px) {
+  .h-80 {
+    height: 16rem;
+  }
+  
+  .w-32 {
+    width: 7rem;
+  }
+  
+  .h-24 {
+    height: 5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .h-80 {
+    height: 12rem;
+  }
+  
+  .w-32 {
+    width: 6rem;
+  }
+  
+  .h-24 {
+    height: 4rem;
+  }
+}
+
+/* Gradient scroll indicators */
+.bg-gradient-to-r {
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.2), transparent);
+}
+
+.bg-gradient-to-l {
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.2), transparent);
+}
+
+/* Badge styling */
+.bg-yellow-400 {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Smooth hover transitions for buttons */
+button {
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
 }
 </style>
 
