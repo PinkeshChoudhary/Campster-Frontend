@@ -139,11 +139,11 @@
         </div>
       </section>
 
-      <!-- Today's Vibe -->
+      <!-- Latest Vibe -->
       <section class="space-y-6">
         <h2 class="text-2xl font-semibold text-white flex items-center gap-3">
           <div class="w-1 h-6 bg-yellow-400 rounded-full"></div>
-          Today's Vibe
+          Latest Vibe
           <span class="text-sm text-white/60 ml-2">Share your moment</span>
         </h2>
         
@@ -163,11 +163,11 @@
             </div>
 
             <!-- Image Vibe -->
-            <div v-if="place.todaysVibe.mediaType === 'image'" class="relative group">
+            <div v-if="place.todaysVibe.mediaType === 'image'" class="relative">
               <img
                 :src="place.todaysVibe.mediaUrl"
-                alt="Today's vibe"
-                class="w-full object-cover max-h-96 rounded-xl transition-transform duration-300 group-hover:scale-[1.02]"
+                alt="Latest vibe"
+                class="w-full object-cover max-h-96 rounded-xl"
               />
               <div class="absolute top-4 left-4 bg-blue-500 text-white text-xs font-medium px-3 py-1 rounded-full flex items-center gap-1">
                 <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
@@ -178,10 +178,10 @@
             </div>
 
             <!-- Video Vibe -->
-            <div v-else class="relative group">
+            <div v-else class="relative">
               <video
                 controls
-                class="w-full shadow-md max-h-96 rounded-xl transition-transform duration-300 group-hover:scale-[1.02]"
+                class="w-full shadow-md max-h-96 rounded-xl"
                 poster=""
               >
                 <source :src="place.todaysVibe.mediaUrl" type="video/mp4" />
@@ -192,6 +192,49 @@
                   <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
                 </svg>
                 Video
+              </div>
+            </div>
+
+            <!-- Replace/Update Options -->
+            <div class="border-t border-white/10 pt-4">
+              <div class="flex items-center justify-between mb-3">
+                <p class="text-sm text-white/70">Want to update latest vibe?</p>
+                <span class="text-xs text-white/50">New upload will replace current content</span>
+              </div>
+              
+              <input
+                id="vibeReplaceUpload"
+                type="file"
+                accept="image/*,video/*"
+                @change="handleVibeUpload"
+                class="hidden"
+              />
+
+              <div class="flex gap-3">
+                <!-- Camera Button -->
+                <button
+                  @click="openCamera"
+                  class="flex items-center gap-2 px-4 py-2 bg-blue-500/20 border border-blue-500/30 text-blue-400 rounded-lg cursor-pointer transition-all duration-300"
+                  title="Take New Photo"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span class="text-sm font-medium">Take New Photo</span>
+                </button>
+
+                <!-- Upload Button -->
+                <label
+                  for="vibeReplaceUpload"
+                  class="flex items-center gap-2 px-4 py-2 bg-yellow-400/20 border border-yellow-400/30 text-yellow-400 rounded-lg cursor-pointer transition-all duration-300"
+                  title="Upload New Media"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                  </svg>
+                  <span class="text-sm font-medium">Upload New Media</span>
+                </label>
               </div>
             </div>
           </div>
@@ -214,7 +257,7 @@
               <!-- Camera Button -->
               <button
                 @click="openCamera"
-                class="flex flex-col items-center gap-3 p-6 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-500/30 text-blue-400 rounded-xl cursor-pointer transition-all duration-300 hover:scale-105 hover:border-blue-400"
+                class="flex flex-col items-center gap-3 p-6 bg-blue-500/20 border border-blue-500/30 text-blue-400 rounded-xl cursor-pointer transition-all duration-300"
                 title="Take Photo"
               >
                 <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
@@ -229,7 +272,7 @@
               <!-- Upload Button -->
               <label
                 for="vibeUpload"
-                class="flex flex-col items-center gap-3 p-6 bg-yellow-400/20 hover:bg-yellow-400/30 border border-yellow-400/30 text-yellow-400 rounded-xl cursor-pointer transition-all duration-300 hover:scale-105 hover:border-yellow-400"
+                class="flex flex-col items-center gap-3 p-6 bg-yellow-400/20 border border-yellow-400/30 text-yellow-400 rounded-xl cursor-pointer transition-all duration-300"
                 title="Upload Photo or Video"
               >
                 <div class="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center">
