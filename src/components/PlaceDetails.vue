@@ -144,35 +144,64 @@
         <h2 class="text-2xl font-semibold text-white flex items-center gap-3">
           <div class="w-1 h-6 bg-yellow-400 rounded-full"></div>
           Today's Vibe
+          <span class="text-sm text-white/60 ml-2">Share your moment</span>
         </h2>
         
         <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
           <div v-if="place.todaysVibe" class="space-y-4">
             <div class="flex items-center justify-between text-sm text-white/60">
-              <span>{{ new Date(place.todaysVibe.uploadedAt).toLocaleDateString() }}</span>
-              <span v-if="place.todaysVibe.uploader">by {{ place.todaysVibe.uploader }}</span>
+              <div class="flex items-center gap-2">
+                <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <span>{{ new Date(place.todaysVibe.uploadedAt).toLocaleDateString() }}</span>
+              </div>
+              <span v-if="place.todaysVibe.uploader" class="flex items-center gap-1">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                </svg>
+                {{ place.todaysVibe.uploader }}
+              </span>
             </div>
 
             <!-- Image Vibe -->
-            <img
-              v-if="place.todaysVibe.mediaType === 'image'"
-              :src="place.todaysVibe.mediaUrl"
-              alt="Today's vibe"
-              class="w-full object-cover max-h-96 rounded-xl"
-            />
+            <div v-if="place.todaysVibe.mediaType === 'image'" class="relative group">
+              <img
+                :src="place.todaysVibe.mediaUrl"
+                alt="Today's vibe"
+                class="w-full object-cover max-h-96 rounded-xl transition-transform duration-300 group-hover:scale-[1.02]"
+              />
+              <div class="absolute top-4 left-4 bg-blue-500 text-white text-xs font-medium px-3 py-1 rounded-full flex items-center gap-1">
+                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                </svg>
+                Photo
+              </div>
+            </div>
 
             <!-- Video Vibe -->
-            <video
-              v-else
-              controls
-              class="w-full shadow-md max-h-96 rounded-xl"
-            >
-              <source :src="place.todaysVibe.mediaUrl" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
+            <div v-else class="relative group">
+              <video
+                controls
+                class="w-full shadow-md max-h-96 rounded-xl transition-transform duration-300 group-hover:scale-[1.02]"
+                poster=""
+              >
+                <source :src="place.todaysVibe.mediaUrl" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              <div class="absolute top-4 left-4 bg-red-500 text-white text-xs font-medium px-3 py-1 rounded-full flex items-center gap-1">
+                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
+                </svg>
+                Video
+              </div>
+            </div>
           </div>
 
-          <div v-else class="flex flex-col items-center justify-center py-12 space-y-4">
+          <div v-else class="flex flex-col items-center justify-center py-12 space-y-6">
+            <div class="text-center space-y-2">
+              <h3 class="text-lg font-medium text-white">Share Today's Vibe</h3>
+              <p class="text-white/60 text-sm">Capture the moment with a photo or video</p>
+            </div>
+
             <input
               id="vibeUpload"
               type="file"
@@ -181,32 +210,54 @@
               class="hidden"
             />
 
-            <div class="flex gap-4">
+            <div class="grid grid-cols-2 gap-4 w-full max-w-xs">
               <!-- Camera Button -->
               <button
                 @click="openCamera"
-                class="w-16 h-16 bg-blue-500 hover:bg-blue-400 text-white flex items-center justify-center rounded-full cursor-pointer transition-all duration-300 hover:scale-105"
+                class="flex flex-col items-center gap-3 p-6 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-500/30 text-blue-400 rounded-xl cursor-pointer transition-all duration-300 hover:scale-105 hover:border-blue-400"
                 title="Take Photo"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
+                <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </div>
+                <span class="text-sm font-medium">Take Photo</span>
               </button>
 
               <!-- Upload Button -->
               <label
                 for="vibeUpload"
-                class="w-16 h-16 bg-yellow-400 hover:bg-yellow-300 text-black flex items-center justify-center rounded-full cursor-pointer transition-all duration-300 hover:scale-105"
-                title="Upload File"
+                class="flex flex-col items-center gap-3 p-6 bg-yellow-400/20 hover:bg-yellow-400/30 border border-yellow-400/30 text-yellow-400 rounded-xl cursor-pointer transition-all duration-300 hover:scale-105 hover:border-yellow-400"
+                title="Upload Photo or Video"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                </svg>
+                <div class="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                  </svg>
+                </div>
+                <span class="text-sm font-medium">Upload Media</span>
               </label>
             </div>
 
-            <p class="text-white/60 text-sm">Take a photo or upload a file</p>
+            <div class="text-center space-y-1">
+              <p class="text-white/60 text-sm">Supported formats:</p>
+              <div class="flex items-center justify-center gap-4 text-xs text-white/50">
+                <span class="flex items-center gap-1">
+                  <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                  </svg>
+                  JPG, PNG, WEBP
+                </span>
+                <span class="flex items-center gap-1">
+                  <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
+                  </svg>
+                  MP4, MOV, AVI
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
