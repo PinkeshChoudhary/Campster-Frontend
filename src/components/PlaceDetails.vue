@@ -3,14 +3,14 @@
     <!-- Hero Section -->
     <div class="relative overflow-hidden">
       <!-- Back Button -->
-      <button
+      <!-- <button
         @click="goBack"
-        class="fixed top-16 left-2 z-50 w-12 h-12 bg-white/10 backdrop-blur-md text-white rounded-full hover:bg-white/20 transition-all duration-300 flex items-center justify-center"
+        class="fixed top-4 left-4 z-50 w-10 h-10 bg-white/10 backdrop-blur-md text-white rounded-full hover:bg-white/20 transition-all duration-300 flex items-center justify-center"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
         </svg>
-      </button>
+      </button> -->
 
       <!-- Hero Image -->
       <div class="relative h-96 overflow-hidden">
@@ -35,14 +35,45 @@
       </div>
     </div>
 
+    <!-- Sticky Tab Navigation -->
+    <div
+      ref="tabNavigation"
+      class="sticky top-0 z-40 bg-black/80 backdrop-blur-md border-b border-white/10"
+      :class="{ 'shadow-lg': isTabsSticky }"
+    >
+      <div class="max-w-4xl mx-auto px-6">
+        <div class="flex overflow-x-auto scrollbar-hide">
+          <button
+            v-for="tab in tabs"
+            :key="tab.id"
+            :data-tab="tab.id"
+            @click="scrollToSection(tab.id)"
+            class="flex-shrink-0 px-6 py-4 text-sm font-medium transition-all duration-300 border-b-2 whitespace-nowrap"
+            :class="activeTab === tab.id
+              ? 'text-yellow-400 border-yellow-400'
+              : 'text-white/70 border-transparent hover:text-white hover:border-white/30'"
+          >
+            <div class="flex items-center gap-2">
+              <component :is="tab.icon" class="w-4 h-4" />
+              {{ tab.label }}
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- Main Content -->
     <div class="max-w-4xl mx-auto px-6 py-12 space-y-12">
       
       <!-- Image Gallery -->
-      <section v-if="place.images && place.images.length > 1" class="space-y-6">
+      <section
+        id="photos"
+        ref="photosSection"
+        v-if="place.images && place.images.length > 1"
+        class="space-y-6"
+      >
         <div class="flex items-center justify-between">
-          <h2 class="text-2xl font-semibold text-white flex items-center gap-3">
-            <div class="w-1 h-6 bg-yellow-400 rounded-full"></div>
+          <h2 class="text-lg font-medium text-white">
             Photos
             <span class="text-sm text-white/60 ml-2">{{ place.images.length - 1 }}</span>
           </h2>
@@ -119,9 +150,12 @@
       </section>
 
       <!-- Description -->
-      <section class="space-y-6">
-        <h2 class="text-2xl font-semibold text-white flex items-center gap-3">
-          <div class="w-1 h-6 bg-yellow-400 rounded-full"></div>
+      <section
+        id="about"
+        ref="aboutSection"
+        class="space-y-6"
+      >
+        <h2 class="text-lg font-medium text-white">
           About
         </h2>
         <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
@@ -140,9 +174,12 @@
       </section>
 
       <!-- Latest Vibe -->
-      <section class="space-y-6">
-        <h2 class="text-2xl font-semibold text-white flex items-center gap-3">
-          <div class="w-1 h-6 bg-yellow-400 rounded-full"></div>
+      <section
+        id="vibe"
+        ref="vibeSection"
+        class="space-y-6"
+      >
+        <h2 class="text-lg font-medium text-white">
           Latest Vibe
           <span class="text-sm text-white/60 ml-2">Share your moment</span>
         </h2>
@@ -306,7 +343,12 @@
       </section>
 
       <!-- Instagram Profile -->
-      <section v-if="place.influncerInstaGramProfile" class="space-y-6">
+      <section
+        id="instagram"
+        ref="instagramSection"
+        v-if="place.influncerInstaGramProfile"
+        class="space-y-6"
+      >
         <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
           <a
             :href="place.influncerInstaGramProfile"
@@ -329,9 +371,13 @@
       </section>
 
       <!-- Map Section -->
-      <section v-if="place.locationCoordinates" class="space-y-6">
-        <h2 class="text-2xl font-semibold text-white flex items-center gap-3">
-          <div class="w-1 h-6 bg-yellow-400 rounded-full"></div>
+      <section
+        id="location"
+        ref="locationSection"
+        v-if="place.locationCoordinates"
+        class="space-y-6"
+      >
+        <h2 class="text-lg font-medium text-white">
           Location
         </h2>
         
@@ -358,50 +404,79 @@
         </div>
       </section>
 
-      <!-- Comments Section -->
-      <section class="space-y-6">
-        <h2 class="text-2xl font-semibold text-white flex items-center gap-3">
-          <div class="w-1 h-6 bg-yellow-400 rounded-full"></div>
-          Comments
+      <!-- Reviews Section -->
+      <section
+        id="comments"
+        ref="commentsSection"
+        class="space-y-4"
+      >
+        <h2 class="text-lg font-medium text-white">
+          Reviews
+          <span class="text-sm text-white/60 ml-2">{{ comments.length }} reviews</span>
         </h2>
         
-        <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 space-y-6">
-          <div v-if="comments.length" class="space-y-4">
-            <div
-              v-for="(comment, index) in comments"
-              :key="index"
-              class="bg-white/5 rounded-xl p-4 border border-white/10"
-            >
-              <div class="flex justify-between items-center mb-2">
-                <span class="font-medium text-white">{{ comment.user }}</span>
-                <span class="text-xs text-white/60">{{ new Date(comment.createdAt).toLocaleDateString('en-GB') }}</span>
+        <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10 space-y-4">
+          <!-- Horizontal Reviews Display -->
+          <div v-if="comments.length" class="relative">
+            <div class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+              <div
+                v-for="(comment, index) in comments"
+                :key="index"
+                class="flex-shrink-0 w-72 bg-white/5 rounded-xl p-4 border border-white/10"
+              >
+                <div class="flex items-center justify-between mb-2">
+                  <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center">
+                      <span class="text-black text-sm font-bold">{{ comment.user.charAt(0).toUpperCase() }}</span>
+                    </div>
+                    <span class="font-medium text-white text-sm">{{ comment.user }}</span>
+                  </div>
+                  <!-- <div class="flex items-center gap-1">
+                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                    <span class="text-yellow-400 text-sm font-medium">5.0</span>
+                  </div> -->
+                </div>
+                <p class="text-white/80 text-sm line-clamp-3">{{ comment.text }}</p>
+                <span class="text-xs text-white/50 mt-2 block">{{ new Date(comment.createdAt).toLocaleDateString('en-GB') }}</span>
               </div>
-              <p class="text-white/80">{{ comment.text }}</p>
             </div>
+            
+            <!-- Scroll indicators -->
+            <div class="absolute top-0 left-0 w-8 h-full bg-gradient-to-r from-black/20 to-transparent pointer-events-none rounded-l-xl"></div>
+            <div class="absolute top-0 right-0 w-8 h-full bg-gradient-to-l from-black/20 to-transparent pointer-events-none rounded-r-xl"></div>
           </div>
-          <p v-else class="text-white/60 text-center py-8">No comments yet. Be the first to comment!</p>
+          
+          <p v-else class="text-white/60 text-center py-6">No reviews yet. Be the first to review!</p>
 
-          <div class="space-y-4">
-            <textarea
-              v-model="newComment"
-              class="w-full p-4 bg-white/5 text-white rounded-xl border border-white/10 focus:outline-none focus:border-yellow-400 transition-colors resize-none"
-              rows="3"
-              placeholder="Write a comment..."
-            ></textarea>
-            <button
-              @click="addComment"
-              class="w-full bg-yellow-400 text-black px-6 py-3 rounded-xl hover:bg-yellow-300 transition-colors font-semibold"
-            >
-              Post Comment
-            </button>
+          <!-- Compact Review Input -->
+          <div class="border-t border-white/10 pt-4">
+            <div class="flex gap-3">
+              <textarea
+                v-model="newComment"
+                class="flex-1 p-3 bg-white/5 text-white rounded-lg border border-white/10 focus:outline-none focus:border-yellow-400 transition-colors resize-none text-sm"
+                rows="2"
+                placeholder="Share your experience..."
+              ></textarea>
+              <button
+                @click="addComment"
+                class="px-4 py-2 bg-yellow-400 text-black rounded-lg hover:bg-yellow-300 transition-colors text-sm font-medium self-end"
+              >
+                Post Review
+              </button>
+            </div>
           </div>
         </div>
       </section>
 
       <!-- CampsterAI Assistant -->
-      <section class="space-y-6">
-        <h2 class="text-2xl font-semibold text-white flex items-center gap-3">
-          <div class="w-1 h-6 bg-yellow-400 rounded-full"></div>
+      <section
+        id="ai"
+        ref="aiSection"
+        class="space-y-6"
+      >
+        <h2 class="text-lg font-medium text-white">
           Ask CampsterAI
         </h2>
         
@@ -607,12 +682,65 @@
 </template>
 
 <script>
-import { ref, onMounted, onBeforeUnmount, computed } from 'vue';
+import { ref, onMounted, onBeforeUnmount, computed, nextTick } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 import { useUserStore } from '../store/user';
 
+// Tab Icons as inline SVG components
+const PhotoIcon = {
+  template: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+  </svg>`
+};
+
+const AboutIcon = {
+  template: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>`
+};
+
+const VibeIcon = {
+  template: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.636 18.364a9 9 0 010-12.728m12.728 0a9 9 0 010 12.728m-9.9-2.829a5 5 0 010-7.07m7.072 0a5 5 0 010 7.07M13 12a1 1 0 11-2 0 1 1 0 012 0z" />
+  </svg>`
+};
+
+const InstagramIcon = {
+  template: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2m0 0v2a1 1 0 01-1 1H8a1 1 0 01-1-1V4m0 0H5a2 2 0 00-2 2v12a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2h-2" />
+  </svg>`
+};
+
+const LocationIcon = {
+  template: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+  </svg>`
+};
+
+const CommentsIcon = {
+  template: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+  </svg>`
+};
+
+const AIIcon = {
+  template: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+  </svg>`
+};
+
 export default {
+  components: {
+    PhotoIcon,
+    AboutIcon,
+    VibeIcon,
+    InstagramIcon,
+    LocationIcon,
+    CommentsIcon,
+    AIIcon
+  },
   setup() {
     const route = useRoute();
     const router = useRouter();
@@ -630,6 +758,46 @@ export default {
     const videoElement = ref(null);
     const capturedImage = ref(null);
     const cameraStream = ref(null);
+
+    // Tab functionality
+    const activeTab = ref('about');
+    const isTabsSticky = ref(false);
+    const tabNavigation = ref(null);
+    const photosSection = ref(null);
+    const aboutSection = ref(null);
+    const vibeSection = ref(null);
+    const instagramSection = ref(null);
+    const locationSection = ref(null);
+    const commentsSection = ref(null);
+    const aiSection = ref(null);
+
+    // Tab configuration
+    const tabs = computed(() => {
+      const tabList = [
+        { id: 'about', label: 'About', icon: 'AboutIcon' }
+      ];
+
+      // Add Photos tab if images exist
+      if (place.value?.images && place.value.images.length > 1) {
+        tabList.unshift({ id: 'photos', label: 'Photos', icon: 'PhotoIcon' });
+      }
+
+      // Add other tabs
+      tabList.push(
+        { id: 'vibe', label: 'Latest Vibe', icon: 'VibeIcon' },
+        { id: 'location', label: 'Location', icon: 'LocationIcon' },
+        { id: 'comments', label: 'Reviews', icon: 'CommentsIcon' },
+        { id: 'ai', label: 'Ask AI', icon: 'AIIcon' }
+      );
+
+      // Add Instagram tab if profile exists
+      if (place.value?.influncerInstaGramProfile) {
+        const insertIndex = tabList.findIndex(tab => tab.id === 'location');
+        tabList.splice(insertIndex, 0, { id: 'instagram', label: 'Instagram', icon: 'InstagramIcon' });
+      }
+
+      return tabList;
+    });
 
     // Fetch Place Details
     const fetchPlaceDetails = async () => {
@@ -843,6 +1011,98 @@ export default {
       }
     };
 
+    // Tab functionality methods
+    const scrollToSection = (sectionId) => {
+      const sectionRef = getSectionRef(sectionId);
+      if (sectionRef?.value) {
+        const tabHeight = tabNavigation.value?.offsetHeight || 60;
+        const offsetTop = sectionRef.value.offsetTop - tabHeight - 10; // Account for sticky tabs + small margin
+        window.scrollTo({
+          top: offsetTop,
+          behavior: 'smooth'
+        });
+      }
+    };
+
+    // Scroll active tab into view horizontally
+    const scrollActiveTabIntoView = (tabId) => {
+      if (!tabNavigation.value) return;
+      
+      const tabContainer = tabNavigation.value.querySelector('.flex.overflow-x-auto');
+      const activeTabButton = tabNavigation.value.querySelector(`button[data-tab="${tabId}"]`);
+      
+      if (tabContainer && activeTabButton) {
+        const containerRect = tabContainer.getBoundingClientRect();
+        const tabRect = activeTabButton.getBoundingClientRect();
+        
+        // Calculate if tab is outside visible area
+        const isTabOutsideLeft = tabRect.left < containerRect.left;
+        const isTabOutsideRight = tabRect.right > containerRect.right;
+        
+        if (isTabOutsideLeft || isTabOutsideRight) {
+          const scrollLeft = activeTabButton.offsetLeft - (containerRect.width / 2) + (tabRect.width / 2);
+          tabContainer.scrollTo({
+            left: scrollLeft,
+            behavior: 'smooth'
+          });
+        }
+      }
+    };
+
+    const getSectionRef = (sectionId) => {
+      const refs = {
+        photos: photosSection,
+        about: aboutSection,
+        vibe: vibeSection,
+        instagram: instagramSection,
+        location: locationSection,
+        comments: commentsSection,
+        ai: aiSection
+      };
+      return refs[sectionId];
+    };
+
+    // Intersection Observer for scroll-based tab switching
+    const setupIntersectionObserver = () => {
+      const options = {
+        root: null,
+        rootMargin: '-70px 0px -50% 0px', // Account for sticky tabs
+        threshold: 0.1
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const sectionId = entry.target.id;
+            if (sectionId && tabs.value.some(tab => tab.id === sectionId)) {
+              activeTab.value = sectionId;
+              // Scroll the active tab into view horizontally
+              scrollActiveTabIntoView(sectionId);
+            }
+          }
+        });
+      }, options);
+
+      // Observe all sections
+      nextTick(() => {
+        [photosSection, aboutSection, vibeSection, instagramSection, locationSection, commentsSection, aiSection].forEach(ref => {
+          if (ref?.value) {
+            observer.observe(ref.value);
+          }
+        });
+      });
+
+      return observer;
+    };
+
+    // Handle scroll for sticky tabs
+    const handleScroll = () => {
+      if (tabNavigation.value) {
+        const rect = tabNavigation.value.getBoundingClientRect();
+        isTabsSticky.value = rect.top <= 0; // Sticky when it reaches the top
+      }
+    };
+
     // Keyboard navigation for gallery
     const handleKeydown = (event) => {
       if (!galleryModalOpen.value) return;
@@ -856,15 +1116,31 @@ export default {
       }
     };
 
-    onMounted(() => {
-      fetchPlaceDetails();
-      fetchComments();
-      likeCount();
+    let intersectionObserver = null;
+
+    onMounted(async () => {
+      await fetchPlaceDetails();
+      await fetchComments();
+      await likeCount();
+      
+      // Setup tab functionality after content is loaded
+      await nextTick();
+      intersectionObserver = setupIntersectionObserver();
+      
+      // Add event listeners
       document.addEventListener('keydown', handleKeydown);
+      window.addEventListener('scroll', handleScroll);
     });
 
     onBeforeUnmount(() => {
       document.removeEventListener('keydown', handleKeydown);
+      window.removeEventListener('scroll', handleScroll);
+      
+      // Clean up intersection observer
+      if (intersectionObserver) {
+        intersectionObserver.disconnect();
+      }
+      
       // Clean up camera stream if still active
       if (cameraStream.value) {
         cameraStream.value.getTracks().forEach(track => track.stop());
@@ -899,7 +1175,20 @@ export default {
       closeCameraModal,
       capturePhoto,
       retakePhoto,
-      uploadCapturedPhoto
+      uploadCapturedPhoto,
+      // Tab functionality
+      activeTab,
+      isTabsSticky,
+      tabs,
+      scrollToSection,
+      tabNavigation,
+      photosSection,
+      aboutSection,
+      vibeSection,
+      instagramSection,
+      locationSection,
+      commentsSection,
+      aiSection
     };
   },
 };
@@ -1093,6 +1382,14 @@ button {
 
 button:hover {
   transform: translateY(-1px);
+}
+
+/* Line clamp utility for review text */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 </style>
 
