@@ -1,5 +1,5 @@
 <template>
-  <div class="place-details-wrapper bg-black text-white min-h-screen pb-10 pt-10" v-if="place">
+  <div class="place-details-wrapper bg-black text-white min-h-screen pb-10 pt-16" v-if="place">
     <!-- Hero Section -->
     <div class="relative overflow-hidden">
       <!-- Back Button -->
