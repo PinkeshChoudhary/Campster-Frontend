@@ -1,78 +1,48 @@
 <template>
   <div class="home-wrapper bg-black text-white min-h-screen pb-10">
-    <!-- Admin view: Display pending places -->
+    <!-- Prelaunch Video Section -->
+    <section class="relative w-full h-96 sm:h-[500px] overflow-hidden">
+      <video
+        class="absolute inset-0 w-full h-full object-cover"
+        autoplay
+        muted
+        loop
+        playsinline
+        :src="'/WhatsApp Video 2025-07-09 at 1.42.51 PM.mp4'"
+      >
+        Your browser does not support the video tag.
+      </video>
+      
+      <!-- Optional overlay for better text readability -->
+      <div class="absolute inset-0 bg-black/30"></div>
+      
+      <!-- Optional content overlay -->
+      <div class="absolute inset-0 flex items-center justify-center">
+        <div class="text-center z-10">
+          <h1 class="text-3xl sm:text-4xl font-bold text-white mb-3 animate-fadeInUp">
+            Coming Soon
+          </h1>
+          <p class="text-lg sm:text-xl text-white/90 animate-fadeInUp animation-delay-200">
+            Something Amazing is on the Way
+          </p>
+        </div>
+      </div>
+    </section>
     <div>
-      <!-- Hero Section with Slideshow -->
-      <section class="relative overflow-hidden">
-        <SlideShow class="h-screen" />
-        
-        <!-- Filters - Top Position -->
-        <div class="absolute top-20 left-6 right-6 z-20">
-          <div class="flex flex-col sm:flex-row gap-4 justify-between">
+      <!-- Hero Section -->
+      <section class="relative overflow-hidden bg-gradient-to-b from-gray-900 to-black">
+       
+      </section>
+      <!-- Places Section -->
+      <section class="py-12">
+        <div class="max-w-7xl mx-auto px-6">
+          <!-- Filters - Above Tabs -->
+          <div class="flex flex-col sm:flex-row gap-4 justify-between mb-8">
             <!-- City Filter - Left -->
             <CityFilter @places-updated="updatePlaces" />
             
             <!-- Sort Filter - Right -->
             <PlaceSortFilter @sort-changed="handleSortChange" />
-          </div>
-        </div>
-        
-        <!-- Hero Overlay Content -->
-        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent flex items-end">
-          <div class="w-full p-8 pb-28">
-            <div class="max-w-4xl mx-auto text-center">
-              <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4 animate-fadeInUp">
-                Discover Hidden Gems
-              </h1>
-              <p class="text-xl sm:text-2xl text-white/80 mb-8 animate-fadeInUp animation-delay-200">
-                Your Next Adventure Awaits – Explore Local Wonders
-              </p>
-              
-              <!-- Quick Stats -->
-              <div class="flex justify-center gap-8 text-center animate-fadeInUp animation-delay-400">
-                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-                  <div class="text-2xl font-bold text-yellow-400">{{ popularPlaces.length }}</div>
-                  <div class="text-sm text-white/80">Popular Places</div>
-                </div>
-                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-                  <div class="text-2xl font-bold text-yellow-400">{{ hiddenPlaces.length }}</div>
-                  <div class="text-sm text-white/80">Hidden Gems</div>
-                </div>
-                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-                  <div class="text-2xl font-bold text-yellow-400">{{ approvedPlaces.length }}</div>
-                  <div class="text-sm text-white/80">Total Places</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Scroll Cards Section -->
-      <!-- <section class="py-12">
-        <div class="max-w-7xl mx-auto px-6">
-          <HomeScrollCards />
-        </div>
-      </section> -->
-
-      <!-- Hidden Gem Promo -->
-      <!-- <section class="py-12">
-        <div class="max-w-7xl mx-auto px-6">
-          <hiddenGemPromo />
-        </div>
-      </section> -->
-
-      <!-- Places Section -->
-      <section class="py-12">
-        <div class="max-w-7xl mx-auto px-6">
-          <!-- Section Header -->
-          <div class="text-center mb-12">
-            <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">
-              Explore Amazing Places
-            </h2>
-            <p class="text-lg text-white/70 max-w-2xl mx-auto">
-              Discover breathtaking destinations and hidden treasures waiting to be explored
-            </p>
           </div>
 
           <!-- Enhanced Tabs -->
@@ -161,28 +131,6 @@
           </div>
         </div>
       </section>
-
-      <!-- Call to Action Section -->
-      <!-- <section class="py-16">
-        <div class="max-w-4xl mx-auto px-6 text-center">
-          <div class="bg-gradient-to-r from-yellow-400/20 to-orange-400/20 backdrop-blur-sm rounded-2xl p-12 border border-yellow-400/30">
-            <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">
-              Ready for Your Next Adventure?
-            </h2>
-            <p class="text-lg text-white/80 mb-8 max-w-2xl mx-auto">
-              Join thousands of explorers who have discovered amazing places through Campster. Start your journey today!
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-              <button class="px-8 py-4 bg-yellow-400 hover:bg-yellow-300 text-black font-semibold rounded-xl transition-colors">
-                Explore Places
-              </button>
-              <button class="px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl border border-white/20 transition-colors">
-                Plan Your Trip
-              </button>
-            </div>
-          </div>
-        </div>
-      </section> -->
     </div>
   </div>
 </template>
@@ -193,7 +141,6 @@ import { useStore } from '../store/store';
 import axios from 'axios';
 import PlaceCard from '../components/PlaceCard.vue';
 import AdminDashboard from '../components/AdminDashboard.vue';
-import SlideShow from '../components/Images/SlideShow.vue';
 import { getAuth } from "firebase/auth";
 import { useUserStore } from "../store/user";
 import CityFilter from '../components/CityFilter.vue';
@@ -208,7 +155,6 @@ export default {
   components: {
     PlaceCard,
     AdminDashboard,
-    SlideShow,
     CityFilter,
     PlaceSortFilter,
     HomeScrollCards,
