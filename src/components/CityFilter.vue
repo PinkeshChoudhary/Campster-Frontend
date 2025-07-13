@@ -3,20 +3,20 @@
     <!-- Dropdown Trigger -->
     <button
       @click="toggleDropdown"
-      class="flex items-center gap-2 px-4 py-3 bg-white/10 backdrop-blur-md text-white rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-200 min-w-[180px]"
+      class="flex items-center gap-1.5 px-2 py-1.5 bg-transparent text-white rounded-lg hover:bg-white/10 transition-all duration-200 text-sm border-0"
     >
-      <svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
       </svg>
-      <span class="flex-1 text-left">
+      <span class="text-left">
         {{ selectedCity || 'All Cities' }}
       </span>
-      <svg 
-        class="w-4 h-4 transition-transform duration-200"
+      <svg
+        class="w-3.5 h-3.5 transition-transform duration-200"
         :class="{ 'rotate-180': isOpen }"
-        fill="none" 
-        stroke="currentColor" 
+        fill="none"
+        stroke="currentColor"
         viewBox="0 0 24 24"
       >
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -34,23 +34,23 @@
     >
       <div
         v-if="isOpen"
-        class="absolute top-full left-0 mt-2 w-full bg-white/10 backdrop-blur-md rounded-xl border border-white/20 shadow-2xl z-50 overflow-hidden"
+        class="absolute top-full left-0 mt-1 w-full bg-white/10 backdrop-blur-md rounded-lg shadow-2xl z-50 overflow-hidden border-0"
       >
         <!-- All Cities Option -->
         <button
           @click="selectCity('')"
-          class="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-white/10 transition-colors"
+          class="w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-white/10 transition-colors border-0 bg-transparent text-sm"
           :class="selectedCity === '' ? 'bg-yellow-400/20 text-yellow-400' : 'text-white'"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           <span class="font-medium">All Cities</span>
-          <svg 
-            v-if="selectedCity === ''" 
-            class="w-4 h-4 ml-auto text-yellow-400" 
-            fill="none" 
-            stroke="currentColor" 
+          <svg
+            v-if="selectedCity === ''"
+            class="w-3.5 h-3.5 ml-auto text-yellow-400"
+            fill="none"
+            stroke="currentColor"
             viewBox="0 0 24 24"
           >
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
@@ -65,18 +65,18 @@
           v-for="city in cities"
           :key="city.name"
           @click="selectCity(city.name)"
-          class="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-white/10 transition-colors"
+          class="w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-white/10 transition-colors border-0 bg-transparent text-sm"
           :class="selectedCity === city.name ? 'bg-yellow-400/20 text-yellow-400' : 'text-white'"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
           </svg>
           <span class="font-medium">{{ city.name }}</span>
-          <svg 
-            v-if="selectedCity === city.name" 
-            class="w-4 h-4 ml-auto text-yellow-400" 
-            fill="none" 
-            stroke="currentColor" 
+          <svg
+            v-if="selectedCity === city.name"
+            class="w-3.5 h-3.5 ml-auto text-yellow-400"
+            fill="none"
+            stroke="currentColor"
             viewBox="0 0 24 24"
           >
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
@@ -97,12 +97,6 @@ const emit = defineEmits(["places-updated"]);
 
 const cities = ref([
   { name: "Udaipur" },
-  { name: "Mount Abu" },
-  { name: "Jaipur" },
-  { name: "Jaisalmer" },
-  { name: "Pushkar" },
-  { name: "Ajmer" },
-  { name: "Kumbhalgarh" },
 ]);
 
 const toggleDropdown = () => {
@@ -155,9 +149,17 @@ onBeforeUnmount(() => {
   position: relative;
 }
 
-/* Smooth transitions */
+/* Remove all borders and ensure transparent backgrounds */
 button {
   transition: all 0.2s ease;
+  border: none !important;
+  outline: none !important;
+  background: transparent;
+}
+
+button:focus {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 /* Hover effects */
@@ -172,6 +174,11 @@ button:active {
 /* Dropdown animation */
 .transition {
   transform-origin: top;
+}
+
+/* Ensure dropdown inherits parent background */
+.absolute {
+  border: none !important;
 }
 
 /* Custom scrollbar for dropdown if needed */

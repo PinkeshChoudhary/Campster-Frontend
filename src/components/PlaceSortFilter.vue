@@ -3,23 +3,14 @@
     <!-- Sort Trigger Button -->
     <button
       @click="toggleSortDropdown"
-      class="flex items-center gap-2 px-4 py-3 bg-white/10 backdrop-blur-md text-white rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-200 min-w-[200px]"
+      class="flex items-center px-2 py-1.5 bg-transparent text-white rounded-lg hover:bg-white/10 transition-all duration-200 text-sm border-0"
     >
-      <svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg class="w-4 h-4 text-yellow-400 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
       </svg>
-      <span class="flex-1 text-left">
+      <span class="text-left">
         {{ currentSortLabel }}
       </span>
-      <svg
-        class="w-4 h-4 transition-transform duration-200"
-        :class="{ 'rotate-180': isSortOpen }"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-      </svg>
     </button>
 
     <!-- Sort Dropdown Menu -->
@@ -33,14 +24,14 @@
     >
       <div
         v-if="isSortOpen"
-        class="absolute top-full left-0 mt-2 w-full bg-white/10 backdrop-blur-md rounded-xl border border-white/20 shadow-2xl z-50 overflow-hidden"
+        class="absolute top-full left-0 mt-1 w-full bg-white/10 backdrop-blur-md rounded-lg shadow-2xl z-50 overflow-hidden border-0"
       >
         <!-- Sort Options -->
         <button
           v-for="option in sortOptions"
           :key="option.value"
           @click="selectSort(option)"
-          class="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-white/10 transition-colors"
+          class="w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-white/10 transition-colors border-0 bg-transparent text-sm"
           :class="currentSort === option.value ? 'bg-yellow-400/20 text-yellow-400' : 'text-white'"
         >
           <!-- Default Icon -->
@@ -67,7 +58,7 @@
           <span class="font-medium">{{ option.label }}</span>
           <svg
             v-if="currentSort === option.value"
-            class="w-4 h-4 ml-auto text-yellow-400"
+            class="w-3.5 h-3.5 ml-auto text-yellow-400"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -92,10 +83,6 @@ const sortRef = ref(null);
 // Sort options with icons
 const sortOptions = ref([
   {
-    value: 'default',
-    label: 'Default Order'
-  },
-  {
     value: 'likes',
     label: 'Most Liked'
   },
@@ -103,10 +90,6 @@ const sortOptions = ref([
     value: 'distance',
     label: 'Nearest First'
   },
-  {
-    value: 'alphabetical',
-    label: 'A to Z'
-  }
 ]);
 
 const currentSortLabel = computed(() => {
@@ -149,9 +132,17 @@ onBeforeUnmount(() => {
   position: relative;
 }
 
-/* Smooth transitions */
+/* Remove all borders and ensure transparent backgrounds */
 button {
   transition: all 0.2s ease;
+  border: none !important;
+  outline: none !important;
+  background: transparent;
+}
+
+button:focus {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 /* Hover effects */
@@ -166,5 +157,10 @@ button:active {
 /* Dropdown animation */
 .transition {
   transform-origin: top;
+}
+
+/* Ensure dropdown inherits parent background */
+.absolute {
+  border: none !important;
 }
 </style>
