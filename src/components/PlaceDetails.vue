@@ -370,7 +370,7 @@
         </div>
       </section>
 
-      <!-- Map Section -->
+      <!-- Location Section -->
       <section
         id="location"
         ref="locationSection"
@@ -381,26 +381,17 @@
           Location
         </h2>
         
-        <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 space-y-4">
+        <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
           <button
             @click="openGoogleMaps"
-            class="w-full flex items-center justify-center gap-3 px-6 py-4 bg-blue-600 hover:bg-blue-500 text-white font-medium rounded-xl transition-colors"
+            class="w-full flex items-center justify-center gap-3 px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-medium rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
           >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
-            Navigate with Google Maps
+            <span class="text-lg">Open in Google Maps</span>
           </button>
-
-          <div class="h-64 w-full rounded-xl overflow-hidden">
-            <iframe
-              class="w-full h-full"
-              :src="`https://www.google.com/maps?q=${place.locationCoordinates.lat},${place.locationCoordinates.lng}&z=15&output=embed`"
-              allowfullscreen
-              loading="lazy"
-            ></iframe>
-          </div>
         </div>
       </section>
 

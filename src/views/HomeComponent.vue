@@ -16,15 +16,24 @@
           <!-- Segmented Control with Icons (Original Design + Swipe Support) -->
           <div class="flex justify-center mb-8">
             <div
-              class="flex border-b border-gray-700"
+              class="flex border-b border-gray-700 relative transition-all duration-200 swipe-container"
               @touchstart="handleTouchStart"
               @touchmove="handleTouchMove"
               @touchend="handleTouchEnd"
+              @touchcancel="handleTouchEnd"
             >
+              <!-- Swipe indicator -->
+              <div
+                v-if="isSwipeInProgress"
+                class="absolute -top-8 left-1/2 transform -translate-x-1/2 text-xs text-gray-400 animate-pulse"
+              >
+                {{ swipeDirection === 'left' ? '← Switching to Hidden' : swipeDirection === 'right' ? '→ Switching to Popular' : 'Swipe to switch tabs' }}
+              </div>
+              
               <!-- Popular Tab -->
               <div
-                class="relative px-8 py-3 cursor-pointer group"
-                @click="switchTab('popular')"
+                class="relative px-8 py-3 cursor-pointer group tab-item"
+                @click="handleTabClick('popular')"
               >
                 <div class="flex items-center space-x-2">
                   <svg class="w-4 h-4" :class="tab === 'popular' ? 'text-yellow-400' : 'text-gray-500'" fill="currentColor" viewBox="0 0 20 20">
@@ -42,8 +51,8 @@
 
               <!-- Hidden Tab -->
               <div
-                class="relative px-8 py-3 cursor-pointer group"
-                @click="switchTab('hidden')"
+                class="relative px-8 py-3 cursor-pointer group tab-item"
+                @click="handleTabClick('hidden')"
               >
                 <div class="flex items-center space-x-2">
                   <svg class="w-4 h-4" :class="tab === 'hidden' ? 'text-purple-400' : 'text-gray-500'" fill="currentColor" viewBox="0 0 20 20">
@@ -141,7 +150,6 @@
                               <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                             </svg>
                           </div>
-                          <span class="text-gray-400 text-sm">{{ review.location }}</span>
                         </div>
                       </div>
                     </div>
@@ -205,38 +213,31 @@ export default {
     // Touch/Swipe functionality
     const touchStartX = ref(0);
     const touchEndX = ref(0);
+    const touchStartY = ref(0);
+    const touchEndY = ref(0);
     const minSwipeDistance = 50;
+    const maxVerticalDistance = 100;
+    const isSwipeInProgress = ref(false);
+    const swipeDirection = ref('');
 
     // Reviews data and state
     const currentReviewIndex = ref(0);
     const reviews = ref([
+  
       {
-        name: "Sarah Johnson",
-        avatar: "/sakhi.png",
+        name: "Rahul",
         rating: 5,
-        location: "Rishikesh",
-        comment: "Amazing camping experience! The location was perfect and the facilities were top-notch. Will definitely come back again."
-      },
-      {
-        name: "Mike Chen",
-        avatar: "/sakhi.png",
-        rating: 5,
-        location: "Manali",
         comment: "Hidden gem discovered through this app! The peaceful environment and stunning views made our weekend unforgettable."
       },
       {
         name: "Priya Sharma",
-        avatar: "/sakhi.png",
         rating: 4,
-        location: "Goa",
-        comment: "Great platform for finding unique camping spots. The booking process was smooth and the host was very helpful."
+        comment: "Great platform for finding unique camping spots. ."
       },
       {
-        name: "David Wilson",
-        avatar: "/sakhi.png",
+        name: "Ashish",
         rating: 5,
-        location: "Himachal Pradesh",
-        comment: "Exceeded all expectations! The app made it so easy to find and book the perfect camping spot for our group."
+        comment: "Exceeded all expectations! The app made it so easy to find  perfect camping spot for our group."
       }
     ]);
 
@@ -258,23 +259,69 @@ export default {
     // Touch event handlers for swipe functionality
     const handleTouchStart = (e) => {
       touchStartX.value = e.touches[0].clientX;
+      touchStartY.value = e.touches[0].clientY;
+      isSwipeInProgress.value = false;
+      swipeDirection.value = '';
+      console.log('Touch start:', touchStartX.value, touchStartY.value);
     };
 
     const handleTouchMove = (e) => {
+      if (!touchStartX.value) return;
+      
       touchEndX.value = e.touches[0].clientX;
+      touchEndY.value = e.touches[0].clientY;
+      
+      const swipeDistanceX = touchStartX.value - touchEndX.value;
+      const swipeDistanceY = Math.abs(touchStartY.value - touchEndY.value);
+      
+      // Check if this is a horizontal swipe
+      if (Math.abs(swipeDistanceX) > 20 && Math.abs(swipeDistanceX) > swipeDistanceY) {
+        isSwipeInProgress.value = true;
+        swipeDirection.value = swipeDistanceX > 0 ? 'left' : 'right';
+        e.preventDefault(); // Prevent scrolling during swipe
+      }
     };
 
-    const handleTouchEnd = () => {
-      const swipeDistance = touchStartX.value - touchEndX.value;
+    const handleTouchEnd = (e) => {
+      if (!touchStartX.value) return;
       
-      if (Math.abs(swipeDistance) > minSwipeDistance) {
-        if (swipeDistance > 0) {
+      const swipeDistanceX = touchStartX.value - touchEndX.value;
+      const swipeDistanceY = Math.abs(touchStartY.value - touchEndY.value);
+      
+      console.log('Touch end - swipeX:', swipeDistanceX, 'swipeY:', swipeDistanceY);
+      
+      // Only process horizontal swipes that meet minimum distance
+      if (Math.abs(swipeDistanceX) > minSwipeDistance && swipeDistanceY < maxVerticalDistance) {
+        if (swipeDistanceX > 0) {
           // Swipe left - switch to hidden tab
+          console.log('Swiped left - switching to hidden');
           switchTab('hidden');
         } else {
           // Swipe right - switch to popular tab
+          console.log('Swiped right - switching to popular');
           switchTab('popular');
         }
+        e.preventDefault();
+      }
+      
+      // Reset swipe state
+      setTimeout(() => {
+        isSwipeInProgress.value = false;
+        swipeDirection.value = '';
+      }, 300);
+      
+      touchStartX.value = 0;
+      touchEndX.value = 0;
+      touchStartY.value = 0;
+      touchEndY.value = 0;
+    };
+
+    // Handle tab clicks (separate from touch events)
+    const handleTabClick = (newTab) => {
+      // Only process click if we're not in the middle of a swipe
+      if (!isSwipeInProgress.value) {
+        console.log('Tab clicked:', newTab);
+        switchTab(newTab);
       }
     };
 
@@ -325,8 +372,10 @@ export default {
     });
 
     const switchTab = (newTab) => {
+      console.log('Switching to tab:', newTab, 'Current tab:', tab.value);
       if (newTab !== tab.value) {
         tab.value = newTab;
+        console.log('Tab switched to:', tab.value);
       }
     };
 
@@ -380,8 +429,11 @@ export default {
       handleTouchStart,
       handleTouchMove,
       handleTouchEnd,
+      handleTabClick,
       reviews,
       currentReviewIndex,
+      isSwipeInProgress,
+      swipeDirection,
     };
   },
 };
@@ -548,6 +600,33 @@ button:focus {
   background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
   background-size: 200px 100%;
   animation: shimmer 2s infinite;
+}
+
+/* Touch-friendly improvements */
+.flex.border-b {
+  touch-action: pan-x; /* Allow horizontal panning only */
+  user-select: none; /* Prevent text selection during swipe */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Swipe feedback animations */
+@keyframes swipeHint {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(5px); }
+}
+
+.swipe-hint {
+  animation: swipeHint 1s ease-in-out infinite;
+}
+
+/* Enhanced touch targets */
+@media (max-width: 768px) {
+  .relative.px-8.py-3 {
+    padding: 1rem 1.5rem; /* Larger touch targets on mobile */
+    min-height: 48px; /* Minimum touch target size */
+  }
 }
 
 </style>
