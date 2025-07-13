@@ -13,9 +13,14 @@
             <PlaceSortFilter @sort-changed="handleSortChange" />
           </div>
 
-          <!-- Segmented Control with Icons -->
+          <!-- Segmented Control with Icons (Original Design + Swipe Support) -->
           <div class="flex justify-center mb-8">
-            <div class="flex border-b border-gray-700">
+            <div
+              class="flex border-b border-gray-700"
+              @touchstart="handleTouchStart"
+              @touchmove="handleTouchMove"
+              @touchend="handleTouchEnd"
+            >
               <!-- Popular Tab -->
               <div
                 class="relative px-8 py-3 cursor-pointer group"
@@ -57,24 +62,104 @@
             </div>
           </div>
 
-          <!-- Places Grid -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <div
-              v-for="place in (tab === 'popular' ? popularPlaces : hiddenPlaces)"
-              :key="place._id"
-            >
-              <PlaceCard :place="place" />
+          <!-- Loading Skeleton -->
+          <div v-if="isLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
+            <div v-for="n in 8" :key="n" class="animate-pulse">
+              <div class="bg-gray-800 rounded-xl overflow-hidden">
+                <div class="h-48 bg-gray-700"></div>
+                <div class="p-4 space-y-3">
+                  <div class="h-4 bg-gray-700 rounded w-3/4"></div>
+                  <div class="h-3 bg-gray-700 rounded w-1/2"></div>
+                  <div class="flex space-x-2">
+                    <div class="h-6 bg-gray-700 rounded w-16"></div>
+                    <div class="h-6 bg-gray-700 rounded w-20"></div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
+          <!-- Places Grid with Transition -->
+          <div v-else class="relative">
+            <transition name="slide" mode="out-in">
+              <div :key="tab" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div
+                  v-for="(place, index) in (tab === 'popular' ? popularPlaces : hiddenPlaces)"
+                  :key="place._id"
+                  class="transform transition-all duration-300 hover:scale-105"
+                  :style="{ animationDelay: `${index * 50}ms` }"
+                >
+                  <PlaceCard :place="place" />
+                </div>
+              </div>
+            </transition>
+          </div>
+
           <!-- Empty State -->
-          <div v-if="(tab === 'popular' ? popularPlaces : hiddenPlaces).length === 0"
+          <div v-if="!isLoading && (tab === 'popular' ? popularPlaces : hiddenPlaces).length === 0"
                class="text-center py-12">
-            <div class="bg-gray-800 rounded-lg p-8 max-w-md mx-auto">
-              <h3 class="text-lg font-medium text-white mb-2">No Places Found</h3>
+            <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-8 max-w-md mx-auto border border-gray-700/50 backdrop-blur-sm">
+              <div class="w-16 h-16 mx-auto mb-4 bg-gray-700 rounded-full flex items-center justify-center">
+                <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+              </div>
+              <h3 class="text-lg font-semibold text-white mb-2">No Places Found</h3>
               <p class="text-gray-400 text-sm">
                 {{ tab === 'popular' ? 'No popular places available at the moment.' : 'No hidden gems discovered yet.' }}
               </p>
+            </div>
+          </div>
+
+          <!-- Reviews Section -->
+          <div class="mt-16 mb-8">
+            <div class="text-center mb-8">
+              <h2 class="text-2xl font-bold text-white mb-2">What Campers Say</h2>
+              <p class="text-gray-400">Real experiences from our community</p>
+            </div>
+            
+            <!-- Reviews Carousel -->
+            <div class="relative overflow-hidden">
+              <div
+                class="flex transition-transform duration-500 ease-in-out"
+                :style="{ transform: `translateX(-${currentReviewIndex * 100}%)` }"
+              >
+                <div
+                  v-for="(review, index) in reviews"
+                  :key="index"
+                  class="w-full flex-shrink-0 px-4"
+                >
+                  <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-6 border border-gray-700/50 backdrop-blur-sm max-w-2xl mx-auto">
+                    <div class="flex items-center mb-4">
+                      <img :src="review.avatar" :alt="review.name" class="w-12 h-12 rounded-full mr-4 border-2 border-gray-600">
+                      <div>
+                        <h4 class="text-white font-semibold">{{ review.name }}</h4>
+                        <div class="flex items-center">
+                          <div class="flex text-yellow-400 mr-2">
+                            <svg v-for="star in 5" :key="star" class="w-4 h-4" :class="star <= review.rating ? 'text-yellow-400' : 'text-gray-600'" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                          </div>
+                          <span class="text-gray-400 text-sm">{{ review.location }}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed">{{ review.comment }}</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Review Navigation Dots -->
+              <div class="flex justify-center mt-6 space-x-2">
+                <button
+                  v-for="(review, index) in reviews"
+                  :key="index"
+                  @click="currentReviewIndex = index"
+                  class="w-2 h-2 rounded-full transition-all duration-300"
+                  :class="currentReviewIndex === index ? 'bg-yellow-400 w-6' : 'bg-gray-600'"
+                ></button>
+              </div>
             </div>
           </div>
         </div>
@@ -84,7 +169,7 @@
 </template>
 
 <script>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, onUnmounted } from 'vue';
 import { useStore } from '../store/store';
 import axios from 'axios';
 import PlaceCard from '../components/PlaceCard.vue';
@@ -114,6 +199,84 @@ export default {
     const { sortPlacesWithDistance, initializeLocation, setSortType } = usePlaceSort();
     const currentSortType = ref('default');
 
+    // Loading state
+    const isLoading = ref(true);
+
+    // Touch/Swipe functionality
+    const touchStartX = ref(0);
+    const touchEndX = ref(0);
+    const minSwipeDistance = 50;
+
+    // Reviews data and state
+    const currentReviewIndex = ref(0);
+    const reviews = ref([
+      {
+        name: "Sarah Johnson",
+        avatar: "/sakhi.png",
+        rating: 5,
+        location: "Rishikesh",
+        comment: "Amazing camping experience! The location was perfect and the facilities were top-notch. Will definitely come back again."
+      },
+      {
+        name: "Mike Chen",
+        avatar: "/sakhi.png",
+        rating: 5,
+        location: "Manali",
+        comment: "Hidden gem discovered through this app! The peaceful environment and stunning views made our weekend unforgettable."
+      },
+      {
+        name: "Priya Sharma",
+        avatar: "/sakhi.png",
+        rating: 4,
+        location: "Goa",
+        comment: "Great platform for finding unique camping spots. The booking process was smooth and the host was very helpful."
+      },
+      {
+        name: "David Wilson",
+        avatar: "/sakhi.png",
+        rating: 5,
+        location: "Himachal Pradesh",
+        comment: "Exceeded all expectations! The app made it so easy to find and book the perfect camping spot for our group."
+      }
+    ]);
+
+    // Auto-rotate reviews
+    let reviewInterval;
+
+    const startReviewRotation = () => {
+      reviewInterval = setInterval(() => {
+        currentReviewIndex.value = (currentReviewIndex.value + 1) % reviews.value.length;
+      }, 4000);
+    };
+
+    const stopReviewRotation = () => {
+      if (reviewInterval) {
+        clearInterval(reviewInterval);
+      }
+    };
+
+    // Touch event handlers for swipe functionality
+    const handleTouchStart = (e) => {
+      touchStartX.value = e.touches[0].clientX;
+    };
+
+    const handleTouchMove = (e) => {
+      touchEndX.value = e.touches[0].clientX;
+    };
+
+    const handleTouchEnd = () => {
+      const swipeDistance = touchStartX.value - touchEndX.value;
+      
+      if (Math.abs(swipeDistance) > minSwipeDistance) {
+        if (swipeDistance > 0) {
+          // Swipe left - switch to hidden tab
+          switchTab('hidden');
+        } else {
+          // Swipe right - switch to popular tab
+          switchTab('popular');
+        }
+      }
+    };
 
     const checkIfAdmin = async () => {
       try {
@@ -131,10 +294,17 @@ export default {
 
     const fetchPlaces = async () => {
       try {
+        isLoading.value = true;
         const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/places`);
         store.setApprovedPlaces(response.data.places);
+        
+        // Simulate loading delay for better UX
+        setTimeout(() => {
+          isLoading.value = false;
+        }, 1000);
       } catch (error) {
         console.error(error);
+        isLoading.value = false;
       }
     };
 
@@ -155,7 +325,9 @@ export default {
     });
 
     const switchTab = (newTab) => {
-      tab.value = newTab;
+      if (newTab !== tab.value) {
+        tab.value = newTab;
+      }
     };
 
     // Handle sort change
@@ -168,6 +340,7 @@ export default {
     onMounted(async () => {
       checkIfAdmin();
       fetchPlaces();
+      startReviewRotation();
       
       // Initialize user location for distance sorting
       await initializeLocation();
@@ -189,6 +362,10 @@ export default {
       });
     });
 
+    onUnmounted(() => {
+      stopReviewRotation();
+    });
+
     return {
       isAdmin,
       approvedPlaces,
@@ -199,6 +376,12 @@ export default {
       switchTab,
       handleSortChange,
       currentSortType,
+      isLoading,
+      handleTouchStart,
+      handleTouchMove,
+      handleTouchEnd,
+      reviews,
+      currentReviewIndex,
     };
   },
 };
@@ -207,6 +390,63 @@ export default {
 <style scoped>
 .home-wrapper {
   scroll-behavior: smooth;
+}
+
+/* Slide transition animations */
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+
+.slide-enter-from {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+.slide-leave-to {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+/* Staggered animation for place cards */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.grid > div {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+/* Pulse animation for loading skeleton */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Enhanced hover effects */
+.hover\:scale-105:hover {
+  transform: scale(1.05);
+}
+
+/* Tab hover effects */
+.group:hover .w-5 {
+  transform: scale(1.1);
 }
 
 /* Custom scrollbar */
@@ -227,9 +467,29 @@ export default {
   background: rgba(255, 255, 255, 0.5);
 }
 
-/* Simple button transitions */
+/* Enhanced button transitions */
 button {
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+/* Backdrop blur support */
+.backdrop-blur-sm {
+  backdrop-filter: blur(4px);
+}
+
+/* Gradient text effect */
+.bg-gradient-to-r {
+  background: linear-gradient(to right, var(--tw-gradient-stops));
+}
+
+/* Enhanced focus states */
+button:focus {
+  outline: 2px solid rgba(59, 130, 246, 0.5);
+  outline-offset: 2px;
 }
 
 /* Responsive adjustments */
@@ -237,12 +497,57 @@ button {
   .grid {
     grid-template-columns: 1fr;
   }
+  
+  /* Improve touch targets on mobile */
+  .px-8 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* Reduce animation delays on mobile */
+  .grid > div {
+    animation-delay: 0ms !important;
+  }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
   .grid {
     grid-template-columns: repeat(2, 1fr);
   }
+}
+
+/* Dark mode enhancements */
+@media (prefers-color-scheme: dark) {
+  .bg-gray-800 {
+    background-color: rgba(31, 41, 55, 0.8);
+  }
+  
+  .border-gray-700 {
+    border-color: rgba(55, 65, 81, 0.6);
+  }
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Loading shimmer effect */
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+.animate-pulse {
+  background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+  background-size: 200px 100%;
+  animation: shimmer 2s infinite;
 }
 
 </style>
