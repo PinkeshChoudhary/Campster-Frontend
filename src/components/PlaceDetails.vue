@@ -100,12 +100,6 @@
                 loading="lazy"
               />
               <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
-              <div class="absolute top-4 left-4 bg-yellow-400 text-black text-xs font-bold px-3 py-1 rounded-full">
-                Featured Photo
-              </div>
-              <div class="absolute bottom-4 right-4 bg-black/70 text-white text-sm px-3 py-1 rounded-full">
-                1 / {{ place.images.length - 1 }}
-              </div>
             </div>
           </div>
           
@@ -124,13 +118,7 @@
                   class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                   loading="lazy"
                 />
-                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300"></div>
-                
-                <!-- Image number -->
-                <div class="absolute bottom-1 right-1 bg-black/70 text-white text-xs px-2 py-1 rounded">
-                  {{ index + 1 }}
-                </div>
-                
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300"></div>  
                 <!-- Hover zoom icon -->
                 <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
                   <div class="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center">
