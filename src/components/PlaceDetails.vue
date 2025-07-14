@@ -248,17 +248,29 @@
               />
 
               <div class="flex gap-3">
-                <!-- Camera Button -->
+                <!-- Take Photo Button -->
                 <button
-                  @click="openCamera"
+                  @click="openCamera('photo')"
                   class="flex items-center gap-2 px-4 py-2 bg-blue-500/20 border border-blue-500/30 text-blue-400 rounded-lg cursor-pointer transition-all duration-300"
-                  title="Take New Photo"
+                  title="Take Photo"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
-                  <span class="text-sm font-medium">Take New Photo</span>
+                  <span class="text-sm font-medium">Take Photo</span>
+                </button>
+
+                <!-- Record Video Button -->
+                <button
+                  @click="openCamera('video')"
+                  class="flex items-center gap-2 px-4 py-2 bg-green-500/20 border border-green-500/30 text-green-400 rounded-lg cursor-pointer transition-all duration-300"
+                  title="Record Video"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  </svg>
+                  <span class="text-sm font-medium">Record Video</span>
                 </button>
 
                 <!-- Upload Button -->
@@ -290,10 +302,10 @@
               class="hidden"
             />
 
-            <div class="grid grid-cols-2 gap-4 w-full max-w-xs">
-              <!-- Camera Button -->
+            <div class="grid grid-cols-3 gap-4 w-full max-w-md">
+              <!-- Take Photo Button -->
               <button
-                @click="openCamera"
+                @click="openCamera('photo')"
                 class="flex flex-col items-center gap-3 p-6 bg-blue-500/20 border border-blue-500/30 text-blue-400 rounded-xl cursor-pointer transition-all duration-300"
                 title="Take Photo"
               >
@@ -304,6 +316,20 @@
                   </svg>
                 </div>
                 <span class="text-sm font-medium">Take Photo</span>
+              </button>
+
+              <!-- Record Video Button -->
+              <button
+                @click="openCamera('video')"
+                class="flex flex-col items-center gap-3 p-6 bg-green-500/20 border border-green-500/30 text-green-400 rounded-xl cursor-pointer transition-all duration-300"
+                title="Record Video"
+              >
+                <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <span class="text-sm font-medium">Record Video</span>
               </button>
 
               <!-- Upload Button -->
@@ -596,7 +622,7 @@
       <!-- Header -->
       <div class="flex items-center justify-between p-6 text-white">
         <div class="flex items-center gap-4">
-          <h3 class="text-xl font-semibold">Take Photo</h3>
+          <h3 class="text-xl font-semibold">{{ cameraMode === 'photo' ? 'Take Photo' : 'Record Video' }}</h3>
         </div>
         <button
           @click="closeCameraModal"
@@ -614,7 +640,7 @@
           <!-- Video Stream -->
           <video
             ref="videoElement"
-            v-show="!capturedImage"
+            v-show="!capturedImage && !recordedVideo"
             autoplay
             playsinline
             class="w-full h-auto rounded-xl bg-black"
@@ -628,25 +654,47 @@
             class="w-full h-auto rounded-xl"
           />
 
-          <!-- Camera Controls -->
+          <!-- Recorded Video Preview -->
+          <video
+            v-if="recordedVideo"
+            :src="recordedVideo"
+            controls
+            class="w-full h-auto rounded-xl"
+          ></video>
+
+          <!-- Recording Status Indicator -->
+          <div v-if="isRecording" class="absolute top-4 left-4 flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-full">
+            <div class="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+            <span class="text-sm font-medium">Recording {{ recordingTime }}s</span>
+          </div>
+
+          <!-- Video Recording Controls -->
           <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex gap-4">
             <button
-              v-if="!capturedImage"
-              @click="capturePhoto"
+              v-if="!recordedVideo && !isRecording"
+              @click="startRecording"
               class="w-16 h-16 bg-white rounded-full hover:bg-gray-200 transition-all duration-300 flex items-center justify-center shadow-lg"
             >
               <div class="w-12 h-12 bg-red-500 rounded-full"></div>
             </button>
 
-            <template v-else>
+            <button
+              v-if="isRecording"
+              @click="stopRecording"
+              class="w-16 h-16 bg-white rounded-full hover:bg-gray-200 transition-all duration-300 flex items-center justify-center shadow-lg"
+            >
+              <div class="w-8 h-8 bg-red-500 rounded-sm"></div>
+            </button>
+
+            <template v-if="recordedVideo">
               <button
-                @click="retakePhoto"
+                @click="retakeVideo"
                 class="px-6 py-3 bg-gray-600 hover:bg-gray-500 text-white rounded-xl transition-colors"
               >
                 Retake
               </button>
               <button
-                @click="uploadCapturedPhoto"
+                @click="uploadRecordedVideo"
                 class="px-6 py-3 bg-green-600 hover:bg-green-500 text-white rounded-xl transition-colors"
               >
                 Upload
@@ -658,8 +706,9 @@
 
       <!-- Instructions -->
       <div class="text-center text-white/60 text-sm pb-6">
-        <p v-if="!capturedImage">Click the red button to take a photo</p>
-        <p v-else>Review your photo and choose to retake or upload</p>
+        <p v-if="!recordedVideo && !isRecording">Click the red button to start recording</p>
+        <p v-else-if="isRecording">Click the square button to stop recording</p>
+        <p v-else>Review your video and choose to retake or upload</p>
       </div>
     </div>
   </div>
@@ -749,6 +798,11 @@ export default {
     const videoElement = ref(null);
     const capturedImage = ref(null);
     const cameraStream = ref(null);
+    const mediaRecorder = ref(null);
+    const recordedVideo = ref(null);
+    const isRecording = ref(false);
+    const recordingTime = ref(0);
+    const recordingTimer = ref(null);
 
     // Tab functionality
     const activeTab = ref('about');
@@ -940,7 +994,7 @@ export default {
       try {
         cameraStream.value = await navigator.mediaDevices.getUserMedia({
           video: { facingMode: 'environment' }, // Use back camera if available
-          audio: false
+          audio: false // Explicitly disable audio
         });
         cameraModalOpen.value = true;
         
@@ -957,48 +1011,113 @@ export default {
     };
 
     const closeCameraModal = () => {
+      // Stop recording if in progress
+      if (isRecording.value) {
+        stopRecording();
+      }
+      
+      // Clear recording timer
+      if (recordingTimer.value) {
+        clearInterval(recordingTimer.value);
+        recordingTimer.value = null;
+      }
+      
+      // Stop camera stream
       if (cameraStream.value) {
         cameraStream.value.getTracks().forEach(track => track.stop());
         cameraStream.value = null;
       }
+      
+      // Reset all states
       cameraModalOpen.value = false;
       capturedImage.value = null;
+      recordedVideo.value = null;
+      isRecording.value = false;
+      recordingTime.value = 0;
+      mediaRecorder.value = null;
     };
 
-    const capturePhoto = () => {
-      if (!videoElement.value) return;
-
-      const canvas = document.createElement('canvas');
-      const context = canvas.getContext('2d');
-      
-      canvas.width = videoElement.value.videoWidth;
-      canvas.height = videoElement.value.videoHeight;
-      
-      context.drawImage(videoElement.value, 0, 0);
-      capturedImage.value = canvas.toDataURL('image/jpeg', 0.8);
-    };
-
-    const retakePhoto = () => {
-      capturedImage.value = null;
-    };
-
-    const uploadCapturedPhoto = async () => {
-      if (!capturedImage.value) return;
+    // Video recording methods
+    const startRecording = () => {
+      if (!cameraStream.value) return;
 
       try {
-        // Convert base64 to blob
-        const response = await fetch(capturedImage.value);
+        const options = {
+          mimeType: 'video/webm;codecs=vp9',
+          videoBitsPerSecond: 2500000 // 2.5 Mbps
+        };
+
+        // Fallback for browsers that don't support vp9
+        if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+          options.mimeType = 'video/webm';
+        }
+
+        mediaRecorder.value = new MediaRecorder(cameraStream.value, options);
+        const chunks = [];
+
+        mediaRecorder.value.ondataavailable = (event) => {
+          if (event.data.size > 0) {
+            chunks.push(event.data);
+          }
+        };
+
+        mediaRecorder.value.onstop = () => {
+          const blob = new Blob(chunks, { type: 'video/webm' });
+          recordedVideo.value = URL.createObjectURL(blob);
+        };
+
+        mediaRecorder.value.start();
+        isRecording.value = true;
+        recordingTime.value = 0;
+
+        // Start recording timer
+        recordingTimer.value = setInterval(() => {
+          recordingTime.value++;
+        }, 1000);
+
+      } catch (error) {
+        console.error('Error starting recording:', error);
+        alert('Failed to start recording. Please try again.');
+      }
+    };
+
+    const stopRecording = () => {
+      if (mediaRecorder.value && isRecording.value) {
+        mediaRecorder.value.stop();
+        isRecording.value = false;
+        
+        if (recordingTimer.value) {
+          clearInterval(recordingTimer.value);
+          recordingTimer.value = null;
+        }
+      }
+    };
+
+    const retakeVideo = () => {
+      if (recordedVideo.value) {
+        URL.revokeObjectURL(recordedVideo.value);
+        recordedVideo.value = null;
+      }
+      recordingTime.value = 0;
+    };
+
+    const uploadRecordedVideo = async () => {
+      if (!recordedVideo.value) return;
+
+      try {
+        // Convert blob URL to blob
+        const response = await fetch(recordedVideo.value);
         const blob = await response.blob();
         
         // Create file from blob
-        const file = new File([blob], `camera-photo-${Date.now()}.jpg`, { type: 'image/jpeg' });
+        const file = new File([blob], `recorded-video-${Date.now()}.webm`, { type: 'video/webm' });
         
         await uploadTodaysVibe(file);
         await fetchPlaceDetails(); // Refresh place to show updated vibe
         closeCameraModal();
       } catch (error) {
-        console.error('Error uploading captured photo:', error);
-        alert('Failed to upload photo. Please try again.');
+        console.error('Error uploading recorded video:', error);
+        alert('Failed to upload video. Please try again.');
       }
     };
 
@@ -1136,6 +1255,16 @@ export default {
       if (cameraStream.value) {
         cameraStream.value.getTracks().forEach(track => track.stop());
       }
+      
+      // Clean up recording timer
+      if (recordingTimer.value) {
+        clearInterval(recordingTimer.value);
+      }
+      
+      // Clean up recorded video URL
+      if (recordedVideo.value) {
+        URL.revokeObjectURL(recordedVideo.value);
+      }
     });
 
     return {
@@ -1158,15 +1287,19 @@ export default {
       askQuickPrompt,
       quickPrompts,
       handleVibeUpload,
-      // Camera functionality
+      // Video recording functionality
       cameraModalOpen,
       videoElement,
       capturedImage,
+      recordedVideo,
+      isRecording,
+      recordingTime,
       openCamera,
       closeCameraModal,
-      capturePhoto,
-      retakePhoto,
-      uploadCapturedPhoto,
+      startRecording,
+      stopRecording,
+      retakeVideo,
+      uploadRecordedVideo,
       // Tab functionality
       activeTab,
       isTabsSticky,
