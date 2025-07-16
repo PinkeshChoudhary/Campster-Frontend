@@ -444,7 +444,7 @@ export default {
                     } else if (key !== "audioFile") {
                         formData.append(key, place.value[key]);   }
                 });
-                formData.append("userId", "dofsgjiwr3riewfjet34it");
+                formData.append("userId", user?.uid);
 
                 await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/places/submit`, formData, {
                     headers: {
