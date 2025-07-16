@@ -1,11 +1,11 @@
 <template>
-  <div class="event-details-wrapper bg-black text-white min-h-screen" v-if="event">
+  <div class="event-details-wrapper bg-black text-white min-h-screen pb-10" v-if="event">
     <!-- Hero Section -->
     <div class="relative overflow-hidden">
       <!-- Back Button -->
       <button
         @click="goBack"
-        class="fixed top-16 left-2 z-50 w-12 h-12 bg-white/10 backdrop-blur-md text-white rounded-full hover:bg-white/20 transition-all duration-300 flex items-center justify-center"
+        class="absolute top-6 left-6 z-50 w-8 h-8 bg-black/40 backdrop-blur-md text-white rounded-full hover:bg-black/60 transition-all duration-300 flex items-center justify-center shadow-xl border border-white/30"
       >
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -24,7 +24,7 @@
         
         <!-- Title Overlay -->
         <div class="absolute bottom-8 left-8 right-8">
-          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-2">
+          <h1 class="text-xl sm:text-xl lg:text-6xl font-bold text-white mb-2">
             {{ event.name }}
           </h1>
           <div class="flex items-center gap-2 text-white/80">
@@ -35,17 +35,47 @@
       </div>
     </div>
 
+    <!-- Sticky Tab Navigation -->
+    <div
+      ref="tabNavigation"
+      class="sticky top-0 z-40 backdrop-blur-md"
+      :class="{ 'shadow-lg': isTabsSticky }"
+    >
+      <div class="max-w-4xl mx-auto px-6">
+        <div class="flex overflow-x-auto scrollbar-hide">
+          <button
+            v-for="tab in tabs"
+            :key="tab.id"
+            :data-tab="tab.id"
+            @click="scrollToSection(tab.id)"
+            class="flex-shrink-0 px-6 py-4 text-sm font-medium transition-all duration-300 border-b-2 whitespace-nowrap"
+            :class="activeTab === tab.id
+              ? 'text-yellow-400 border-yellow-400'
+              : 'text-white/70 border-transparent hover:text-white hover:border-white/30'"
+          >
+            <div class="flex items-center gap-2">
+              <component :is="tab.icon" class="w-4 h-4" />
+              {{ tab.label }}
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- Main Content -->
     <div class="max-w-4xl mx-auto px-6 py-12 space-y-12">
       
       <!-- Event Info -->
-      <section class="space-y-6">
-        <h2 class="text-2xl font-semibold text-white flex items-center gap-3">
-          <div class="w-1 h-6 bg-yellow-400 rounded-full"></div>
+      <section
+        id="details"
+        ref="detailsSection"
+        class="space-y-6"
+      >
+        <h2 class="text-lg font-medium text-white">
           Event Details
         </h2>
         
-        <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 space-y-6">
+        <div class="space-y-6">
           <!-- Date & Time -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="flex items-center gap-4">
@@ -112,23 +142,30 @@
       </section>
 
       <!-- Description -->
-      <section class="space-y-6">
-        <h2 class="text-2xl font-semibold text-white flex items-center gap-3">
-          <div class="w-1 h-6 bg-yellow-400 rounded-full"></div>
+      <section
+        id="about"
+        ref="aboutSection"
+        class="space-y-6"
+      >
+        <h2 class="text-lg font-medium text-white">
           About Event
         </h2>
-        <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+        <div>
           <p class="text-white/80 leading-relaxed text-lg">{{ event.description }}</p>
         </div>
       </section>
 
       <!-- Social Links -->
-      <section v-if="event.instagramLink || event.youtubeLink" class="space-y-6">
-        <h2 class="text-2xl font-semibold text-white flex items-center gap-3">
-          <div class="w-1 h-6 bg-yellow-400 rounded-full"></div>
+      <section
+        id="social"
+        ref="socialSection"
+        v-if="event.instagramLink || event.youtubeLink"
+        class="space-y-6"
+      >
+        <h2 class="text-lg font-medium text-white">
           Follow Us
         </h2>
-        <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+        <div>
           <div class="flex gap-4">
             <a 
               v-if="event.instagramLink" 
@@ -158,62 +195,93 @@
       </section>
 
       <!-- Gallery -->
-      <section v-if="event.images && event.images.length > 1" class="space-y-6">
-        <h2 class="text-2xl font-semibold text-white flex items-center gap-3">
-          <div class="w-1 h-6 bg-yellow-400 rounded-full"></div>
-          Gallery
-          <span class="text-sm text-white/60 ml-2">{{ event.images.length - 1 }} photos</span>
-        </h2>
+      <section
+        id="photos"
+        ref="photosSection"
+        v-if="event.images && event.images.length > 1"
+        class="space-y-6"
+      >
+        <div class="flex items-center justify-between">
+          <h2 class="text-lg font-medium text-white">
+            Photos
+            <span class="text-sm text-white/60 ml-2">{{ event.images.length - 1 }}</span>
+          </h2>
+          <button
+            @click="openGalleryModal(0)"
+            class="text-yellow-400 hover:text-yellow-300 text-sm font-medium transition-colors"
+          >
+            See all photos
+          </button>
+        </div>
         
-        <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+        <div class="rounded-2xl">
+          <!-- Main featured image -->
+          <div class="mb-4">
             <div
-              v-for="(image, index) in event.images.slice(1)"
-              :key="index"
-              class="group relative aspect-square overflow-hidden rounded-lg cursor-pointer bg-white/5 hover:scale-105 transition-all duration-300"
-              @click="openGalleryModal(index)"
+              class="group relative h-80 overflow-hidden rounded-xl cursor-pointer"
+              @click="openGalleryModal(0)"
             >
               <img
-                :src="image"
-                alt="Event Gallery Image"
-                class="w-full h-full object-cover"
+                :src="event.images[1]"
+                alt="Featured Gallery Image"
+                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                loading="lazy"
               />
-              
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
-              
-              <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div class="w-16 h-16 bg-black/60 backdrop-blur-sm rounded-full flex items-center justify-center">
-                  <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                  </svg>
-                </div>
-              </div>
-              
-              <div class="absolute bottom-2 right-2 bg-yellow-400 text-black text-sm font-bold px-2 py-1 rounded-full">
-                {{ index + 1 }}
-              </div>
+              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
             </div>
           </div>
           
-          <div class="mt-4 text-center text-white/60 text-sm">
-            Click any image to browse all photos
+          <!-- Horizontal scrolling thumbnails -->
+          <div class="relative">
+            <div class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+              <div
+                v-for="(image, index) in event.images.slice(1)"
+                :key="index"
+                class="group relative flex-shrink-0 w-32 h-24 overflow-hidden rounded-lg cursor-pointer transition-all duration-300 hover:scale-105"
+                @click="openGalleryModal(index)"
+              >
+                <img
+                  :src="image"
+                  alt="Gallery Thumbnail"
+                  class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                  loading="lazy"
+                />
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300"></div>
+                <!-- Hover zoom icon -->
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
+                  <div class="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center">
+                    <svg class="w-4 h-4 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Scroll indicators -->
+            <div class="absolute top-1/2 -translate-y-1/2 left-0 w-8 h-full bg-gradient-to-r from-black/20 to-transparent pointer-events-none rounded-l-lg"></div>
+            <div class="absolute top-1/2 -translate-y-1/2 right-0 w-8 h-full bg-gradient-to-l from-black/20 to-transparent pointer-events-none rounded-r-lg"></div>
           </div>
         </div>
       </section>
 
       <!-- Terms & Conditions -->
-      <section class="space-y-6">
-        <div class="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 overflow-hidden">
+      <section
+        id="terms"
+        ref="termsSection"
+        class="space-y-6"
+      >
+        <div class="overflow-hidden">
           <button
             @click="toggleTerms"
-            class="w-full flex items-center justify-between p-6 text-left hover:bg-white/5 transition-colors"
+            class="w-full flex items-center justify-between text-left transition-colors"
           >
-            <h3 class="text-xl font-semibold text-white">Terms & Conditions</h3>
-            <svg 
+            <h3 class="text-lg font-medium text-white">Terms & Conditions</h3>
+            <svg
               class="w-6 h-6 text-white transition-transform duration-300"
               :class="{ 'rotate-180': showFullTerms }"
-              fill="none" 
-              stroke="currentColor" 
+              fill="none"
+              stroke="currentColor"
               viewBox="0 0 24 24"
             >
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -221,8 +289,8 @@
           </button>
           
           <transition name="fade-slide">
-            <div v-if="showFullTerms" class="px-6 pb-6 border-t border-white/10">
-              <div class="pt-6 text-white/70 space-y-3">
+            <div v-if="showFullTerms">
+              <div class="text-white/70 space-y-3">
                 <ul class="space-y-2">
                   <li class="flex items-start gap-2">
                     <div class="w-1 h-1 bg-yellow-400 rounded-full mt-2 flex-shrink-0"></div>
@@ -256,12 +324,16 @@
       </section>
 
       <!-- Contact Creator Button -->
-      <section class="space-y-6">
-        <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-          <a 
-            :href="whatsappLink" 
-            target="_blank" 
-            class="w-full flex items-center justify-center gap-3 px-6 py-4 bg-green-600 hover:bg-green-500 text-white font-semibold rounded-xl transition-colors"
+      <section
+        id="contact"
+        ref="contactSection"
+        class="space-y-6"
+      >
+        <div>
+          <a
+            :href="whatsappLink"
+            target="_blank"
+            class="w-full flex items-center justify-center gap-3 px-6 py-4 bg-green-600 hover:bg-green-500 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
           >
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12 2C6.477 2 2 6.477 2 12c0 1.937.546 3.78 1.487 5.347L2 22l4.887-1.41A9.953 9.953 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2Zm0 18a7.946 7.946 0 0 1-4.27-1.21l-.303-.19L5 19l.744-2.41-.19-.304A8 8 0 1 1 12 20Zm3.477-5.198c-.187-.094-1.106-.546-1.278-.61s-.296-.094-.42.093c-.125.188-.48.61-.589.736s-.218.14-.405.047a6.37 6.37 0 0 1-2.723-2.415c-.205-.352.205-.327.586-1.092.065-.137.032-.253-.032-.347-.063-.094-.42-1.01-.575-1.384-.152-.373-.306-.32-.42-.326l-.358-.006a.78.78 0 0 0-.566.266c-.194.213-.738.722-.738 1.759s.756 2.047.861 2.191c.107.143 1.49 2.308 3.609 3.234.504.218.899.349 1.206.446.508.161.97.139 1.337.084.407-.06 1.106-.452 1.262-.888s.156-.81.109-.888-.171-.125-.358-.219Z" />
@@ -360,85 +432,274 @@
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted, onBeforeUnmount, computed } from "vue";
+<script>
+import { ref, onMounted, onBeforeUnmount, computed, nextTick } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import axios from "axios";
 
-const route = useRoute();
-const router = useRouter();
-const event = ref(null);
-const showFullTerms = ref(false);
-const galleryModalOpen = ref(false);
-const currentImageIndex = ref(0);
-
-const toggleTerms = () => {
-  showFullTerms.value = !showFullTerms.value;
+// Tab Icons as inline SVG components
+const DetailsIcon = {
+  template: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>`
 };
 
-const openGalleryModal = (index) => {
-  currentImageIndex.value = index;
-  galleryModalOpen.value = true;
+const AboutIcon = {
+  template: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+  </svg>`
 };
 
-const closeGalleryModal = () => {
-  galleryModalOpen.value = false;
+const PhotoIcon = {
+  template: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+  </svg>`
 };
 
-const nextImage = () => {
-  if (currentImageIndex.value < event.value.images.length - 2) {
-    currentImageIndex.value++;
+const SocialIcon = {
+  template: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2m0 0v2a1 1 0 01-1 1H8a1 1 0 01-1-1V4m0 0H5a2 2 0 00-2 2v12a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2h-2" />
+  </svg>`
+};
+
+const TermsIcon = {
+  template: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+  </svg>`
+};
+
+const ContactIcon = {
+  template: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+  </svg>`
+};
+
+export default {
+  components: {
+    DetailsIcon,
+    AboutIcon,
+    PhotoIcon,
+    SocialIcon,
+    TermsIcon,
+    ContactIcon
+  },
+  setup() {
+    const route = useRoute();
+    const router = useRouter();
+    const event = ref(null);
+    const showFullTerms = ref(false);
+    const galleryModalOpen = ref(false);
+    const currentImageIndex = ref(0);
+
+    // Tab functionality
+    const activeTab = ref('details');
+    const isTabsSticky = ref(false);
+    const tabNavigation = ref(null);
+    const detailsSection = ref(null);
+    const aboutSection = ref(null);
+    const photosSection = ref(null);
+    const socialSection = ref(null);
+    const termsSection = ref(null);
+    const contactSection = ref(null);
+
+    // Tab configuration
+    const tabs = computed(() => {
+      const tabList = [
+        { id: 'details', label: 'Details', icon: 'DetailsIcon' },
+        { id: 'about', label: 'About', icon: 'AboutIcon' }
+      ];
+
+      // Add Photos tab if images exist
+      if (event.value?.images && event.value.images.length > 1) {
+        tabList.push({ id: 'photos', label: 'Photos', icon: 'PhotoIcon' });
+      }
+
+      // Add Social tab if social links exist
+      if (event.value?.instagramLink || event.value?.youtubeLink) {
+        tabList.push({ id: 'social', label: 'Social', icon: 'SocialIcon' });
+      }
+
+      // Add other tabs
+      tabList.push(
+        { id: 'terms', label: 'Terms', icon: 'TermsIcon' },
+        { id: 'contact', label: 'Contact', icon: 'ContactIcon' }
+      );
+
+      return tabList;
+    });
+
+    const toggleTerms = () => {
+      showFullTerms.value = !showFullTerms.value;
+    };
+
+    const openGalleryModal = (index) => {
+      currentImageIndex.value = index;
+      galleryModalOpen.value = true;
+    };
+
+    const closeGalleryModal = () => {
+      galleryModalOpen.value = false;
+    };
+
+    const nextImage = () => {
+      if (currentImageIndex.value < event.value.images.length - 2) {
+        currentImageIndex.value++;
+      }
+    };
+
+    const previousImage = () => {
+      if (currentImageIndex.value > 0) {
+        currentImageIndex.value--;
+      }
+    };
+
+    // Tab functionality methods
+    const scrollToSection = (sectionId) => {
+      const sectionRef = getSectionRef(sectionId);
+      if (sectionRef?.value) {
+        const tabHeight = tabNavigation.value?.offsetHeight || 60;
+        const offsetTop = sectionRef.value.offsetTop - tabHeight - 10;
+        window.scrollTo({
+          top: offsetTop,
+          behavior: 'smooth'
+        });
+      }
+    };
+
+    const getSectionRef = (sectionId) => {
+      const refs = {
+        details: detailsSection,
+        about: aboutSection,
+        photos: photosSection,
+        social: socialSection,
+        terms: termsSection,
+        contact: contactSection
+      };
+      return refs[sectionId];
+    };
+
+    // Intersection Observer for scroll-based tab switching
+    const setupIntersectionObserver = () => {
+      const options = {
+        root: null,
+        rootMargin: '-70px 0px -50% 0px',
+        threshold: 0.1
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const sectionId = entry.target.id;
+            if (sectionId && tabs.value.some(tab => tab.id === sectionId)) {
+              activeTab.value = sectionId;
+            }
+          }
+        });
+      }, options);
+
+      nextTick(() => {
+        [detailsSection, aboutSection, photosSection, socialSection, termsSection, contactSection].forEach(ref => {
+          if (ref?.value) {
+            observer.observe(ref.value);
+          }
+        });
+      });
+
+      return observer;
+    };
+
+    // Handle scroll for sticky tabs
+    const handleScroll = () => {
+      if (tabNavigation.value) {
+        const rect = tabNavigation.value.getBoundingClientRect();
+        isTabsSticky.value = rect.top <= 0;
+      }
+    };
+
+    // Keyboard navigation for gallery
+    const handleKeydown = (event) => {
+      if (!galleryModalOpen.value) return;
+      
+      if (event.key === 'ArrowLeft') {
+        previousImage();
+      } else if (event.key === 'ArrowRight') {
+        nextImage();
+      } else if (event.key === 'Escape') {
+        closeGalleryModal();
+      }
+    };
+
+    const fetchEventDetails = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/events/${route.params.id}`);
+        event.value = response.data;
+      } catch (error) {
+        console.error("Error fetching event details:", error);
+      }
+    };
+
+    const goBack = () => (window.history.length > 1 ? router.back() : router.push("/"));
+
+    const formatDate = (dateString) => {
+      const options = { year: "numeric", month: "long", day: "numeric" };
+      return new Date(dateString).toLocaleDateString(undefined, options);
+    };
+
+    const whatsappLink = computed(() => {
+      const message = `Hi! I found your "${event?.value?.name}" on Campster. I'm interested and would like some more details, please.`;
+      return `https://wa.me/${event.value?.organizerPhone}?text=${encodeURIComponent(message)}`;
+    });
+
+    let intersectionObserver = null;
+
+    onMounted(async () => {
+      await fetchEventDetails();
+      
+      await nextTick();
+      intersectionObserver = setupIntersectionObserver();
+      
+      document.addEventListener('keydown', handleKeydown);
+      window.addEventListener('scroll', handleScroll);
+    });
+
+    onBeforeUnmount(() => {
+      document.removeEventListener('keydown', handleKeydown);
+      window.removeEventListener('scroll', handleScroll);
+      
+      if (intersectionObserver) {
+        intersectionObserver.disconnect();
+      }
+    });
+
+    return {
+      event,
+      showFullTerms,
+      galleryModalOpen,
+      currentImageIndex,
+      toggleTerms,
+      openGalleryModal,
+      closeGalleryModal,
+      nextImage,
+      previousImage,
+      fetchEventDetails,
+      goBack,
+      formatDate,
+      whatsappLink,
+      // Tab functionality
+      activeTab,
+      isTabsSticky,
+      tabs,
+      scrollToSection,
+      tabNavigation,
+      detailsSection,
+      aboutSection,
+      photosSection,
+      socialSection,
+      termsSection,
+      contactSection
+    };
   }
 };
-
-const previousImage = () => {
-  if (currentImageIndex.value > 0) {
-    currentImageIndex.value--;
-  }
-};
-
-// Keyboard navigation for gallery
-const handleKeydown = (event) => {
-  if (!galleryModalOpen.value) return;
-  
-  if (event.key === 'ArrowLeft') {
-    previousImage();
-  } else if (event.key === 'ArrowRight') {
-    nextImage();
-  } else if (event.key === 'Escape') {
-    closeGalleryModal();
-  }
-};
-
-const fetchEventDetails = async () => {
-  try {
-    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/events/${route.params.id}`);
-    event.value = response.data;
-  } catch (error) {
-    console.error("Error fetching event details:", error);
-  }
-};
-
-const goBack = () => (window.history.length > 1 ? router.back() : router.push("/"));
-
-const formatDate = (dateString) => {
-  const options = { year: "numeric", month: "long", day: "numeric" };
-  return new Date(dateString).toLocaleDateString(undefined, options);
-};
-
-const whatsappLink = computed(() => {
-  const message = `Hi! I found your "${event?.value?.name}" on Campster. I'm interested and would like some more details, please.`;
-  return `https://wa.me/${event.value?.organizerPhone}?text=${encodeURIComponent(message)}`;
-});
-
-onMounted(() => {
-  fetchEventDetails();
-  document.addEventListener('keydown', handleKeydown);
-});
-
-onBeforeUnmount(() => {
-  document.removeEventListener('keydown', handleKeydown);
-});
 </script>
 
 <style scoped>

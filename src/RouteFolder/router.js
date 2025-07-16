@@ -53,7 +53,7 @@ const routes = [
     path: '/events/:id',
     name: 'eventdetails',
     component: EventDetails,
-    meta: { requiresAuth: true }
+    // meta: { requiresAuth: true }
   },
   {
     path: '/organizer',
