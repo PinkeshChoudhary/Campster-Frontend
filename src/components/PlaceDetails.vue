@@ -3,14 +3,14 @@
     <!-- Hero Section -->
     <div class="relative overflow-hidden">
       <!-- Back Button -->
-      <!-- <button
+      <button
         @click="goBack"
-        class="fixed top-4 left-4 z-50 w-10 h-10 bg-white/10 backdrop-blur-md text-white rounded-full hover:bg-white/20 transition-all duration-300 flex items-center justify-center"
+        class="absolute top-6 left-6 z-50 w-8 h-8 bg-black/40 backdrop-blur-md text-white rounded-full hover:bg-black/60 transition-all duration-300 flex items-center justify-center shadow-xl border border-white/30"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
         </svg>
-      </button> -->
+      </button>
 
       <!-- Hero Image -->
       <div class="relative h-96 overflow-hidden">
@@ -24,7 +24,7 @@
         
         <!-- Title Overlay -->
         <div class="absolute bottom-8 left-8 right-8">
-          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-2">
+          <h1 class="text-xl sm:text-xl lg:text-6xl font-bold text-white mb-2">
             {{ place.destination }}
           </h1>
           <div class="flex items-center gap-2 text-white/80">
@@ -38,7 +38,7 @@
     <!-- Sticky Tab Navigation -->
     <div
       ref="tabNavigation"
-      class="sticky top-0 z-40 bg-black/80 backdrop-blur-md border-b border-white/10"
+      class="sticky top-0 z-40 backdrop-blur-md"
       :class="{ 'shadow-lg': isTabsSticky }"
     >
       <div class="max-w-4xl mx-auto px-6">
@@ -86,11 +86,11 @@
         </div>
         
         <!-- Horizontal Scrolling Gallery -->
-        <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+        <div class="rounded-2xl">
           <!-- Main featured image -->
           <div class="mb-4">
             <div
-              class="group relative h-80 overflow-hidden rounded-xl cursor-pointer bg-white/5"
+              class="group relative h-80 overflow-hidden rounded-xl cursor-pointer"
               @click="openGalleryModal(0)"
             >
               <img
@@ -109,7 +109,7 @@
               <div
                 v-for="(image, index) in place.images.slice(1)"
                 :key="index"
-                class="group relative flex-shrink-0 w-32 h-24 overflow-hidden rounded-lg cursor-pointer bg-white/5 transition-all duration-300 hover:scale-105"
+                class="group relative flex-shrink-0 w-32 h-24 overflow-hidden rounded-lg cursor-pointer transition-all duration-300 hover:scale-105"
                 @click="openGalleryModal(index)"
               >
                 <img
@@ -146,7 +146,7 @@
         <h2 class="text-lg font-medium text-white">
           About
         </h2>
-        <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+        <div class="rounded-2xl">
           <p class="text-white/80 leading-relaxed text-lg">{{ place.description }}</p>
           
           <!-- Like Counter -->
@@ -172,12 +172,12 @@
           Audio Description
         </h2>
         
-        <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+        <div class="rounded-2xl">
           <!-- Audio Player -->
           <div class="space-y-4">
 
             <!-- Custom Audio Player -->
-            <div class="bg-white/5 rounded-xl p-4 border border-white/10">
+            <div class="rounded-xl">
               <audio
                 ref="audioPlayer"
                 :src="place.audioUrl"
@@ -245,7 +245,7 @@
           <span class="text-sm text-white/60 ml-2">Share your moment</span>
         </h2>
         
-        <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+        <div class="rounded-2xl">
           <div v-if="place.todaysVibe" class="space-y-4">
             <div class="flex items-center justify-between text-sm text-white/60">
               <div class="flex items-center gap-2">
@@ -400,7 +400,7 @@
         v-if="place.influncerInstaGramProfile"
         class="space-y-6"
       >
-        <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+        <div class="rounded-2xl">
           <a
             :href="place.influncerInstaGramProfile"
             target="_blank"
@@ -432,7 +432,7 @@
           Location
         </h2>
         
-        <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+        <div class="rounded-2xl">
           <button
             @click="openGoogleMaps"
             class="w-full flex items-center justify-center gap-3 px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-medium rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
@@ -457,14 +457,14 @@
           <span class="text-sm text-white/60 ml-2">{{ comments.length }} reviews</span>
         </h2>
         
-        <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10 space-y-4">
+        <div class="rounded-2xl space-y-4">
           <!-- Horizontal Reviews Display -->
           <div v-if="comments.length" class="relative">
             <div class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
               <div
                 v-for="(comment, index) in comments"
                 :key="index"
-                class="flex-shrink-0 w-72 bg-white/5 rounded-xl p-4 border border-white/10"
+                class="flex-shrink-0 w-72 rounded-xl p-4 border border-white/20 bg-white/5"
               >
                 <div class="flex items-center justify-between mb-2">
                   <div class="flex items-center gap-2">
@@ -480,7 +480,21 @@
                     <span class="text-yellow-400 text-sm font-medium">5.0</span>
                   </div> -->
                 </div>
-                <p class="text-white/80 text-sm line-clamp-3">{{ comment.text }}</p>
+                <div>
+                  <p
+                    class="text-white/80 text-sm"
+                    :class="{ 'line-clamp-3': !comment.expanded }"
+                  >
+                    {{ comment.text }}
+                  </p>
+                  <button
+                    v-if="comment.text.length > 150"
+                    @click="toggleCommentExpansion(index)"
+                    class="text-yellow-400 hover:text-yellow-300 text-xs mt-1 transition-colors"
+                  >
+                    {{ comment.expanded ? 'View less' : 'View more' }}
+                  </button>
+                </div>
                 <span class="text-xs text-white/50 mt-2 block">{{ new Date(comment.createdAt).toLocaleDateString('en-GB') }}</span>
               </div>
             </div>
@@ -497,8 +511,8 @@
             <div class="flex gap-3">
               <textarea
                 v-model="newComment"
-                class="flex-1 p-3 bg-white/5 text-white rounded-lg border border-white/10 focus:outline-none focus:border-yellow-400 transition-colors resize-none text-sm"
-                rows="2"
+                class="flex-1 p-2 bg-gray-800 text-white rounded-xl focus:outline-none focus:border-yellow-400 transition-colors"
+                rows="1"
                 placeholder="Share your experience..."
               ></textarea>
               <button
@@ -522,7 +536,7 @@
           Ask CampsterAI
         </h2>
         
-        <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 space-y-6">
+        <div class="rounded-2xl space-y-6">
           <div class="flex flex-wrap gap-3">
             <button
               v-for="option in quickPrompts"
@@ -539,7 +553,7 @@
               v-model="travelPrompt"
               type="text"
               placeholder="Ask about travel, blogs, tips..."
-              class="flex-1 p-4 bg-white/5 text-white rounded-xl border border-white/10 focus:outline-none focus:border-yellow-400 transition-colors"
+              class="flex-1 p-2 bg-gray-800 text-white rounded-xl focus:outline-none focus:border-yellow-400 transition-colors"
             />
             <button
               @click="askSakhiAI"
@@ -551,7 +565,7 @@
 
           <div
             v-if="sakhiResponse"
-            class="bg-white/5 p-6 rounded-xl border border-white/10 text-white/90 whitespace-pre-wrap"
+            class="rounded-xl text-white/90 whitespace-pre-wrap"
           >
             {{ sakhiResponse }}
           </div>
@@ -619,7 +633,7 @@
           <div
             v-for="(image, index) in place.images.slice(1)"
             :key="index"
-            class="flex-shrink-0 w-20 h-20 overflow-hidden rounded-lg cursor-pointer bg-white/5 border-2 transition-all duration-300"
+            class="flex-shrink-0 w-20 h-20 overflow-hidden rounded-lg cursor-pointer border-2 transition-all duration-300"
             :class="currentImageIndex === index ? 'border-yellow-400' : 'border-transparent hover:border-white/40'"
             @click="currentImageIndex = index"
           >
@@ -879,10 +893,18 @@ export default {
       const placeId = route.params.id;
       try {
         const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/places/${placeId}/comments`);
-        comments.value = response.data;
+        comments.value = response.data.map(comment => ({
+          ...comment,
+          expanded: false
+        }));
       } catch (error) {
         console.error('Error fetching comments:', error);
       }
+    };
+
+    // Toggle comment expansion
+    const toggleCommentExpansion = (index) => {
+      comments.value[index].expanded = !comments.value[index].expanded;
     };
 
     // Add Comment
@@ -913,9 +935,12 @@ export default {
     };
 
     const goBack = () => {
-      if (window.history.length > 1) {
-        router.back();
+      // Check if there's a previous page in history
+      if (window.history.length > 1 && document.referrer) {
+        // Use router.go(-1) for better compatibility
+        router.go(-1);
       } else {
+        // Fallback to home page
         router.push('/');
       }
     };
@@ -1316,6 +1341,7 @@ export default {
       comments,
       newComment,
       addComment,
+      toggleCommentExpansion,
       goBack,
       likes,
       openGoogleMaps,
