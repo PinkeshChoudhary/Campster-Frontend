@@ -7,7 +7,7 @@
     </div>
   </div>
   <div v-else>
-    <Navbar />
+   
     <div class="container mx-auto">
       <RouterView />
     </div>
@@ -18,14 +18,14 @@
 <script>
 import { ref, onMounted } from "vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import Navbar from "./components/Navbar.vue";
+// import Navbar from "./components/Navbar.vue";
 import OtpLogin from "./components/OtpLogin.vue";
 import BottomNavigation from "./components/BottomNavigation.vue";
 import ProgramList from "./components/menus/programList.vue";
 
 export default {
   components: {
-    Navbar,
+    // Navbar,
     OtpLogin,
     BottomNavigation,
     ProgramList,

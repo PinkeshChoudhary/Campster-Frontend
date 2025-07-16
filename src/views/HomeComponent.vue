@@ -1,5 +1,6 @@
 <template>
   <div class="home-wrapper bg-black text-white min-h-screen pb-10 pt-10">
+     <Navbar />
     <div>
       <!-- Places Section -->
       <section class="py-12">
@@ -188,6 +189,7 @@ import CityFilter from '../components/CityFilter.vue';
 import PlaceSortFilter from '../components/PlaceSortFilter.vue';
 import router from '../RouteFolder/router';
 import { usePlaceSort } from '../composables/usePlaceSort.js';
+import Navbar from '../components/Navbar.vue';
 
 export default {
   components: {
@@ -195,6 +197,7 @@ export default {
     AdminDashboard,
     CityFilter,
     PlaceSortFilter,
+    Navbar,
   },
   setup() {
     const store = useStore();
