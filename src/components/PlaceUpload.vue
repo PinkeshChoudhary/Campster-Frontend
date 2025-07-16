@@ -195,6 +195,106 @@
               </div>
             </div>
 
+            <!-- Audio Recording -->
+            <div class="form-group">
+              <label class="form-label">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-14 0m14 0a7 7 0 00-14 0m14 0v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4m-6 0V7a3 3 0 016 0v4a1 1 0 01-1 1H9a1 1 0 01-1-1v-4z" />
+                </svg>
+                Record Audio Description (Optional)
+              </label>
+              
+              <!-- Audio Recording Controls -->
+              <div class="audio-recording-section">
+                <div class="audio-controls">
+                  <button
+                    type="button"
+                    @click="startRecording"
+                    :disabled="isRecording || isPaused || !canRecord"
+                    class="audio-btn record-btn"
+                    :class="{ 'disabled': isRecording || isPaused || !canRecord }"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-14 0m14 0a7 7 0 00-14 0m14 0v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4m-6 0V7a3 3 0 016 0v4a1 1 0 01-1 1H9a1 1 0 01-1-1v-4z" />
+                    </svg>
+                    {{ !canRecord ? 'Microphone not available' : 'Start Recording' }}
+                  </button>
+
+                  <button
+                    type="button"
+                    @click="pauseRecording"
+                    :disabled="!isRecording"
+                    class="audio-btn pause-btn"
+                    :class="{ 'disabled': !isRecording }"
+                    v-if="isRecording"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6" />
+                    </svg>
+                    Pause
+                  </button>
+
+                  <button
+                    type="button"
+                    @click="resumeRecording"
+                    :disabled="!isPaused"
+                    class="audio-btn resume-btn"
+                    :class="{ 'disabled': !isPaused }"
+                    v-if="isPaused"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h8m-9-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Resume
+                  </button>
+
+                  <button
+                    type="button"
+                    @click="stopRecording"
+                    :disabled="!isRecording && !isPaused"
+                    class="audio-btn stop-btn"
+                    :class="{ 'disabled': !isRecording && !isPaused }"
+                    v-if="isRecording || isPaused"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10h6v4H9z" />
+                    </svg>
+                    Stop
+                  </button>
+                </div>
+
+                <!-- Recording Status -->
+                <div v-if="isRecording || isPaused" class="recording-status">
+                  <div class="flex items-center gap-2">
+                    <div class="recording-indicator" :class="{ 'paused': isPaused }"></div>
+                    <span class="text-white text-sm">
+                      {{ isPaused ? 'Recording Paused' : 'Recording...' }}
+                    </span>
+                    <span class="text-slate-400 text-sm">{{ formatTime(recordingTime) }}</span>
+                  </div>
+                </div>
+
+                <!-- Audio Preview -->
+                <div v-if="audioBlob" class="audio-preview">
+                  <div class="audio-player-container">
+                    <audio ref="audioPlayer" :src="audioUrl" controls class="audio-player"></audio>
+                    <button
+                      type="button"
+                      @click="removeAudio"
+                      class="remove-audio-btn"
+                      title="Remove audio"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1H8a1 1 0 00-1 1v1m0 0h8m-8 0v3a1 1 0 001 1h6a1 1 0 001-1V4" />
+                      </svg>
+                    </button>
+                  </div>
+                  <p class="text-slate-400 text-xs mt-2">Audio duration: {{ formatTime(audioDuration) }}</p>
+                </div>
+              </div>
+            </div>
+
             <!-- Sponsored Checkbox -->
             <div class="form-group">
               <div class="flex items-center gap-3">
@@ -237,7 +337,9 @@
 <script>
 import {
     ref,
-    computed
+    computed,
+    onMounted,
+    onUnmounted
 } from "vue";
 import axios from "axios";
 import {
@@ -255,6 +357,7 @@ export default {
         const route = useRoute();
         const router = useRouter();
         const fileInput = ref(null);
+        const audioPlayer = ref(null);
         const isGettingLocation = ref(false);
         
         const place = ref({
@@ -266,10 +369,24 @@ export default {
             typeOfPlace: "",
             paid: false,
             instagramProfile: "",
+            audioFile: null,
         });
 
         const imagePreviews = ref([]);
         const isSubmitting = ref(false);
+
+        // Audio recording state
+        const mediaRecorder = ref(null);
+        const audioStream = ref(null);
+        const audioChunks = ref([]);
+        const audioBlob = ref(null);
+        const audioUrl = ref(null);
+        const isRecording = ref(false);
+        const isPaused = ref(false);
+        const canRecord = ref(false);
+        const recordingTime = ref(0);
+        const audioDuration = ref(0);
+        const recordingTimer = ref(null);
 
         const processFiles = (files) => {
             Array.from(files).forEach((file) => {
@@ -322,11 +439,12 @@ export default {
                 Object.keys(place.value).forEach((key) => {
                     if (key === "images") {
                         place.value.images.forEach((image) => formData.append("images", image));
-                    } else {
-                        formData.append(key, place.value[key]);
-                    }
+                    } else if (key === "audioFile" && place.value.audioFile) {
+                        formData.append("audio", place.value.audioFile);
+                    } else if (key !== "audioFile") {
+                        formData.append(key, place.value[key]);   }
                 });
-                formData.append("userId", user.uid);
+                formData.append("userId", "dofsgjiwr3riewfjet34it");
 
                 await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/places/submit`, formData, {
                     headers: {
@@ -343,9 +461,11 @@ export default {
                     instagramProfile: "",
                     images: [],
                     typeOfPlace: "",
-                    paid: false
+                    paid: false,
+                    audioFile: null
                 };
                 imagePreviews.value = [];
+                removeAudio();
                 
                 // Success notification
                 alert("Hidden gem shared successfully! 🎉");
@@ -391,10 +511,134 @@ export default {
             );
         };
 
+        // Audio recording functions
+        const initializeAudioRecording = async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                audioStream.value = stream;
+                canRecord.value = true;
+            } catch (error) {
+                console.error('Error accessing microphone:', error);
+                canRecord.value = false;
+            }
+        };
+
+        const startRecording = async () => {
+            if (!canRecord.value) return;
+
+            try {
+                if (!audioStream.value) {
+                    await initializeAudioRecording();
+                }
+
+                audioChunks.value = [];
+                mediaRecorder.value = new MediaRecorder(audioStream.value);
+                
+                mediaRecorder.value.ondataavailable = (event) => {
+                    if (event.data.size > 0) {
+                        audioChunks.value.push(event.data);
+                    }
+                };
+
+                mediaRecorder.value.onstop = () => {
+                    const blob = new Blob(audioChunks.value, { type: 'audio/wav' });
+                    audioBlob.value = blob;
+                    audioUrl.value = URL.createObjectURL(blob);
+                    place.value.audioFile = blob;
+                    
+                    // Get audio duration
+                    const audio = new Audio(audioUrl.value);
+                    audio.onloadedmetadata = () => {
+                        audioDuration.value = audio.duration;
+                    };
+                };
+
+                mediaRecorder.value.start();
+                isRecording.value = true;
+                isPaused.value = false;
+                recordingTime.value = 0;
+                
+                // Start timer
+                recordingTimer.value = setInterval(() => {
+                    recordingTime.value++;
+                }, 1000);
+            } catch (error) {
+                console.error('Error starting recording:', error);
+                alert('Failed to start recording. Please check microphone permissions.');
+            }
+        };
+
+        const pauseRecording = () => {
+            if (mediaRecorder.value && isRecording.value) {
+                mediaRecorder.value.pause();
+                isPaused.value = true;
+                isRecording.value = false;
+                clearInterval(recordingTimer.value);
+            }
+        };
+
+        const resumeRecording = () => {
+            if (mediaRecorder.value && isPaused.value) {
+                mediaRecorder.value.resume();
+                isPaused.value = false;
+                isRecording.value = true;
+                
+                // Resume timer
+                recordingTimer.value = setInterval(() => {
+                    recordingTime.value++;
+                }, 1000);
+            }
+        };
+
+        const stopRecording = () => {
+            if (mediaRecorder.value && (isRecording.value || isPaused.value)) {
+                mediaRecorder.value.stop();
+                isRecording.value = false;
+                isPaused.value = false;
+                clearInterval(recordingTimer.value);
+            }
+        };
+
+        const removeAudio = () => {
+            if (audioUrl.value) {
+                URL.revokeObjectURL(audioUrl.value);
+            }
+            audioBlob.value = null;
+            audioUrl.value = null;
+            place.value.audioFile = null;
+            audioDuration.value = 0;
+            recordingTime.value = 0;
+        };
+
+        const formatTime = (seconds) => {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        };
+
+        // Initialize audio on component mount
+        onMounted(() => {
+            initializeAudioRecording();
+        });
+
+        // Cleanup on component unmount
+        onUnmounted(() => {
+            if (audioStream.value) {
+                audioStream.value.getTracks().forEach(track => track.stop());
+            }
+            if (audioUrl.value) {
+                URL.revokeObjectURL(audioUrl.value);
+            }
+            if (recordingTimer.value) {
+                clearInterval(recordingTimer.value);
+            }
+        });
+
         return {
             place,
             imagePreviews,
             fileInput,
+            audioPlayer,
             isGettingLocation,
             handleImageUpload,
             handleDrop,
@@ -405,6 +649,20 @@ export default {
             isSubmitting,
             goBack,
             getUserLocation,
+            // Audio recording
+            startRecording,
+            pauseRecording,
+            resumeRecording,
+            stopRecording,
+            removeAudio,
+            formatTime,
+            isRecording,
+            isPaused,
+            canRecord,
+            recordingTime,
+            audioDuration,
+            audioBlob,
+            audioUrl,
         };
     },
 };
@@ -718,6 +976,180 @@ export default {
 .form-select:invalid:focus {
   border-color: rgba(239, 68, 68, 0.5);
   box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+}
+
+/* Audio Recording Styles */
+.audio-recording-section {
+  background-color: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  backdrop-filter: blur(4px);
+}
+
+.audio-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.audio-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
+}
+
+.record-btn {
+  background-color: rgb(239, 68, 68);
+  color: white;
+}
+
+.record-btn:hover:not(.disabled) {
+  background-color: rgb(220, 38, 38);
+  transform: scale(1.05);
+}
+
+.pause-btn {
+  background-color: rgb(251, 191, 36);
+  color: white;
+}
+
+.pause-btn:hover:not(.disabled) {
+  background-color: rgb(245, 158, 11);
+  transform: scale(1.05);
+}
+
+.resume-btn {
+  background-color: rgb(34, 197, 94);
+  color: white;
+}
+
+.resume-btn:hover:not(.disabled) {
+  background-color: rgb(22, 163, 74);
+  transform: scale(1.05);
+}
+
+.stop-btn {
+  background-color: rgb(107, 114, 128);
+  color: white;
+}
+
+.stop-btn:hover:not(.disabled) {
+  background-color: rgb(75, 85, 99);
+  transform: scale(1.05);
+}
+
+.audio-btn.disabled {
+  background-color: rgb(71, 85, 105);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.recording-status {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 0.5rem;
+}
+
+.recording-indicator {
+  width: 0.75rem;
+  height: 0.75rem;
+  background-color: rgb(239, 68, 68);
+  border-radius: 50%;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.recording-indicator.paused {
+  background-color: rgb(251, 191, 36);
+  animation: none;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1);
+  }
+}
+
+.audio-preview {
+  margin-top: 1rem;
+}
+
+.audio-player-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.audio-player {
+  flex: 1;
+  height: 2.5rem;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 0.25rem;
+}
+
+.audio-player::-webkit-media-controls-panel {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.remove-audio-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  background-color: rgb(239, 68, 68);
+  color: white;
+  border-radius: 0.375rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.remove-audio-btn:hover {
+  background-color: rgb(220, 38, 38);
+  transform: scale(1.1);
+}
+
+/* Responsive adjustments for audio controls */
+@media (max-width: 640px) {
+  .audio-controls {
+    flex-direction: column;
+  }
+  
+  .audio-btn {
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .audio-player-container {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .remove-audio-btn {
+    align-self: flex-end;
+  }
 }
 
 /* Smooth transitions for all interactive elements */

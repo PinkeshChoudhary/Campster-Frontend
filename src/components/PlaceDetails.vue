@@ -161,6 +161,79 @@
         </div>
       </section>
 
+      <!-- Audio Description -->
+      <section
+        id="audio"
+        ref="audioSection"
+        v-if="place.audioUrl"
+        class="space-y-6"
+      >
+        <h2 class="text-lg font-medium text-white">
+          Audio Description
+        </h2>
+        
+        <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+          <!-- Audio Player -->
+          <div class="space-y-4">
+
+            <!-- Custom Audio Player -->
+            <div class="bg-white/5 rounded-xl p-4 border border-white/10">
+              <audio
+                ref="audioPlayer"
+                :src="place.audioUrl"
+                @loadedmetadata="onAudioLoaded"
+                @timeupdate="onTimeUpdate"
+                @ended="onAudioEnded"
+                @play="isPlaying = true"
+                @pause="isPlaying = false"
+                class="hidden"
+              ></audio>
+
+              <!-- Audio Controls -->
+              <div class="flex items-center gap-4">
+                <!-- Play/Pause Button -->
+                <button
+                  @click="togglePlayPause"
+                  class="w-12 h-12 bg-yellow-400 hover:bg-yellow-300 text-black rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-105"
+                >
+                  <svg v-if="!isPlaying" class="w-6 h-6 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                  </svg>
+                  <svg v-else class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                  </svg>
+                </button>
+
+                <!-- Progress Bar -->
+                <div class="flex-1 space-y-2">
+                  <div class="relative">
+                    <div class="w-full h-2 bg-white/20 rounded-full overflow-hidden">
+                      <div
+                        class="h-full bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full transition-all duration-300"
+                        :style="{ width: progressPercentage + '%' }"
+                      ></div>
+                    </div>
+                    <!-- Progress Handle -->
+                    <div
+                      class="absolute top-1/2 transform -translate-y-1/2 w-4 h-4 bg-yellow-400 rounded-full shadow-lg cursor-pointer transition-all duration-300 hover:scale-110"
+                      :style="{ left: progressPercentage + '%', marginLeft: '-8px' }"
+                      @mousedown="startSeeking"
+                    ></div>
+                  </div>
+                  
+                  <!-- Time Display -->
+                  <div class="flex justify-between text-xs text-white/60">
+                    <span>{{ formatTime(currentTime) }}</span>
+                    <span>{{ formatTime(duration) }}</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- Latest Vibe -->
       <section
         id="vibe"
@@ -704,6 +777,12 @@ const CommentsIcon = {
   </svg>`
 };
 
+const AudioIcon = {
+  template: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+  </svg>`
+};
+
 const AIIcon = {
   template: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
@@ -714,6 +793,7 @@ export default {
   components: {
     PhotoIcon,
     AboutIcon,
+    AudioIcon,
     VibeIcon,
     InstagramIcon,
     LocationIcon,
@@ -744,11 +824,21 @@ export default {
     const tabNavigation = ref(null);
     const photosSection = ref(null);
     const aboutSection = ref(null);
+    const audioSection = ref(null);
     const vibeSection = ref(null);
     const instagramSection = ref(null);
     const locationSection = ref(null);
     const commentsSection = ref(null);
     const aiSection = ref(null);
+
+    // Audio player state
+    const audioPlayer = ref(null);
+    const isPlaying = ref(false);
+    const currentTime = ref(0);
+    const duration = ref(0);
+    const volume = ref(1);
+    const isMuted = ref(false);
+    const isSeeking = ref(false);
 
     // Tab configuration
     const tabs = computed(() => {
@@ -759,6 +849,11 @@ export default {
       // Add Photos tab if images exist
       if (place.value?.images && place.value.images.length > 1) {
         tabList.unshift({ id: 'photos', label: 'Photos', icon: 'PhotoIcon' });
+      }
+
+      // Add Audio tab if audio exists
+      if (place.value?.audioUrl) {
+        tabList.push({ id: 'audio', label: 'Audio Story', icon: 'AudioIcon' });
       }
 
       // Add other tabs
@@ -923,6 +1018,105 @@ export default {
       }
     };
 
+    // Audio player functionality
+    const progressPercentage = computed(() => {
+      if (duration.value === 0) return 0;
+      return (currentTime.value / duration.value) * 100;
+    });
+
+    const formatTime = (time) => {
+      if (isNaN(time)) return '0:00';
+      const minutes = Math.floor(time / 60);
+      const seconds = Math.floor(time % 60);
+      return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    };
+
+    const togglePlayPause = () => {
+      if (!audioPlayer.value) return;
+      
+      if (isPlaying.value) {
+        audioPlayer.value.pause();
+      } else {
+        audioPlayer.value.play();
+      }
+    };
+
+    const onAudioLoaded = () => {
+      if (audioPlayer.value) {
+        duration.value = audioPlayer.value.duration;
+        audioPlayer.value.volume = volume.value;
+      }
+    };
+
+    const onTimeUpdate = () => {
+      if (audioPlayer.value && !isSeeking.value) {
+        currentTime.value = audioPlayer.value.currentTime;
+      }
+    };
+
+    const onAudioEnded = () => {
+      isPlaying.value = false;
+      currentTime.value = 0;
+    };
+
+    const startSeeking = (event) => {
+      isSeeking.value = true;
+      const rect = event.target.parentElement.getBoundingClientRect();
+      const clickX = event.clientX - rect.left;
+      const percentage = clickX / rect.width;
+      const newTime = percentage * duration.value;
+      
+      if (audioPlayer.value) {
+        audioPlayer.value.currentTime = newTime;
+        currentTime.value = newTime;
+      }
+      
+      const handleMouseMove = (e) => {
+        const moveX = e.clientX - rect.left;
+        const movePercentage = Math.max(0, Math.min(1, moveX / rect.width));
+        const moveTime = movePercentage * duration.value;
+        
+        if (audioPlayer.value) {
+          audioPlayer.value.currentTime = moveTime;
+          currentTime.value = moveTime;
+        }
+      };
+      
+      const handleMouseUp = () => {
+        isSeeking.value = false;
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+      };
+      
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+    };
+
+    const toggleMute = () => {
+      if (!audioPlayer.value) return;
+      
+      if (isMuted.value) {
+        audioPlayer.value.volume = volume.value;
+        isMuted.value = false;
+      } else {
+        audioPlayer.value.volume = 0;
+        isMuted.value = true;
+      }
+    };
+
+    const setVolume = (event) => {
+      const rect = event.target.getBoundingClientRect();
+      const clickX = event.clientX - rect.left;
+      const newVolume = clickX / rect.width;
+      
+      volume.value = Math.max(0, Math.min(1, newVolume));
+      
+      if (audioPlayer.value) {
+        audioPlayer.value.volume = volume.value;
+        isMuted.value = volume.value === 0;
+      }
+    };
+
     // Camera functionality
     const openCamera = async () => {
       try {
@@ -1032,6 +1226,7 @@ export default {
       const refs = {
         photos: photosSection,
         about: aboutSection,
+        audio: audioSection,
         vibe: vibeSection,
         instagram: instagramSection,
         location: locationSection,
@@ -1064,7 +1259,7 @@ export default {
 
       // Observe all sections
       nextTick(() => {
-        [photosSection, aboutSection, vibeSection, instagramSection, locationSection, commentsSection, aiSection].forEach(ref => {
+        [photosSection, aboutSection, audioSection, vibeSection, instagramSection, locationSection, commentsSection, aiSection].forEach(ref => {
           if (ref?.value) {
             observer.observe(ref.value);
           }
@@ -1146,6 +1341,22 @@ export default {
       askQuickPrompt,
       quickPrompts,
       handleVibeUpload,
+      // Audio functionality
+      audioPlayer,
+      isPlaying,
+      currentTime,
+      duration,
+      volume,
+      isMuted,
+      progressPercentage,
+      formatTime,
+      togglePlayPause,
+      onAudioLoaded,
+      onTimeUpdate,
+      onAudioEnded,
+      startSeeking,
+      toggleMute,
+      setVolume,
       // Camera functionality
       cameraModalOpen,
       videoElement,
@@ -1163,6 +1374,7 @@ export default {
       tabNavigation,
       photosSection,
       aboutSection,
+      audioSection,
       vibeSection,
       instagramSection,
       locationSection,
