@@ -141,7 +141,7 @@ export default {
     };
 
     const editPlace = () => {
-      router.push(`/place-upload?edit=${props.place._id}`);
+      router.push(`/submit-place?edit=${props.place._id}`);
     };
 
     onMounted(() => {
