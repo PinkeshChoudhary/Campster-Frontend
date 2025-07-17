@@ -631,7 +631,7 @@ export default {
         const fetchPlaceData = async (placeId) => {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/places/${placeId}`);
-                const placeData = response.data.place;
+                const placeData = response.data;
                 
                 // Populate form with existing data
                 place.value = {
