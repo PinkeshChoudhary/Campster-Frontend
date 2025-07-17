@@ -517,7 +517,7 @@
               ></textarea>
               <button
                 @click="addComment"
-                class="px-4 py-2 bg-yellow-400 text-black rounded-lg hover:bg-yellow-300 transition-colors text-sm font-medium self-end"
+                class="px-4 py-2 bg-gray-500 text-black rounded-lg hover:bg-yellow-300 transition-colors text-sm font-medium self-end"
               >
                 Post Review
               </button>
@@ -557,7 +557,7 @@
             />
             <button
               @click="askSakhiAI"
-              class="px-6 py-4 bg-yellow-400 text-black rounded-xl hover:bg-yellow-300 transition-colors font-semibold"
+              class="px-6 py-4 bg-gray-500 text-black rounded-xl hover:bg-yellow-300 transition-colors font-semibold"
             >
               Ask
             </button>
