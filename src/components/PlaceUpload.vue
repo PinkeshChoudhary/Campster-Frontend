@@ -23,8 +23,8 @@
               </svg>
             </div>
           </div>
-          <h1 class="text-4xl font-bold text-white mb-2">Share Hidden Gem</h1>
-          <p class="text-slate-400 text-lg">Discover and share amazing places with the community</p>
+          <h1 class="text-4xl font-bold text-white mb-2">{{ isEditMode ? 'Edit Your Place' : 'Share Hidden Gem' }}</h1>
+          <p class="text-slate-400 text-lg">{{ isEditMode ? 'Update your place information' : 'Discover and share amazing places with the community' }}</p>
         </div>
 
         <!-- Form Container -->
@@ -324,7 +324,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                 </svg>
-                <span>Share Hidden Gem</span>
+                <span>{{ isEditMode ? 'Update Place' : 'Share Hidden Gem' }}</span>
               </div>
             </button>
           </form>
@@ -359,6 +359,10 @@ export default {
         const fileInput = ref(null);
         const audioPlayer = ref(null);
         const isGettingLocation = ref(false);
+        
+        // Edit mode variables
+        const isEditMode = ref(false);
+        const editPlaceId = ref(null);
         
         const place = ref({
             destination: "",
@@ -446,7 +450,14 @@ export default {
                 });
                 formData.append("userId", user?.uid);
 
-                await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/places/submit`, formData, {
+                // Add edit mode information to form data
+                if (isEditMode.value) {
+                    formData.append("isEdit", "true");
+                    formData.append("placeId", editPlaceId.value);
+                }
+
+                // Use the same submit endpoint for both create and update
+                const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/places/submit`, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data"
                     },
@@ -468,13 +479,13 @@ export default {
                 removeAudio();
                 
                 // Success notification
-                alert("Hidden gem shared successfully! 🎉");
+                alert(isEditMode.value ? "Place updated successfully! 🎉" : "Hidden gem shared successfully! 🎉");
                 
                 // Navigate back
                 goBack();
             } catch (error) {
                 console.error(error);
-                alert("Failed to share your hidden gem. Please try again.");
+                alert(isEditMode.value ? "Failed to update your place. Please try again." : "Failed to share your hidden gem. Please try again.");
             } finally {
                 isSubmitting.value = false;
             }
@@ -616,9 +627,53 @@ export default {
             return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
         };
 
+        // Function to fetch existing place data for editing
+        const fetchPlaceData = async (placeId) => {
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/places/${placeId}`);
+                const placeData = response.data.place;
+                
+                // Populate form with existing data
+                place.value = {
+                    destination: placeData.destination || "",
+                    description: placeData.description || "",
+                    location: placeData.location || "",
+                    locationCoordinates: placeData.locationCoordinates || "",
+                    images: [],
+                    typeOfPlace: placeData.typeOfPlace || "",
+                    paid: placeData.paid || false,
+                    instagramProfile: placeData.instagramProfile || "",
+                    audioFile: null,
+                };
+                
+                // Handle existing images
+                if (placeData.images && placeData.images.length > 0) {
+                    imagePreviews.value = placeData.images;
+                }
+                
+                // Handle existing audio
+                if (placeData.audioUrl) {
+                    audioUrl.value = placeData.audioUrl;
+                    // Note: We can't recreate the blob from URL, so we'll just show the existing audio
+                }
+            } catch (error) {
+                console.error('Error fetching place data:', error);
+                alert('Failed to load place data for editing.');
+                router.push('/my-posts');
+            }
+        };
+
         // Initialize audio on component mount
         onMounted(() => {
             initializeAudioRecording();
+            
+            // Check if we're in edit mode
+            const editId = route.query.edit;
+            if (editId) {
+                isEditMode.value = true;
+                editPlaceId.value = editId;
+                fetchPlaceData(editId);
+            }
         });
 
         // Cleanup on component unmount
@@ -649,6 +704,10 @@ export default {
             isSubmitting,
             goBack,
             getUserLocation,
+            // Edit mode
+            isEditMode,
+            editPlaceId,
+            fetchPlaceData,
             // Audio recording
             startRecording,
             pauseRecording,

@@ -30,6 +30,16 @@
   <i class="fas fa-share-alt text-black"></i>
 </button>
 
+<!-- Edit Button (only show for user's own posts) -->
+<button
+  v-if="showEditButton"
+  @click.stop="editPlace"
+  class="absolute top-2 right-12 bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition"
+  title="Edit Post"
+>
+  <i class="fas fa-edit"></i>
+</button>
+
 
       <!-- Place Info -->
       <div class="absolute bottom-4 left-4 text-white font-semibold text-lg">
@@ -46,7 +56,7 @@ import { getAuth } from "firebase/auth";
 import axios from "axios";
 
 export default {
-  props: ['place'],
+  props: ['place', 'showEditButton'],
   setup(props) {
     const router = useRouter();
     const likedByUser = ref(false);
@@ -130,6 +140,10 @@ export default {
       }
     };
 
+    const editPlace = () => {
+      router.push(`/place-upload?edit=${props.place._id}`);
+    };
+
     onMounted(() => {
       checkLikedStatus();
 
@@ -162,6 +176,7 @@ export default {
       distance,
       displayDistance,
       sharePlace,
+      editPlace,
     };
   },
 };

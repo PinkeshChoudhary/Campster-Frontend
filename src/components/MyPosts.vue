@@ -29,6 +29,7 @@
         v-for="(place, index) in myPosts"
         :key="place._id"
         :place="place"
+        :showEditButton="true"
         class="opacity-0 animate-fade-in"
         :style="{ animationDelay: `${index * 150}ms` }"
       />
