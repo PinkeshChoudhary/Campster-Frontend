@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed bottom-0 w-full bg-black border-t border-gray-700 shadow-md flex justify-around items-center pt-2 pb-4 z-50">
+  <div class="fixed bottom-0 w-full bg-black border-t border-gray-700 shadow-md flex justify-around items-center pt-2 pb-4 z-50 md:hidden">
     <!-- Home -->
     <router-link to="/" :class="activeClass('/')" class="nav-item">
       <i class="fas fa-home icon"></i>

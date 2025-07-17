@@ -1,6 +1,5 @@
 <template>
   <div class="home-wrapper bg-black text-white min-h-screen pb-10 pt-10">
-     <Navbar />
     <div>
       <!-- Places Section -->
       <section class="py-12">

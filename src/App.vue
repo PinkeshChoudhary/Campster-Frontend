@@ -7,7 +7,7 @@
     </div>
   </div>
   <div v-else>
-   
+   <Navbar v-if="shouldShowNavbar" />
     <div class="container mx-auto">
       <RouterView />
     </div>
@@ -16,23 +16,32 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUnmounted, computed } from "vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-// import Navbar from "./components/Navbar.vue";
+import { useRoute } from "vue-router";
+import Navbar from "./components/Navbar.vue";
 import OtpLogin from "./components/OtpLogin.vue";
 import BottomNavigation from "./components/BottomNavigation.vue";
 import ProgramList from "./components/menus/programList.vue";
 
 export default {
   components: {
-    // Navbar,
+    Navbar,
     OtpLogin,
     BottomNavigation,
     ProgramList,
   },
   setup() {
+    const route = useRoute();
     const isAuthenticated = ref(false);
     const isLoading = ref(true);
+
+    // Computed property to determine if navbar should be shown
+    const shouldShowNavbar = computed(() => {
+        // Show navbar on desktop/tablet for main routes: Home, Events, Community
+        return route.path === '/' || route.path === '/events' || route.path === '/ChatGround';
+    });
+
     onMounted(() => {
       const auth = getAuth();
       onAuthStateChanged(auth, (user) => {
@@ -41,7 +50,7 @@ export default {
       });
     });
 
-    return { isAuthenticated, isLoading };
+    return { isAuthenticated, isLoading, shouldShowNavbar };
   },
 };
 </script>
