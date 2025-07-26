@@ -345,6 +345,7 @@ export default {
       try {
         isLoading.value = true;
         const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/places`);
+        console.log("sachin data h ya nah", response)
         store.setApprovedPlaces(response.data.places);
         
         // Simulate loading delay for better UX

@@ -120,7 +120,7 @@ const routes = [
     path: '/submit-place',
     name: 'PlaceUpload', // New route for uploading a place
     component: PlaceUpload,
-    meta: { requiresAuth: true }
+    // meta: { requiresAuth: true }
   },
   {
     path: '/myPost',

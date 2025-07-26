@@ -63,7 +63,7 @@
           <!-- Thumbnail -->
           <div class="event-thumbnail w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 flex-shrink-0 overflow-hidden m-4 bg-white/5">
             <img
-              :src="event.images[0]"
+              :src="event?.images[0]"
               class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
               alt="event thumbnail"
             />
