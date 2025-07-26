@@ -364,12 +364,12 @@ export default {
     const tab = ref('popular');
 
     const popularPlaces = computed(() => {
-      const filtered = approvedPlaces.value.filter(place => place.typeOfPlace === 'popular');
+      const filtered = approvedPlaces?.value?.filter(place => place.typeOfPlace === 'popular');
       return sortPlacesWithDistance(filtered, currentSortType.value);
     });
 
     const hiddenPlaces = computed(() => {
-      const filtered = approvedPlaces.value.filter(place => place.typeOfPlace === 'hidden');
+      const filtered = approvedPlaces?.value?.filter(place => place.typeOfPlace === 'hidden');
       return sortPlacesWithDistance(filtered, currentSortType.value);
     });
 
