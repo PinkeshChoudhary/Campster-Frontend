@@ -4,14 +4,15 @@
       ref="container"
       @click="handleOutsideClick"
     >
-        <!-- 🔘 Toggle Dashboard Button -->
+        <!-- 🔘 Toggl Dashboard Button -->
         <div class="fixed top-0 left-0 w-full bg-gray-900 text-white p-2 z-50 shadow">
       <button @click="showDashboard = !showDashboard" class="w-full text-center font-semibold bg-yellow-500 text-black py-2 rounded">
         {{ showDashboard ? '🔽 Hide Game Dashboard' : '📊 Show Game Dashboard' }}
       </button>
     </div>
 
-    <!-- 🔽 Slide Down Dashboard -->
+    <!-- 🔽 Slide Down Dash
+     oard -->
     <transition name="slide">
       <div v-if="showDashboard" class="absolute top-12 left-0 w-full z-40">
         <BingoDashboard :gameId="gameId" :playerId="playerId" :players="players" />
